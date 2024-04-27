@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% block content %}
+    {% for flight in flightinfo%}
+    <div style="border: 1px solid black; background-color: antiquewhite;">
+        <p>{{flight.AirlineCode}}</p>
+        <p>{{flight.AirlineName}}</p>
+        <p>{{flight.FlightNumber}}</p>
+        <p>{{flight.DepartureAirportName}}</p>
+        <p>{{flight.ArrivalAirportName}}</p>
+        <p>{{flight.departurecontryname}}</p>
+        <p>{{flight.arrivalcontryname}}</p>
+        
+    </div>
+    {% endfor %}
+    {% endblock %}
+    
+</body>
+</html>

@@ -1,0 +1,913 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Fight Multi Trip</title>
+</head>
+<body>
+    <Header>
+        <div class="container-fluid header">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="navbar-brand" href="#" >
+                    <img src="{% static 'image/flight/Magnet logo.png' %}"alt="logo" width="79px" height="79px">
+                </a>
+                <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto mt-2"> <!-- mx-auto for centering -->
+                        <li class="nav-item">
+                            <a class="nav-link" href=" "><img src="{% static 'image/flight/flight w.svg' %}"  alt=""><p>Flights</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'hotel' %}"><img src="{% static 'image/flight/hotel w.svg' %}"  alt=""><p>Hotels</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/flight/holiday w.svg' %}" alt=""><p>Holidays</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/flight/island w.svg' %}" alt=""><p>Island</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/flight/visa w 1 icon.svg' %}" alt=""><p>Visa</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/flight/more w 1 icon.svg' %}" alt=""><p>More</p></a>
+                        </li>
+                    </ul>
+                    <div class="d-flex btn-log mb-2">
+                        <button class="btn btn-primary" id="log-btn">LOG IN</button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </Header>
+    <section class="container-fluid" id="form" style="background: #F4F4F4;">
+        <form action="submit" class="containeralign-items-center  row p-2" style="background: #FFFFFF; margin: 20px 50px 0px 50px;">
+            <div class="col-md-12">
+                <div class="row ">
+                    <div class="col-md-2">
+                        <label for="from" class="fcode-title" >MAA</label>
+                        <input type="text" class="form-control" value="Chennai" autofocus>
+                    </div>
+                    <div class="col-md-1">
+                        <img src="image/flight/flight b.svg" alt="flight icon" class="img-fluid">
+                    </div>
+                    <div class="col-md-2" >
+                        <label for="from" class="fcode-title">BLR</label>
+                        <input type="text" class="form-control" value="Bangalore">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="departure date" class="f-label">Departure Date</label>
+                        <input type="date" id="date" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="passengers-class" class="f-label">Passengers & Class</label>
+                        <input type="text" class="form-control" readonly value="1 pas & economy">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary" id="mod-btn">Modify Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+    <section class="container d-flex mt-4">
+        <div id="filter-sec" class=" col-md-3" style="margin: 4;">
+            <div>
+                <div>
+                    <h3>Filters</h3>
+                    <hr>
+                    <p>Number of Price</p>
+                </div>
+                <div class="wrapper">
+                    <div class="price-input">
+                        <div class="form-row d-flex">
+                            <div class="col d-flex">
+                                <label for="price">₹</label>
+                                <input type="number" readonly class="form-control input-min" value="{{ min_price }}">
+                            </div>
+                            <div class="separator">-</div>
+                            <div class="col d-flex">
+                                <label for="price">₹</label>
+                                <input type="number" readonly class="form-control input-max" value="{{ max_price }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider">
+                        <div class="progress"></div>
+                    </div>
+                    <div class="range-input">
+                        <div class="form-row">
+                            <div class="col">
+                                <input type="range" class="form-range range-min" min="0" max="10000" value="{{ min_price }}" step="100">
+                            </div>
+                            <div class="col">
+                                <input type="range" class="form-range range-max" min="0" max="10000" value="{{ max_price }}" step="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="row">
+                        <p class="fil-head">Stops MAA - BLA</p>
+                    </div>
+                    <div class="row">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="nonStop">
+                            <label class="form-check-label" for="nonStop">Non-stop</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="oneStop">
+                            <label class="form-check-label" for="oneStop">1 Stop</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="twoStop">
+                            <label class="form-check-label" for="twoStop">2 Stops</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="threeStop">
+                            <label class="form-check-label" for="threeStop">3 Stops</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="row">
+                        <div>
+                            <p class="fil-head">Take off from MAA</p>
+                        </div>
+                        <div>
+                            <label for="time" class="f-time">Before 6AM</label>
+                            <label for="time" class="f-time">6AM-12PM</label>
+                        </div>
+                        <div>
+                            <label for="time" class="f-time">12PM-6PM</label>
+                            <label for="time" class="f-time">After 6PM</label>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div>
+                            <p class="fil-head">Arrival in BLA</p>
+                        </div>
+                        <div>
+                            <label for="time" class="f-time">Before 6AM</label>
+                            <label for="time" class="f-time">6AM-12PM</label>
+                        </div>
+                        <div>
+                            <label for="time" class="f-time">12PM-6PM</label>
+                            <label for="time" class="f-time">After 6PM</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="row">
+                        <p class="fil-head">Airlines</p>
+                    </div>
+                    <div class="row">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="Air-india">
+                            <label class="form-check-label" for="Air india">Air india</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="Air-asia">
+                            <label class="form-check-label" for="Air asia">Air asia</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="Indigo">
+                            <label class="form-check-label" for="Indigo">Indigo</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="Vistara">
+                            <label class="form-check-label" for="Vistara">Vistara</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="row">
+                        <p class="fil-head">All Itineraries</p>
+                    </div>
+                    <div class="row">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="Baggage">
+                            <label class="form-check-label" for="Baggage">Baggage Included</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="Non-Refundable">
+                            <label class="form-check-label" for="Non-Refundable">Non-Refundable</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="Refundable">
+                            <label class="form-check-label" for="Refundable">Refundable</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="Par-Refundable">
+                            <label class="form-check-label" for="Partial Refundable">Partial Refundable</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>   
+        <div class="container">
+            <div id="fd-sec" class="col-md-12">
+                <div class="d-flex" id="sort-by">
+                    <div class="col-md-6 mt-1">
+                        <h4>Sort By</h4>
+                    </div>
+                    <div id="sortby-label" class="col-md-6">
+                        <label class="form-check-label" for="airlinesRadio" autofocus>Airlines</label>
+                        <label class="form-check-label" for="departureRadio">Departure</label>
+                        <label class="form-check-label" for="durationRadio">Duration</label>
+                        <label class="form-check-label" for="arrivalRadio">Arrival</label>
+                        <label class="form-check-label" for="priceRadio">Price</label>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-3">
+                <div class="flight-container">
+                    <div class="row" style="text-align: center;align-items: center;" >
+                        <div class="col-md-1">
+                            <img src="{% static 'image/flight/flight w.svg' %}" alt="Flight-logo">
+                        </div>
+                        <div class="col-md-3">
+                            <h4 class="f-name">Indigo | 6E-2498</h4>
+                            <p class="f-class">Private / Economy</p>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="flight-timings">
+                                <div class=" d-flex">
+                                    <p class="f-time-in">06:15</p>
+                                    <p class="f-time-in">09.05</p>
+                                </div>
+                                <div class="d-flex" style="justify-content: space-between;">
+                                    <p class="f-code col-md-1">MAA</p>
+                                    <p class="f_to_time col-md-10" style="border-bottom: 1px solid blue;">2h50m</p>
+                                    <p class="f-code col-md-1">DEL</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 flight-price" style="text-align: center;align-items: center;">
+                            <p class="f-date">19 dec 2023</p>
+                        </div>
+                    </div>
+                    <div class="row" style="text-align: center;align-items: center;" >
+                        <div class="col-md-1">
+                            <img src="{% static 'image/flight/flight w.svg' %}" alt="Flight-logo">
+                        </div>
+                        <div class="col-md-3">
+                            <h4 class="f-name">Indigo | 6E-2498</h4>
+                            <p class="f-class">Private / Economy</p>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="flight-timings">
+                                <div class=" d-flex">
+                                    <p class="f-time-in">06:15</p>
+                                    <p class="f-time-in">09.05</p>
+                                </div>
+                                <div class="d-flex" style="justify-content: space-between;">
+                                    <p class="f-code col-md-1">MAA</p>
+                                    <p class="f_to_time col-md-10" style="border-bottom: 1px solid blue;">2h50m</p>
+                                    <p class="f-code col-md-1">DEL</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 flight-price" style="text-align: center;align-items: center;">
+                            <p class="f-date">19 dec 2023</p>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="flight-features d-flex">
+                            <div class="col-md-2">
+                                <button type="button" class="btn flight-btn" id="flightBtn1" onclick="showFlightDetail()">Flight Details</button>
+                            </div>
+                            <div class="col-md-10 d-flex" style="align-items: center;background: #D9D9D94D; border-radius: 22px;padding: 3px 10px;">
+                                <div class="col-md-4">
+                                    <h4 class="f-class" style="font-size: 16px; color: #00000099;text-align: start;">PUBLIC / ECONAMY</h4>
+                                </div>
+                                <div class="col-md-1 d-flex">
+                                    <img src="" alt="R-icon">
+                                    <img src="" alt="lug-icon">
+                                </div>
+                                <div class="col-md-4">
+                                    <h4 class="f-price1">$ 57,000</h4>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-primary book-btn">Book Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="flight-det-sec" class="container mt-3">
+                        <div>
+                            <div>
+                                <ul class="nav nav-tabs " id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active btn" id="home-tab"  data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true" autofocus>Flight Detailes</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link btn" id="profile-tab"  data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Fare Rules</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link btn" id="contact-tab"   data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Fare Summary</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link btn" id="bag-tab"  data-bs-toggle="tab" data-bs-target="#bag-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Baggage Info</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content mt-2" id="myTabContent">
+                                    <div class="tab-pane fade show active col-md-12" id="home-tab-pane"  role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-3" style="align-items: center;">
+                                                    <img src="" alt="Flight-logo">
+                                                    <h4 class="f-name">Indigo</h4>
+                                                    <p class="f-name">6E-2498</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="flight-timings">
+                                                        <div class="d-flex" style="border-bottom: 1px solid blue;">
+                                                            <p class="f-time-in">06:15</p>
+                                                            <p class="f_to_time">2h50m</p>
+                                                            <p class="f-time-in">09.05</p>
+                                                        </div>
+                                                        <div class="d-flex mt-2">
+                                                            <div>
+                                                                <p class="f-code">MAA Chennai</p>
+                                                                <p class="f-code2">Chennai, India</p>
+                                                                <p class="f-term">Terminal: 1</p>
+                                                            </div>
+                                                            <div>
+                                                                <p class="f-code">DEL Indra Ghanthi Airport</p>
+                                                                <p class="f-code2">Delhi India</p>
+                                                                <p class="f-term">Terminal: 3</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 ms-12" style="text-align: center;">
+                                                    <p class="f-refund">Refundable</p>
+                                                    <p class="f-code2">Seat Left: 9</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3" style="align-items: center;">
+                                                    <img src="" alt="Flight-logo">
+                                                    <h4 class="f-name">Indigo</h4>
+                                                    <p class="f-name">6E-2498</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="flight-timings">
+                                                        <div class="d-flex" style="border-bottom: 1px solid blue;">
+                                                            <p class="f-time-in">06:15</p>
+                                                            <p class="f_to_time">2h50m</p>
+                                                            <p class="f-time-in">09.05</p>
+                                                        </div>
+                                                        <div class="d-flex mt-2">
+                                                            <div>
+                                                                <p class="f-code">MAA Chennai</p>
+                                                                <p class="f-code2">Chennai, India</p>
+                                                                <p class="f-term">Terminal: 1</p>
+                                                            </div>
+                                                            <div>
+                                                                <p class="f-code">DEL Indra Ghanthi Airport</p>
+                                                                <p class="f-code2">Delhi India</p>
+                                                                <p class="f-term">Terminal: 3</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 ms-12" style="text-align: center;">
+                                                    <p class="f-refund">Refundable</p>
+                                                    <p class="f-code2">Seat Left: 9</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2" style="display: none;">
+                                                <button type="button" class="btn flight-btn" id="flightBtn2" onclick="showFlightDetail()">Flight Details</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show" role="tabpanel" id="profile-tab-pane" aria-labelledby="home-tab" tabindex="0">
+                                        <div class="container">
+                                            <div>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>TYPE</th>
+                                                            <th>BASE FARE</th>
+                                                            <th>TAXES & FEES</th>
+                                                            <th>TOTAL</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Adult X 1</td>
+                                                            <td>INR 4380.00</td>
+                                                            <td>INR 1170.00</td>
+                                                            <td>INR 5500.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Total</td>
+                                                            <td>INR 4380.00</td>
+                                                            <td>INR 1170.00</td>
+                                                            <td><strong>INR 5500.00</strong></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show" id="contact-tab-pane"  role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                                        <div class="container">
+                                            <div>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>SECTOR</th>
+                                                            <th>TIME FRAME</th>
+                                                            <th>CHARGES & DISCRIPTION</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="f-code">MAA - DEL</td>
+                                                            <td>From & Above Before Dept</td>
+                                                            <td>INR 4000* + 0</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show" id="bag-tab-pane"  role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                                        <div class="container">
+                                            <div>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>SECTOR</th>
+                                                            <th>CHECK IN</th>
+                                                            <th>CABIN</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="f-code">MAA - DEL</td>
+                                                            <td>20 Kg / Person</td>
+                                                            <td>20 Kg / Person</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            font-family:'Inter', sans-serif;
+        }
+        Header {
+            background: rgba(74, 74, 74, 0.23);
+            border-radius: 20px;
+            height: 59px;
+            margin: 20px 18px;
+            align-items: center;
+            position: sticky;
+            top: 0; 
+            z-index: 100; 
+        }
+
+        nav {
+            align-items: center;
+            justify-content: center;
+            height: 59px;
+        }
+
+        .nav-item :hover {
+            opacity: 60%;
+            color: white;
+        }
+
+        .nav-item a img{
+            margin-top: -12px;
+            margin-right: 4px;
+        }
+
+        .nav-item a {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 1);
+        }
+
+        #img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        .btn-log {
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        #log-btn {
+            color: black;
+            background-color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        #log-btn:hover {
+            background-color: rgba(41, 41, 41, 0.8);
+        }
+
+        #mod-btn {
+            color: white;
+            background-color:rgba(41, 41, 41, 1);
+            border: 1px solid white;
+            width: 130px;
+            margin-top: 5px;
+            font-size: 14px;
+            border-radius: 17px;
+        }
+
+        .fcode-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #000000;
+        }
+
+        .f-label {
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        #filter-sec {
+           border:1px solid #00000033;
+           padding: 4px 8px 4px 10px;
+           border-radius: 9px;
+           margin: 2px 6px;
+        }
+
+        .fil-head {
+            font-size: 16px;
+            color: #000000;
+            font-weight: 600;
+        }
+
+        .slider{
+            height: 11px;
+            position: relative;
+            background: #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .slider .progress{
+            height: 100%;
+            left: 25%;
+            right: 25%;
+            position: absolute;
+            border-radius: 5px;
+            background:rgba(0, 113, 255, 1);
+            margin-top: -4px;
+        }
+
+        .range-input{
+            position: relative;
+        }
+            
+        .range-input input{
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            top: 0px;
+            background: none;
+            margin-bottom: 3px;
+            pointer-events: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        } 
+
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb{
+            height: 14px;
+            width: 14px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid rgba(0, 113, 255, 1);
+            pointer-events: auto;
+            -webkit-appearance: none;
+            box-shadow: 0 0 6px rgba(0,0,0,0.05);
+            margin-top: -16px;
+        }
+
+        input[type="range"]::-moz-range-thumb{
+            height: 15px;
+            width: 17px;
+            border: none;
+            border-radius: 50%;
+            background: white;
+            pointer-events: auto;
+            -moz-appearance: none;
+            box-shadow: rgba(0, 113, 255, 1);
+        }
+
+        .f-time {
+            border: 1px solid #00000099;
+            border-radius: 22px;
+            font-size: 13px;
+            padding:3px 6px;
+            margin: 4px 6px;
+        }
+
+        .f-time-in {
+            font-size: 16px;
+            color: #00000099;
+            font-weight: 400;
+        }
+
+        .f_to_time {
+            color:#EA8208;
+            font-size: 13px;
+            font-weight: 400;
+        }
+
+        .f-price {
+            color:  #151515;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .f-sel-btn {
+            text-align: center;
+        }
+
+        .f-date {
+            font-size: 14px;
+            font-weight: 700;
+            color:#15151599;
+;
+        }
+
+        .f-price1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0071FF;
+        }
+
+        .form-check label {
+            font-size: 14px;
+        }
+
+        #sort-by {
+            justify-content: space-between;
+            background: #292929;
+            color: #F0F0F0E0;
+            padding: 3px 6px;
+            border-radius: 7px;
+        }
+
+        #sort-by h4 {
+            font-size: 16px;
+            margin-top: 4px;
+            padding: 0px 6px;
+        }
+
+        #sortby-label {
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+            padding: 5px; 
+        }
+
+        #sortby-label label {
+            margin-right: 7px;
+            border: 0.5px solid #FFFFFF;
+            padding: 2px 8px;
+            border-radius: 22px;    
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        #sortby-label label:hover {
+            background-color: white;
+            color: black;
+        }
+
+        .flight-container {
+            border:1px solid #00000033;
+            padding: 4px 8px;
+            border-radius: 9px;
+            margin-bottom: 15px;
+        }
+
+        .flight-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .flight-details {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .f-code {
+            font-size: 14px;
+            font-weight: 600;
+            color: #000000;
+        }
+
+        .f-code2 {
+            font-size: 14px;
+            font-weight: 500;
+            color:#00000099;
+
+        }
+
+        .f-code2, .f-term {
+            margin-top: -13px;
+        }
+
+        .f-fil {
+            color: #000000CC;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .f-name {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .f-class {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .flight-details img {
+            margin-right: 10px;
+        }
+
+        .flight-timings {
+            display: flex;
+            align-items: center;
+            
+            margin-top: 10px;
+            flex-direction: column;
+        }
+
+        .flight-timings div {
+            text-align: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .flight-price {
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .flight-features {
+           justify-content: space-between;
+           text-align: center;
+           align-items: center;
+        }
+
+        .more-btn {
+            border: 1px solid #00000099;
+            background: none;
+            color: #000000;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 14px;
+        }
+
+        .flight-btn {
+            background: none;
+            border: none;
+            font-size: 14px;
+            color: #498ADC;
+        }
+
+        .book-btn {
+            background: #0071FF;
+            border-radius: 22px;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 4PX 12PX;
+        }
+
+        .select-btn {
+            background: #0071FF;
+            border-radius: 22px;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 4PX 12PX;
+        }
+
+        #fare-sec {
+            background: #D9D9D945;
+            border-radius: 8px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        #myTab li button {
+            border: 1px solid #0071FF;
+            border-radius: 22px;
+            color:  #0071FF;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 3px 12px;
+            margin: 2px 25px;
+        }
+
+        #myTab li button:hover {
+            background:#0071FF !important;
+            color: white !important;
+        }
+
+        #myTab li {
+            margin: 2px;
+            justify-content: space-between;
+        }
+
+        #myTab {
+            border-bottom: none;
+        }
+
+        .f-term {
+            font-weight: 700;
+        }
+
+        .f-refund {
+            color: #FFB800;
+        }
+
+        table {
+           border: none;
+           border-bottom: none;
+           outline: none;
+        }
+
+        #flight-det-sec {
+            display: none;
+        }
+
+        #filter-sec {
+            height: 1000px;
+            position: sticky;
+            top: 0; 
+            z-index: 100;
+        }
+    </style>
+    
+    <script>
+        function showFlightDetail() {
+            var showFlightDetail = document.getElementById("flight-det-sec");
+            if(showFlightDetail.style.display === "none") {
+                showFlightDetail.style.display = "block";
+            } else {
+                showFlightDetail.style.display = "none";
+            }
+        }
+    </script>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,522 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+Header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000; 
+    background-color: #fff; 
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    justify-content: center;
+}
+
+.name-loc {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.nav-item a p {
+    margin-top: 12px;
+    margin-left: 10px;
+    color:  rgba(9, 9, 9, 1);
+    font-weight: 600;
+}
+
+.nav-item a {
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-item  :hover {
+    opacity: 60%;
+}
+
+
+
+.log-btn {
+    color: black;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.mod-btn {
+    color: white;
+    background-color: rgba(41, 41, 41, 1);
+    border: 1px solid white;
+    width: 130px;
+    margin-top: 5px;
+    font-size: 14px;
+    border-radius: 17px;
+}
+
+.hotel-cont {
+    margin-top: 105px;
+}
+
+.inp-row {
+    background: rgba(255, 255, 255, 1);
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.inp {
+    padding-left: 4px;
+}
+
+
+.hotel-room {
+    width: 100%;
+}
+
+.dot {
+    height: 25px;
+    width: 25px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+.room-details ul li {
+    color: rgba(0, 78, 174, 1);
+}
+
+.r-info {
+    border: 1px solid rgba(208, 213, 221, 1);
+    border-radius: 22px;
+    max-width: auto;
+    height: 300px; 
+    align-items: center;
+    text-align: start;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+.thumbnail {
+    width: 100px;
+    height: 75px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.thumbnail-container {
+    margin-top: -90px;
+    margin-left: 40px;
+}
+
+
+
+.price {
+    padding-left: 7px;
+    margin-top: -5px;
+    font-size: 25px;
+    font-weight: bolder;
+}
+
+ul {
+    padding: 0;
+}
+
+.nav-3 .nav-link:hover {
+    background-color: #004EAE;
+    color: black;
+    margin-bottom: 10px;
+    border-bottom: none;
+}
+
+.nav-room-sec {
+    border: 1px solid  rgba(208, 213, 221, 1);
+    border-radius: 10px;
+    width: 754px;
+    height: auto;
+    padding: 5px;
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+.des_head {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.container-room {
+    width: 730px;
+    height: 170px;
+    align-items: center;
+    border-radius: 10px;
+    padding: 0px 2px;
+    background: rgba(208, 213, 221, 0.23);
+    margin-bottom: 2px;
+}
+
+.room-inf-nav {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    margin-top: -20px;
+}
+
+.room-inf-nav li a {
+    text-decoration: none;
+    color: black;
+}
+
+.room-inf-nav li {
+    background: rgba(210, 230, 255, 1);
+    padding: 3px 6px;
+    border-radius: 6px;
+}
+
+.nav-item button {
+    background: rgba(210, 230, 255, 1);
+    color: black;
+    margin: 8px 3px;
+}
+
+.nav-item .navlink .active {
+    background: rgba(0, 113, 255, 1);
+    color: white;
+}
+
+.room-inf-img img {
+    margin: 5px;
+    width: 300px;
+    height:160px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.room-info {
+    max-width: 400px;
+}
+
+
+.price-info {
+    /* text-align: center; */
+    justify-content:space-between;
+    align-items:center;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.more-optn {
+    color: black;
+    font-size: 14px; 
+}
+
+.fac_text {
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+.fac_head {
+    font-size: 22px;
+    margin-left: 10px;
+    font-weight: 600;
+}
+
+.rub-price {
+    display: flex;
+    flex-direction: row;
+}
+
+.can-pol p a {
+    color: black;
+}
+
+.thumbnail {
+    flex: 0 0 auto;
+    width: 20%;
+    height: 80px;
+    margin-right: 10px;
+    scroll-snap-align: start;
+    cursor: pointer;
+}
+
+.can-pol p{
+    margin-top: 50px;
+}
+
+.fac-sec {
+    margin: 10px;
+}
+
+.book-btn:hover{
+    color: rgba(0, 78, 174, 1) !important;
+    border: 1px solid rgba(0, 78, 174, 1) !important;
+    background: rgba(208, 213, 221, 0.23) !important;
+}
+
+.li {
+    list-style: none;
+}
+
+.r-features li {
+    margin-left: 20px;
+}
+
+.footer-img img {
+    width: 100px;
+    height: 75px;
+}
+
+Footer {
+    background: rgba(27, 27, 27, 1);
+    height: auto;
+    display: flex;
+    margin-top: 20px;
+}
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.footer-icons img{
+    width: 20px;
+    height: 20px;
+}
+
+ .thumbnail-container {
+    display: flex;
+    margin: 5px 0px 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+}
+
+/*  .thumbnail {
+    flex: 0 0 auto;
+    width: 100px; /* Adjust the width as needed */
+    /*   margin-right: 10px; /* Adjust the margin as needed */
+/*    scroll-snap-align: start;
+    cursor: pointer;
+} */
+
+.thumbnail {
+    flex: 0 0 auto;
+    width: 20%;
+    height: 80px;
+    margin-right: 10px;
+    scroll-snap-align: start;
+    cursor: pointer;
+}
+
+.navigation-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 24px; /* Adjust the font size as needed */
+    color: #333; /* Adjust the color as needed */
+}
+
+#nextButton {
+    right: 10px;
+}
+
+#prevButton {
+    left: 10px;
+}
+
+#facilities ul li {
+    background: #D9D9D9;
+    list-style: circle;
+    padding: 2px 5px;
+    margin: 2px;
+    border-radius: 6px;
+}
+
+#facilities ul {
+    margin: 4px 6px 2px 2px;
+}
+
+#myTabContent {
+    width: 60%;
+    font-size: 14px;
+    border: 1px solid rgba(208, 213, 221, 1);
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.more_room_div {
+    margin:4px;
+    /* font-size:16px; */
+    justify-content:center;
+    align-items:center;
+}
+
+.room-info-name {
+    font-size:19px;
+    font-weight:600;
+    margin: 5px 0px;
+}
+
+.room-type-name {
+    font-size:16px;
+    font-weight:500;
+    margin: 5px 0px;
+}
+
+#myTab {
+    border-bottom: none;
+}
+
+#myTab li button {
+    background: #D2E6FF;
+    border-radius: 16px;
+    margin: 6px 3px;
+    padding: 4px 12px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.book-btn {
+    background: #004EAE !important;
+    color: white !important;
+    border-radius: 20.14px !important;
+    padding:4px 12px !important;
+    font-size: 16px !important;
+}
+
+/* #canpol_container {
+    position: fixed;
+    margin: -16px 20px 0px 220px;
+    display: none;
+    z-index: 1000;
+}
+
+#cp-img {
+    cursor: pointer;
+} */
+
+.r-info h2 {
+    color: #101828;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.det_p {
+    color: #101828;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.int {
+    color: #101828;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: start;
+}
+
+.room-details {
+    justify-content: space-between;
+    width: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+    #myTabContent {
+        width: 100%;
+    }
+    
+    .fac_head {
+        font-size: 16px;
+    }
+    
+    .fac_text {
+        font-size: 12px;
+    }
+
+    #mainImage{
+        height: auto !important;
+    }
+    
+    .price {
+        font-size: 20px;
+    }
+
+    .room-info {
+        width: 70% !important;
+    }
+
+    .room-info-name { 
+       font-size: 14px;
+    }
+
+    .room-type-name {
+        font-size: 12px;
+    }
+
+    .pn {
+        font-size: 12px;
+    }
+
+    .book-btn {
+        font-size: 13px !important;
+    }
+
+    .hotel-description {
+        font-size: 14px;
+    }
+
+    .des_head {
+        font-size: 20px;
+    }
+
+    .inp-row {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .r-info {
+        margin-top: 20px;
+    }
+
+    .room-inf-img img {
+        width: 100%;
+    }
+
+    #myTab li button  {
+        font-size: 14px;
+    }
+    
+}
+
+
+@media (min-width:320px) and (max-width:480px) {
+    .footer-img img {
+        width: auto;
+        height:auto;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    #myTabContent {
+        width: 100%;
+    }
+}

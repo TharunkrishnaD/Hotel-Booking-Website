@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <title class="title">{{ email }}</title>
+    <input class="title" id="email" value="{{ email }}">
+    <!-- <p>{{ details }}</p>
+    <p>{{ details.price_info.hotel_name}}</p> -->
+    <ul>
+        {% if hotel_data %}
+        <h2>Your Bookings:</h2>
+        <ul>
+            {% for booking in hotel_data %}
+                {% if booking.booking_id %}
+                    <li>
+                        <a href="#" onclick="openPopup('{{ booking.booking_id }}')">Cancel Booking</a>
+                        <form action="{% url 'download_pdf' pk=booking.booking_id %}" method="get">
+                            <button type="submit">Download PDF</button>
+                        </form>
+                        <strong>Hotel Name:</strong> {{ booking.hotel_name }} <br>
+                        <strong>Booking ID:</strong> {{ booking.booking_id }} <br>
+                        <strong>Hotel Address:</strong> {{ booking.datas.address_line_1 }} <br>
+                        <strong>Additional Details:{{ booking.datas }}</strong> <br>
+                        <ul>
+                            <li><strong>City:</strong> {{ booking.datas.city }}</li>
+                            <li><strong>Latitude:</strong> {{ booking.datas.star_rating }}</li>
+                            <li><strong>Longitude:</strong> {{ booking.datas.address_line_2 }}</li>
+                            <!-- Add more details as needed -->
+                        </ul>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No bookings found.</p>
+    {% endif %}
+    <div class="hotel-summary col-md-8">
+        <div class="det">
+            <div>
+                <h2 class="heading">Hotel Summary</h2>
+            </div>
+            <div class=""  style="background:rgba(238, 246, 255, 1);border-radius: 8px;padding: 6px 10px 0px;">
+                <div class="d-flex row" style="padding:3px;">
+                    <div class="col-md-8" >
+                        <div class="d-flex">
+                            <div class="hotel-name">
+                                <p style="font-size: 19px;color:#313131;font-weight: 600;">{{ details.hotel_name }}</p>
+                            </div>
+                            <div class="star-view" style="padding-left: 6px;">
+                                {% for star in "12345" %}
+                                    <span class="fa fa-star {% if forloop.counter <= details.rating %}checked{% else %}unchecked{% endif %}"></span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="hotel-loc">
+                            <address>{{ details.address }}</address>
+                        </div>
+                    </div>
+                    <div class="canpol col-md-4 text-end">
+                        <button style="background:rgba(238, 246, 255, 1);font-size: 12px;border: none;text-decoration: underline;" onclick="showPolicy()">Cancellation Policy</button>
+                        <a href="" style="display: none;"><p>{{ details.cancellation_policy }}</p></a>
+                    </div>
+                </div>
+                <div class="container mt-1"  style="padding: 6px 10px 0px;">
+                    <div class="d-flex col-md-12 justify-content-between">
+                        <div class="col-md-4">
+                            <p>Check In</p>
+                            <p>{{ details.check_in_date }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p>Check Out</p>
+                            <p>{{ details.check_out_date }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p>Night(s)</p>
+                            <p>{{ details.No_of_Night }}</p>
+                        </div>
+                    </div>
+                    <div class="d-flex col-md-12 justify-content-between" >
+                        <div class="col-md-4">
+                            <p>Room(s)</p>
+                                <p>{{ details.totalrooms }}</p>
+                        </div>
+                        <div class="col-md-4"> 
+                            <p>Adult(s)</p>
+                                <p>{{ details.adults }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p>Children</p>
+                                <p>{{ details.childs }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <p>Success</p>
+    <div id="popup" style="display: none;">
+        <label for="remark">Remark:</label>
+        <input type="text" id="remark">
+        <button onclick="submitRemark()">Submit</button>
+    </div>
+            <a>{{ result }}</a>
+    <script>
+        function openPopup(bookingId) {
+            var bookingId = bookingId;
+            var csrftoken = document.cookie.match(/csrftoken=([\w-]+)/)[1];
+            $.ajax({
+                url: "/check_cancel/",  // Replace with the actual URL of your views.py
+                type: "POST",
+                data: {
+                    'booking_id': bookingId,
+                },
+                headers: {
+                    'X-CSRFToken': csrftoken  // Include the CSRF token in the headers
+                },
+                success: function(response) {
+                    console.log("Booking canceled successfully.");
+                    remarks = response.remarks
+                    console.log(remarks)
+                    if (remarks === "None") {
+                        // Remarks is null or undefined
+                        console.log("Failed: Remarks is not provided.");
+                        document.getElementById('popup').style.display = 'block';
+                        document.getElementById('popup').dataset.bookingId = bookingId;
+                        // Perform actions for failure
+                    } else {
+                        // Remarks is not null
+                        console.log("Success: Remarks provided.");
+                        statuscheck(response.bookingid)
+                        // Perform actions for success
+                    }
+                    // document.getElementById(hotelCode).innerHTML = response.result;
+                    // Handle success response if needed
+                },
+                error: function(error) {
+                    console.error(error);
+                    // Handle error response if needed
+                }
+            });
+        }
+
+        function submitRemark() {
+            var bookingId = document.getElementById('popup').dataset.bookingId;
+            var remark = document.getElementById('remark').value;
+            var csrftoken = document.cookie.match(/csrftoken=([\w-]+)/)[1];
+            $.ajax({
+                url: "/cancel-booking/",  // Replace with the actual URL of your views.py
+                type: "POST",
+                data: {
+                    'booking_id': bookingId,
+                    'remark': remark,
+                },
+                headers: {
+                    'X-CSRFToken': csrftoken  // Include the CSRF token in the headers
+                },
+                success: function(response) {
+                    console.log("Booking canceled successfully.");
+                    alert(response.result)
+                    // document.getElementById(hotelCode).innerHTML = response.result;
+                    // Handle success response if needed
+                },
+                error: function(error) {
+                    console.error(error);
+                    // Handle error response if needed
+                }
+            });
+            document.getElementById('popup').style.display = 'none';
+        }
+        function statuscheck(bookId) {
+            var bookingId = bookId;
+            var csrftoken = document.cookie.match(/csrftoken=([\w-]+)/)[1];
+            $.ajax({
+                url: "/cancel_status/",  // Replace with the actual URL of your views.py
+                type: "POST",
+                data: {
+                    'booking_id': bookingId,
+                },
+                headers: {
+                    'X-CSRFToken': csrftoken  // Include the CSRF token in the headers
+                },
+                success: function(response) {
+                    console.log("Booking canceled successfully.");
+                    alert(response.result)
+                    // document.getElementById(hotelCode).innerHTML = response.result;
+                    // Handle success response if needed
+                },
+                error: function(error) {
+                    console.error(error);
+                    // Handle error response if needed
+                }
+            });
+            document.getElementById('popup').style.display = 'none';
+        }
+    </script>
+    
+</body>
+</html>
+</html>

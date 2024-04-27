@@ -41,7 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'booking'
+    'booking',
+    'flight',
+    'island',
+    'payment',
+    'signup'
 ]
 
 MIDDLEWARE = [
@@ -52,6 +56,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+PASSWORD_HASHERS = [
+  'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+  'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+  'django.contrib.auth.hashers.Argon2PasswordHasher',
+  'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+  'django.contrib.auth.hashers.BCryptPasswordHasher',
+  'django.contrib.auth.hashers.SHA1PasswordHasher',
+  'django.contrib.auth.hashers.MD5PasswordHasher',
+  'django.contrib.auth.hashers.UnsaltedSHA1PasswordHasher',
+  'django.contrib.auth.hashers.UnsaltedMD5PasswordHasher',
+  'django.contrib.auth.hashers.CryptPasswordHasher',
 ]
 # settings.py
 
@@ -85,7 +102,7 @@ DATABASES = {
         'NAME': 'hotel',
         'HOST':'localhost',
         'USER':'root',
-        'PASSWORD':'9750528343',
+        'PASSWORD':'8870082135',
         'PORT':'3306'
     }
 }
@@ -131,3 +148,20 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtppro.zoho.com'
+EMAIL_USE_TLS = False
+EMAIL_PORT = 587
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'tharun@vacationfeast.com'
+EMAIL_HOST_PASSWORD = 'nBvizb5wji94'
+
+GALLABOX_API_KEY = '63c4f8e4da6a679a061f84e4'
+GALLABOX_API_SECRET = '055c76989ae94746b5f861464c387066'
+GALLABOX_CHANNELID = '63b7e6ff3749160e1e2d36c2'
+
+RAZORPAY_MERCHANT_KEY = 'rzp_test_5bpcghNaRd7Qqg'
+RAZORPAY_MERCHANT_SECRET = 'AyBHtno3opb2r4D1pVgqpPG5'
+
+BASE_URL = 'http://127.0.0.1:8000/'

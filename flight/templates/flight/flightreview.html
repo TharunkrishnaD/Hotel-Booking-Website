@@ -1,0 +1,3555 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body id="body">
+    <Header>
+        <div class="container-fluid header">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="navbar-brand" href="#" >
+                    <img src="{% static 'image/flight/Magnet logo.png' %}"alt="logo" width="79px" height="79px">
+                </a>
+                <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto mt-2"> <!-- mx-auto for centering -->
+                        <li class="nav-item">
+                            <a class="nav-link icon" href=" "><img src="{% static 'image/flight/flight w.svg' %}"  alt=""><p>Flights</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link icon" href="{% url 'hotel' %}"><img src="{% static 'image/flight/hotel w.svg' %}"  alt=""><p>Hotels</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link icon" href="#"><img src="{% static 'image/flight/holiday w.svg' %}" alt=""><p>Holidays</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link icon" href="#"><img src="{% static 'image/flight/island w.svg' %}" alt=""><p>Island</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link icon" href="#"><img src="{% static 'image/flight/visa w 1 icon.svg' %}" alt=""><p>Visa</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link icon" href="#"><img src="{% static 'image/flight/more w 1 icon.svg' %}" alt=""><p>More</p></a>
+                        </li>
+                    </ul>
+                    <div class="d-flex btn-log mb-2">
+                        <button class="btn btn-primary" id="log-btn">LOG IN</button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </Header>
+    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="errorpops">
+        Launch demo modal
+    </button>
+      
+     Modal 
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            First
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div> -->
+    </div>
+    <section id="process" class="bg-light py-5">
+        <div class="container">
+            <div class="final-pro">
+                <ul class="nav nav-pills" >
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Traveller Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Review</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Payment</a>
+                    </li>
+                </ul>
+                <div class="slider">
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </section>
+    <section class="container mt-3 d-flex">
+        <form action="{% url 'one_trip_reviewpage' %}" method="POST" name="room_information" class=" container col-md-8 mt-3 mb-3">
+            {% csrf_token %}
+            <div id="fl_rev_details">
+                <div>
+                    <div class="d-flex fl_rev_div justify-content-between mt-2" style="border-bottom:1px solid rgba(0, 0, 0, 0.30);">
+                        <div class="d-flex">
+                            <div>
+                                <h4 class="fr-head">{{single_flight_del.start_point}} - {{single_flight_del.end_point}}</h4>
+                                <p style="font-size: 14px;">{{single_flight_del.flight_stop}} | {{single_flight_del.flight_class}}</p>
+                            </div>
+                            <div>
+                                <h4 class="fr-head">{{single_flight_del.flight_date}}</h4>
+                                <p style="font-size: 14px;">{{single_flight_del.flight_H_M}}</p>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <h4 class="fr-head mt-2">Departure</h4>
+                        </div>
+                    </div>
+                    <input type="hidden" id="f-d-in" name="flightdetails" value="{{dumbflighdetails}}">
+                    <input type="hidden" id="f-d-in" name="fullflightdetails" value="{{totalflightlist}}">
+                    <input type="hidden" id="publishedprice" name="publishedprice" value="{{flight_details.0.mypulishfare}}">
+                    
+                    {% for flights in flight_details %}
+                    <div class="d-flex mt-3  justify-content-between">
+                        <div class="col-md-3">
+                            <img src="{% static 'image/AirlineLogo/' %}{{ flights.AirlineCode }}.gif" alt="Flight-logo" style="width: 43%; height: 75px; padding-bottom: 10px;">
+                            <p style="font-size: 16px;font-weight: 600;" class="mb-0">{{flights.AirlineName}} </p>
+                            <p style="font-size: 16px;font-weight: 600;">{{flights.AirlineCode}}-{{flights.AirlineNumber}}</p>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="d-flex f_dep_div" >
+                                <div>
+                                    <p class="f-time1">{{flights.departur_H_M}}</p>
+                                    <p class="f-date1">{{flights.departur_date}}</p>
+                                </div>
+                                <div>
+                                    <p class="f-timeduration">{{flights.total_H_M}}</p>
+                                </div>
+                                <div>
+                                    <p class="f-time1">{{flights.arrival_H_M}}</p>
+                                    <p class="f-date1">{{flights.arrival_date}}</p>
+                                </div>
+                            </div>
+                            <div class="d-flex mt-2" id="airport_div">
+                                <div class="text-start">
+                                    <p class="f-name">{{flights.OrginAirportCode}} {{flights.OrginAirportName}}</p>
+                                    <p class="f-sname">{{flights.OrginAirportCityName}}, {{flights.OrginAirportCoutryName}}</p>
+                                    <p class="f-term">Terminal: {{flights.OrginAirportTerminal}}</p>
+                                </div>
+                                <div class="text-left">
+                                    <p class="f-name">{{flights.DestinationAirportCode}} {{flights.DestinationAirportName}}</p>
+                                    <p class="f-sname">{{flights.DestinationCityName}}, {{flights.DestinationCountryName}}</p>
+                                    <p class="f-term">Terminal: {{flights.DestinationTerminal}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-2" id="icon_container">
+                        <div class="col-md-9 d-flex">
+                            <div class="d-flex icon_div">
+                                <img src="{% static 'image/flight/luggage.svg' %}" alt="lug-icon" class="img-class">
+                                <p class="icon_text">Check-In : {{flights.checkinbag}}</p>
+                            </div>
+                            <div class="d-flex icon_div">
+                                <img src="{% static 'image/flight/cab in icon.svg' %}" alt="cab-icon" class="img-class">
+                                <p class="icon_text">Cab-In : {{flights.combainbag}}</p>
+                            </div>
+                            <div class="d-flex icon_div">
+                                <img src="{% static 'image/flight/meal icon.svg' %}" alt="meal-icon" class="img-class">
+                                <p class="icon_text">Meal : Yes</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex">
+                                <img src="{% static 'image/flight/info orang.svg' %}" alt="ref-icon"  class="img-class">
+                                <div class="padding-top: 17px;text-align:left">
+                                    <p style="color: #FFB800; font-size: 12px;" class="mb-0">fear rules</p>
+                                    <p style="color: #FFB800;font-size: 14px;" class="mb-0">{{flight_details.0.Refund}}</p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="mt-3" id="contact-container">
+                <div  id="contact_div">
+                    <div class="mt-2">
+                        <h4 class="fl-head mb-0" style="color:#004EAE;">Contact Details</h4>
+                        <p class="fls-head">Your flight ticket(s) and other information will be sent here.</p>
+                    </div>
+                    <div id="cd1">
+                        <div class="row mt-3">
+                            <div class="col-md-6 mt-2">
+                                <div class="form-group">
+                                    <label for="Phone number" style="font-weight: 500;">Phone number</label>
+                                    <input class="form-control mt-2" type="tel" id="phoneNumber" placeholder="Enter Your Phone Number"  name="phoneNumber">
+                                    <span class="error" id="phoneError" style="color: red;font-size: 12px;"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-2">
+                                <div class="form-group">
+                                    <label for="Email" style="font-weight: 500;">Email</label>
+                                    <input class="form-control mt-2" type="email" id="email" placeholder="Enter Your Email" name="gmail">
+                                    <span class="error" id="emailError" style="color: red;font-size: 12px;"></span>
+                                </div>
+                            </div>
+                            <div class="text-end mt-2 bc_btn_div">
+                                <button type="button" id="contact-details" style="align-items: end;" onclick="validateForm()" class="btn btn-primary pro-btn mt-2">Continue</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                function validateForm() {
+                var valid = true;
+
+                document.getElementById('phoneError').innerText = '';
+                document.getElementById('emailError').innerText = '';
+        
+                var phoneInput = document.getElementById('phoneNumber');
+                var emailInput = document.getElementById('email');
+        
+                var phone = phoneInput.value;
+                var email = emailInput.value;
+        
+                var phonePattern = /^\d{10}$/;
+                if (phone.trim() === '') {
+                    document.getElementById('phoneError').innerText = 'Phone number is required';
+                    phoneInput.style.border = '1px solid red';
+                    valid = false;
+                } else if (!phonePattern.test(phone)) {
+                    document.getElementById('phoneError').innerText = 'Invalid phone number';
+                    phoneInput.style.border = '1px solid red';
+                    valid = false;
+                } else {
+                    phoneInput.style.border = ''; // Reset border style if valid
+                }
+        
+                var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (email.trim() === '') {
+                    document.getElementById('emailError').innerText = 'Email is required';
+                    emailInput.style.border = '1px solid red';
+                    valid = false;
+                } else if (!emailPattern.test(email)) {
+                    document.getElementById('emailError').innerText = 'Invalid email address';
+                    emailInput.style.border = '1px solid red';
+                    valid = false;
+                } else {
+                    emailInput.style.border = ''; // Reset border style if valid
+                }
+
+                // var specialRequest = document.getElementById('req').value;
+                return valid;
+            }
+            </script>
+            <script>
+                document.getElementById("contact-details").addEventListener("click", function(e) {
+                e.preventDefault();
+                
+                // Validate the form
+                if(validateForm()) {
+                    // If validation passes, execute subsequent code
+                    document.getElementById("cd1").style.display = "none";
+                    document.getElementById("multiCollapseExample1").style.display = "block";
+                    document.getElementById("buttsh").style.display = "block";
+                } 
+            });
+            </script>
+            <div class="mt-3" id="td_container">
+                <div class="">
+                    <div class="d-flex justify-content-between head_div" data-bs-toggle="collapse"  data-bs-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">
+                        <h4 class="fl-head mt-2">Traveller Details</h4>
+                        <img src="{% static 'image/flight/expand-icon.svg' %}" id="expand-more" alt="">
+                    </div>
+                    
+                    <div class="collapse multi-collapse td_div" id="multiCollapseExample1" style="display: none;">
+
+                        <!-- Guest details will be dynamically added here -->
+                       
+                        <div id="hiddenGuestData" style="display:none;">{{ guest_cout }}</div>
+                        
+                         
+                    
+                    </div>
+                    <div  id="buttsh" class="justify-content-between mt-2 mb-2 bc_btn_div" style="display: none;">
+                        <button type="submit" id="myButton1" class="btn btn-primary pro-btn back-btn">Back</button>
+                        <button type="submit" id="myButton" class="btn btn-primary pro-btn" >Continue</button>
+                        <input type="hidden" id="user_information" name="user_information" value="">
+                    </div> 
+                 </div>
+                
+            </div>
+            <script>
+                               
+                
+                    document.getElementById("myButton1").addEventListener("click", function(e) {
+                    // Hide the current container
+                    
+                    e.preventDefault();
+                    // Show the next container
+                    document.getElementById("cd1").style.display = "block";
+                    document.getElementById("multiCollapseExample1").style.display = "none";
+                    document.getElementById("buttsh").style.display = "none"
+                    
+                });
+            </script>
+        <div class="mt-3" id="baggage">
+            <div class="">
+                    <div class="d-flex justify-content-between head_div" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample3" aria-expanded="false" aria-controls="multiCollapseExample3">
+                        <h4 class="fl-head mt-2">Add Baggage, Meal & Other Services To Your Travel</h4>
+                        <img src="{% static 'image/flight/expand-icon.svg' %}" id="expand-more" alt="">
+                    </div>
+                    
+                    
+                    <div  id="multiCollapseExample3" class="baggage_div" style="display:none;">
+                       
+                    </div>
+                    <!-- <div class="col-md-4 addMeal modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="mt-2 mb-2 d-flex justify-content-between modal-dialog modal-dialog-centered" role="document"> 
+                            <div class="modal-content" >
+                                <div class="modal-header">
+                                    <h2 class="mb-3 modal-title" style="font-size: 22px;margin: 4px 12px;" id="exampleModalLongTitle">Add On Meal</h2>
+                                    <!-- <span><img onclick="hideMeals()" src="{% static 'image/flight/cancel icon.svg' %}" class="cp-img" alt="c-i"></span> 
+                                    <button type="button" class="close" id="mealClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                </div>
+                              
+                                <div class="modal-body" id="foodContainer">
+                                    <!-- {% for food in foods%}
+                                    <div class="mt-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-2 meal-tab"  style="width: 100%;" onclick="mealPriceAdd(this.querySelector('input[type=checkbox]'))">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <input type="radio" id="mealCheck" name="fav_language" style="width: 20px !important;height: 20px !important;">
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" name="fav_language" id="mealCheck" style="width: 20px;height: 20px;">
+                                                <p class="m-0" id="foodMealName"> {{food.MealName}} Idly</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <p class="m-0" id="foodMealPrice">₹200 </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %} 
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- <div class=" col-md-4 addBaggage modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="mt-2 mb-2 d-flex justify-content-between modal-dialog modal-dialog-centered" role="document"> 
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="mb-3 modal-title" style="font-size: 22px;margin: 4px 12px;" id="exampleModalLongTitle">Add On Baggage</h2>
+                                    <!-- <span><img onclick="hideMeals()" src="{% static 'image/flight/cancel icon.svg' %}" class="cp-img" alt="c-i"></span> 
+                                    <button type="button" class="close" id="baggageClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                </div>
+                                <div class="modal-body" >
+                                    {% for baggage in baggage_details %}
+                                    <div class="mt-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-2 baggage-tab"  style="width: 100%;"  onclick="baggagePriceAdd(this.querySelector('input[type=checkbox]'))">
+                                            <div>
+                                                <input type="checkbox" id="bagageCheck" style="width: 20px;height: 20px;">
+                                                <p class="m-0" id="baggageName">{{baggage.Weight}} kg extra at</p>
+                                            </div>
+                                            <div>
+                                                <p class="m-0" id="baggagePrice">₹200 {{baggage.Currency}} {{baggage.Price}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    
+                    <div id="bt-com" class="justify-content-between mt-2 mb-2 bc_btn_div"  style="display: none;">
+                        <button type="submit" id="myButton333" class="btn btn-primary pro-btn back-btn">Back</button>
+                        <button type="submit" id="myButtons3" class="btn btn-primary pro-btn">Continue</button>
+                        <input type='hidden' id='hiddenBaggageInput' name='hiddenbagge' value='{{lentght_baggage}}'>
+                        <input type='hidden' id='hiddenMealInput' name='hiddenmeal' value='{{meal_len}}'>
+                    </div>
+                
+            </div>
+        </div>
+<input type="hidden" id="selectedMealName" name="selectedMealName">
+<input type="hidden" id="selectedMealPrice" name="selectedMealPrice">
+
+<!-- <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var meals = [
+            {'MealPrice': 0, 'MealName': 'BABY MEAL', 'Code': 'BBML'},
+            {'MealPrice': 0, 'MealName': 'DIABETIC MEAL', 'Code': 'DBML'},
+            {'MealPrice': 0, 'MealName': 'HINDU (NON VEGETARIAN) MEAL', 'Code': 'HNML'},
+            {'MealPrice': 0, 'MealName': 'MUSLIM MEAL', 'Code': 'MOML'},
+            {'MealPrice': 0, 'MealName': 'SEA FOOD MEAL', 'Code': 'SFML'},
+            {'MealPrice': 0, 'MealName': 'VEGETARIAN VEGAN MEAL', 'Code': 'VGML'},
+            {'MealPrice': 0, 'MealName': 'VEGETARIAN INDIAN MEAL', 'Code': 'VJML'}
+        ];
+        
+        var foodContainer = document.getElementById('foodContainer');
+
+        meals.forEach(function(meal, index) {
+            var div1 = document.createElement('div');
+            div1.className = 'mt-1';
+
+            var div2 = document.createElement('div');
+            div2.className = 'd-flex justify-content-between align-items-center mb-2 meal-tab';
+            div2.style.width = '100%';
+
+            var div3 = document.createElement('div');
+            div3.className = 'd-flex';
+
+            var input = document.createElement('input');
+            input.type = 'checkbox';
+            input.name = 'mealCheckbox';
+            input.dataset.mealName = meal.MealName;
+            input.dataset.mealPrice = meal.MealPrice;
+            input.style.width = '20px';
+            input.style.height = '20px';
+
+            var p1 = document.createElement('p');
+            p1.className = 'm-0';
+            p1.textContent = meal.MealName;
+
+            var div4 = document.createElement('div');
+            
+            var p2 = document.createElement('p');
+            p2.className = 'm-0';
+            p2.textContent = '₹' + meal.MealPrice;
+
+            div3.appendChild(input);
+            div3.appendChild(p1);
+
+            div2.appendChild(div3);
+            div2.appendChild(div4);
+
+            div4.appendChild(p2);
+
+            div1.appendChild(div2);
+
+            foodContainer.appendChild(div1);
+        });
+
+        // Add event listener to checkboxes
+        var checkboxes = document.getElementsByName('mealCheckbox');
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('click', function() {
+                // Get selected meal name and price
+                var selectedMealName = this.dataset.mealName;
+                var selectedMealPrice = this.dataset.mealPrice;
+
+                // Update hidden input values
+                document.getElementById('selectedMealName').value = selectedMealName;
+                document.getElementById('selectedMealPrice').value = selectedMealPrice;
+
+                // Uncheck other checkboxes
+                checkboxes.forEach(function(cb) {
+                    if (cb !== checkbox) {
+                        cb.checked = false;
+                    }
+                });
+            });
+        });
+    });
+</script> -->
+
+        
+           <script>
+                document.getElementById("myButton333").addEventListener("click", function(e) {
+                    // Hide the current container
+                    
+                    e.preventDefault();
+                    // Show the next container
+                    document.getElementById("multiCollapseExample1").style.display = "block";
+                    document.getElementById("multiCollapseExample3").style.display = "none";
+                    document.getElementById("buttsh").style.display = "block"
+                    document.getElementById("bt-com").style.display="none"
+                });
+            </script>
+            <script>
+                document.getElementById("myButtons3").addEventListener("click", function(e) {
+                    // Hide the current container
+                    e.preventDefault()
+                    document.getElementById("multiCollapseExample3").style.display = "none";
+                    document.getElementById('pay-condinue').style.display = "block"
+                    // Show the next container
+                    document.getElementById("multiCollapseExample5").style.display = "block";
+                    document.getElementById("bt-com").style.display="none"
+                });
+            </script>
+            <div class="mt-4" id="seat-container">
+                <div class="">
+                     <div class="d-flex justify-content-between head_div" data-bs-toggle="collapse"  data-bs-target="#multiCollapseExample5" aria-expanded="false" aria-controls="multiCollapseExample5">
+                        <h4 class="fl-head mt-2" style="font-size: 22px;">Select Seats (Optional)</h4>
+                        <img src="{% static 'image/flight/expand-icon.svg' %}" id="expand-more" alt="">
+                    </div>
+                    
+                    <div class="collapse multi-collapse seat_div" id="multiCollapseExample5" style="display: none;">
+                        <div id="hidden-fir-flight-seats" style="display:none;">{{ fir_flight_seat }}</div>
+                        <div id="hidden-second-flight-seats" style="display:none;">{{ second_flight_seat }}</div>
+                        <input type="hidden" id="hidden-sec-flight-seats" value="{{ second_flight_seat }}">
+                        
+
+                     <div>
+                        <div class="mt-3 col-md-3 mb-0 d-flex justify-content-between">
+                            <p class="f-city">{{flightname.0.F_OrgCityName}}</p>
+                            <img src="{% static 'image/flight/flight 12.svg' %}" alt="" style="width: 17px;height: 20px;">
+                            <p class="f-city">{{flightname.0.F_DesCityName}}</p>
+                        </div>
+                    
+                        <div class="d-flex  justify-content-between" id="seat-main-div"> 
+                            <!-- ------------- first flight seat details -------------- -->
+
+                        </div>
+                    </div>
+                    <div id="second_flight_screen">
+                        <div class="mt-3 col-md-3 mb-0 d-flex justify-content-between">
+                            <p class="f-city">{{flightname.1.S_OrgCityName}}</p>
+                            <img src="{% static 'image/flight/flight 12.svg' %}" alt="" style="width: 17px;height: 20px;">
+                            <p class="f-city">{{flightname.1.S_DesCityName}}</p>
+                        </div>
+                        <div class="d-flex  justify-content-between" id="seat-main-div-two"> 
+                           <!-- ------------------- second flight details ------------- -->
+                        </div>
+                    </div>
+                       
+                        <div class="mt-2 mb-2 bc_btn_div">
+                            <button type="submit" id="seatbutton" class="btn btn-primary pro-btn back-btn">Back</button>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+         
+            <script>
+                document.getElementById("seatbutton").addEventListener("click", function(e) {
+                    // Hide the current container
+                    
+                    e.preventDefault();
+                    // Show the next container
+                    document.getElementById("multiCollapseExample3").style.display = "block";
+                    document.getElementById("multiCollapseExample5").style.display = "none";
+                    document.getElementById("bt-com").style.display = "block"
+                    // document.getElementById("bt-com").style.display="none"
+                });
+                var hiddenInput = document.getElementById("hidden-sec-flight-seats");
+    
+ 
+                var divElement = document.getElementById("second_flight_screen");
+                
+                // Check if the input value is empty
+                if(hiddenInput.value === "[]") {
+                    // If empty, make sure the div remains empty
+                    divElement.innerHTML = ""; // Set the innerHTML of the div to an empty string
+                }
+
+            </script>
+            <div class="mt-3" id="gst_container">
+                <div class="">
+                    <div class="d-flex justify-content-between head_div" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">
+                        <h4 class="fl-head mt-2">GST Number For Business Travel(optional)</h4>
+                        <img src="{% static 'image/flight/expand-icon.svg' %}" id="expand-more" alt="">
+                    </div>
+                    <div class="row collapse multi-collapse gst_div" id="multiCollapseExample2">
+                        <div class="col-md-12 d-flex mt-3 mb-1">
+                            <div class="form-group col-md-4">
+                                <input type="text" class="form-control mt-2" placeholder="GST(GSTIN)">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <input type="text" class="form-control mt-2" placeholder="Company Name">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <input type="text" class="form-control mt-2" placeholder="Registered  Email">
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex mt-3 mb-3">
+                            <div class="form-group col-md-4">
+                                <input type="text" class="form-control mt-2" placeholder="Registered  Phone">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <input type="text" class="form-control mt-2" placeholder="Registered  Address">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <input type="text" class="form-control mt-2" placeholder="State(Optional)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="pay-condinue" style="display: none;">
+                <button  class="btn btn-primary"> Continue</button>
+            </div>
+    
+        </form>
+        <div class="flight-pay col-md-4 mt-3">
+            <div class="accordion d-flex col-md-12" id="accordionPanelsStayOpenExample">
+                <div class="accordion-item col-md-9">
+                    <div class="d-flex justify-content-between">
+                        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                Price Details
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                        <div class="accordion-body">
+                            <div class="d-flex col-md-12" id="extra_div">
+                                <div class="col-md-9">
+                                    <p class="mb-0" id="addedMealName">Meal Name</p>
+                                </div>
+                                <div class="d-flex col-md-3" style="justify-content: space-between;">
+                                    <p class="text-start mb-0">INR</p>
+                                    <p class="text-end mb-0" id="addedMealPrice">00</p>
+                                </div>
+                            </div>
+                            <div class="d-flex col-md-12">
+                                <div class="col-md-9">
+                                    <p class="mb-0" id="addedBaggageName">Baggage Name</p>
+                                </div>
+                                <div class="d-flex col-md-3" style="justify-content: space-between;">
+                                    <p class="text-start mb-0">INR</p>
+                                    <p class="text-end mb-0" id="addedBaggagePrice">00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="payment_div mt-4">
+                <div class="">
+                    <h2 class="price-head">Pricing Details</h2>
+                </div>
+                <hr>
+                <div class="d-flex col-md-12">
+                    <div class="col-md-9">
+                        <p>Base Fare</p>
+                    </div>
+                    <div class="d-flex col-md-3" style="justify-content: space-between;">
+                        <p class="text-start">INR</p>
+                        <p class="text-end" id="baseFare">{{flight_details.0.OffredFare}}</p>
+                    </div>
+                </div>
+                <div class="d-flex col-md-12">
+                    <div class="col-md-9">
+                        <p>Taxes and Fees</p>
+                    </div>
+                    <div class="d-flex col-md-3" style="justify-content: space-between;" >
+                        <p class="text-start">INR</p>
+                        <p  class="text-end" id="taxes">{{flight_details.0.MYtax}}</p>
+                    </div>
+                </div>
+                <div class="d-flex col-md-12">
+                    <div class="col-md-9">
+                        <p>Total Price</p>
+                    </div>
+                    <div class="d-flex col-md-3" style="justify-content: space-between;">
+                        <p class="text-start">INR</p>
+                        <p class="text-end " id="totalPrice">00</p>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex col-md-12">
+                <div class="col-md-9">
+                    <p>Total Price</p>
+                </div>
+                <div class="d-flex col-md-3" style="justify-content: space-between;">
+                    <p class="text-start">INR</p>
+                    <p class="text-end " id="totalPrice">00</p>
+              
+                </div>
+            </div>
+            <hr>
+            <div class="d-flex col-md-12">
+                <div class="col-md-9">
+                    <p>Your Price</p>
+                </div>
+                <div class="d-flex col-md-3" style="color: rgba(94, 255, 129, 1); justify-content: space-between;">
+                    <p class="text-start">INR</p>
+                    <p  class="text-end" id="yourPrice">00</p>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    // function showExtraPrice() {
+    //     var extra_div = document.getElementById("extra_div");
+    //     if(extra_div.style.display === "none") {
+    //         extra_div.style.display = "block";
+    //         document.getElementById("ex_up").style.display = "block";
+    //         console.log("clicked")
+    //     } else {
+    //         extra_div.style.display = "none"
+    //     }
+    // }
+
+
+    // function mealPriceAdd(checkbox) {
+    //     var extraPriceElement = document.getElementById("addedMealPrice");
+    //     var extraPrice = extraPriceElement.innerText; 
+        
+    //     var extraMealElement = document.getElementById("addedMealName");
+    //     var extraMeal = extraMealElement.innerText; 
+        
+    //     var foodMealPriceElement = document.getElementById("foodMealPrice");
+    //     var foodMealPrice = foodMealPriceElement.innerText; 
+        
+    //     var foodMealNameElement = document.getElementById("foodMealName");
+    //     var foodMealName = foodMealNameElement.innerText; 
+
+    //     // Uncheck all checkboxes
+    //     var checkboxes = document.querySelectorAll('.meal-tab input[type="checkbox"]');
+    //     checkboxes.forEach(function(checkbox) {
+    //         if (checkbox !== event.target && checkbox.checked) {
+    //             checkbox.checked = false;
+    //         }
+    //     });
+
+    //     // Update extraPrice and extraMeal only if the checkbox is checked
+    //     if (checkbox.checked) {
+    //         extraPrice = foodMealPrice;
+    //         extraMeal = foodMealName;
+    //         console.log("Meal and price added");
+    //         $("#mealClose").click();
+    //     } else {
+    //         extraPrice = "";
+    //         extraMeal = "";
+    //     }
+
+    //     extraPriceElement.innerText = extraPrice;
+    //     extraMealElement.innerText = extraMeal;
+    // }
+
+
+    // function baggagePriceAdd(checkbox) {
+    // var extraPriceElement = document.getElementById("addedBaggagePrice");
+    // var extraPrice = extraPriceElement.innerText; 
+    
+    // var extraBaggageElement = document.getElementById("addedBaggageName");
+    // var extraBaggage = extraBaggageElement.innerText; 
+    
+    // var baggagePriceElement = document.getElementById("baggagePrice");
+    // var baggagePrice = baggagePriceElement.innerText; 
+    
+    // var baggageElement = document.getElementById("baggageName");
+    // var baggageName = baggageElement.innerText; 
+
+    // Uncheck all checkboxes
+//     var checkboxes = document.querySelectorAll('.baggage-tab input[type="checkbox"]');
+//     checkboxes.forEach(function(checkbox) {
+//         if (checkbox !== event.target && checkbox.checked) {
+//             checkbox.checked = false;
+//         }
+//     });
+
+//     // Update extraPrice and extraBaggage only if the checkbox is checked
+//     if (checkbox.checked) {
+//         extraPrice = baggagePrice;
+//         extraBaggage = baggageName;
+//         console.log("Baggage and price added");
+//         $("#baggageClose").click();
+//     } else {
+//         extraPrice = "";
+//         extraBaggage = "";
+//     }
+
+//     extraPriceElement.innerText = extraPrice;
+//     extraBaggageElement.innerText = extraBaggage;
+// }
+
+    </script>
+    <script>
+        // Get the values
+        var baseFare = parseFloat(document.getElementById('baseFare').innerText);
+        var taxes = parseFloat(document.getElementById('taxes').innerText);
+        var extraPrice = parseFloat(document.getElementById('extraPrice').innerText);
+    
+        // Calculate the total price
+        var totalPrice = baseFare + taxes + extraPrice;
+    
+        // Update the total price in the HTML
+        document.getElementById('totalPrice').innerText = totalPrice.toFixed(2);
+        document.getElementById('yourPrice').innerText = totalPrice.toFixed(2);
+        document.getElementById('publishedprice').value =totalPrice.toFixed(2)
+    </script>
+<!-- -------------------------------first flight pop-condainer------------------ -->
+
+    <input type="hidden" id="hiiddengustcount" value="{{ guest_cout }}"> 
+    <div class="container-fluid seatPopup" id="popup-container" style="display: none;">
+        <div  id="popup-content" class="col-md-9 mt-2 mb-3">
+            <div class="d-flex justify-content-between" style=" position: sticky;top:0;">
+                <h4 class="" style="color: white;">Flight Seats</h4>
+                <span id="close-popup" >&times;</span>
+                <!-- <span><img src="{% static 'image/flight/cancel icon.svg' %}" class="cp-img mt-3 mb-2" alt="c-i"></span> -->
+            </div>
+            <div id="first-flight-price-list" style="display: none;">{{ fir_flight_price }}</div>
+            <!-- <div class="seat_bar container-fluid">
+                
+
+               
+                <div class="d-flex" id="new-con-seat1">
+                    <div class="row d-flex col-md-2 ">
+                        <div class="seat_boxes" style="background-color: #000;"></div>
+                        <p class="seat_price">Booked Seats</p>
+                    </div>
+                    <div class="col-md-8 justify-content-evenly d-flex" id="priceContainer1">
+                       
+                    </div>
+                </div>
+            
+              
+                <div class="d-flex" id="new-con-seat2">
+                    <div class="row d-flex col-md-2 ">
+                        <div class="seat_boxes" style="background-color: #50EB37;"></div>
+                        <p class="seat_price">Selected Seats</p>
+                    </div>
+                    <div class="col-md-8 justify-content-evenly d-flex" id="priceContainer2"  >
+                    
+                    </div>
+                </div> 
+            
+            </div> -->
+            
+            <div class="d-flex container">
+                <div class="col-md-3" id="fd_left_container">
+                    <div class="mt-3  fd_pop_con">
+                        <div class="d-flex mt-2 mb-2">
+                            <div class="p-2">
+                                <img src="" alt="" style="width: 50px; height: 50px">
+                            </div>
+                            <div class="p-2">
+                                <p class="flight_nc">{{flightname.0.AirlineName}} | {{flightname.0.AirlineCode}}-{{flightname.0.AirlineNumber}}</p>
+                                <p class="flight_pe">Private / {{single_flight_del.flight_class}}</p>
+                            </div>
+                        </div> 
+                        <div class="mt-3">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Passengers</th>
+                                        <th>Seat No</th>
+                                        <th>Fees</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="passengerTableBody">
+                                    <!-- <tr>
+                                        <td>Adult 1</td>
+                                        <td>8A</td>
+                                        <td>250</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Adult 2</td>
+                                        <td>8A</td>
+                                        <td>250</td>
+                                    </tr> -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-2 text-center">
+                            <button class="btn btn-primary ctn_btn" id="Continue-seatHome"  >Continue</button>
+                        </div>
+                        <div class="mb-3 text-center">
+                            <a href="" class="pws_link">Proceed Without Seat</a>
+                        </div>
+                        
+                        <div class="mt-3 text-center">
+                            <p class="con_text">condition apply.  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posue</p>
+                        </div>
+                    </div>
+                    <div class="mt-4" id="fli_orientation">
+                        <div class="mt-2 p-3">
+                            <p class="fo_head">Flight Orientaion</p>
+                        </div>
+                        <div class="mt-0 mb-3" id="flight_pic_div">
+                            <img src="{% static 'image/flight/flight b.svg' %}" class="mb-3" style="transform: rotate(-90deg);" alt="" width="88px" height="88px">
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3 col-md-4" id="flight_tickets_container" style="margin-left: 85px;">
+                    <div class="mt-2" id="firstFLight-details">
+                        <!-- <div class="sbox_div d-flex justify-content-between" id="main-container-flight" >
+                            <div class="d-flex  seat_box_div">
+                                <div class="seat_box">
+                                    <span>1A</span>
+                                </div>
+                                <div class="seat_box">
+                                    <span>1B</span>
+                                </div>
+                                <div class="seat_box">
+                                    <span>1C</span>
+                                </div>
+                            </div>
+                            <div class="d-flex  seat_box_div">
+                                <div class="seat_box">
+                                    <span>1D</span>
+                                </div>
+                                <div class="seat_box">
+                                    <span>1E</span>
+                                </div>
+                                <div class="seat_box">
+                                    <span>1F</span>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="col-md-3 mt-3" id="fd_right_container">
+                    <div class="seat_status_div">
+                        <div class="mt-2">
+                            <h4 class="ss_head mb-0">Seat Status</h4>
+                        </div>
+                        <div class="seat_status mt-2 mb-2">
+                            <div class="d-flex mb-0 justify-content-between">
+                                <p class="bs_text mt-2 mb-0">Booked Seats</p>
+                                <div class="mt-2 mb-0" style="background-color: #000; width: 28px;height: 28px; border-radius: 2px;"></div>
+                            </div>
+                            <div class="d-flex mb-0 justify-content-between">
+                                <p class="bs_text mt-2 mb-0">Selected Seats</p>
+                                <div class="mt-2 mb-0" style="background-color: #50EB37;width: 28px;height: 28px; border-radius: 2px;"></div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="mt-1">
+                                <h4 class="ss_head mb-0">Seat Fees</h4>
+                            </div>
+                            <div class="seat_fees_div mt-2 mb-2" id="priceContainer1">
+                                <!-- <div class="seat_fees d-flex align-items-center justify-content-center" style="gap: 20px;">
+                                    <div class="mt-1 mb-0" style="background-color: #50EB37;width: 28px;height: 28px; border-radius: 2px;"></div>
+                                    <p class="sa_price mt-1 mb-0">INR 250.00</p>
+                                </div> -->
+                            </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- ----------------------------------second flight details-------------------------------------------------- -->
+
+    <div class="container-fluid seatPopup" id="popup-container_two" style="display: none;">
+        <div  id="popup-content_two" class="col-md-9 mt-2 mb-3">
+            <div class="d-flex justify-content-between" style=" position: sticky;top:0;">
+                <h4 class="" style="color: white;">Flight Seats</h4>
+                <span id="sec_close-popup" >&times;</span>
+                <!-- <span><img src="{% static 'image/flight/cancel icon.svg' %}" class="cp-img mt-3 mb-2" alt="c-i"></span> -->
+            </div>
+            <div id="scond-flight-price-list" style="display: none;">{{ second_flight_price }}</div>
+            <div id="flight-seatnumber-list" style="display: none;">{{ seatNumber }}</div>
+            <!-- <div class="seat_bar container-fluid">
+               
+
+               First instance of new-con-seat 
+                <div class="d-flex" id="new-con-seat1">
+                    <div class="row d-flex col-md-2 ">
+                        <div class="seat_boxes" style="background-color: #000;"></div>
+                        <p class="seat_price">Booked Seats</p>
+                    </div>
+                    <div class="col-md-8 justify-content-evenly d-flex" id="sec_priceContainer1">
+                      Prices for first instance will be dynamically inserted here 
+                    </div>
+                </div>
+            
+              Second instance of new-con-seat 
+                <div class="d-flex" id="new-con-seat2">
+                    <div class="row d-flex col-md-2 ">
+                        <div class="seat_boxes" style="background-color: #50EB37;"></div>
+                        <p class="seat_price">Selected Seats</p>
+                    </div>
+                    <div class="col-md-8 justify-content-evenly d-flex" id="sec_priceContainer2"  >
+                        Prices for second instance will be dynamically inserted here 
+                    </div>
+                </div>
+            
+            </div> -->
+            <div class="d-flex">
+                <div class="mt-3 col-md-3 fd_pop_con">
+                    <div class="d-flex mt-2 mb-2">
+                        <div class="p-2">
+                            <img src="" alt="" style="width: 50px; height: 50px">
+                        </div>
+                        <div class="p-2">
+                            <p class="flight_nc">{{flightname.1.AirlineName}} | {{flightname.1.AirlineCode}}-{{flightname.1.AirlineNumber}}</p>
+                            <p class="flight_pe">Private / {{single_flight_del.flight_class}}</p>
+                        </div>
+                    </div> 
+                    <div class="mt-3">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Passengers</th>
+                                    <th>Seat No</th>
+                                    <th>Fees</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sec_passengerTableBody">
+                                <!-- <tr>
+                                    <td>Adult 1</td>
+                                    <td>8A</td>
+                                    <td>250</td>
+                                </tr>
+                                <tr>
+                                    <td>Adult 2</td>
+                                    <td>8A</td>
+                                    <td>250</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
+                   
+                    <div class="mt-2 text-center">
+                        <button class="btn btn-primary ctn_btn" id="sec_Continue-seatHome"  >Continue</button>
+                    </div>
+                    <div class="mb-3 text-center">
+                        <a href="" class="pws_link">Proceed Without Seat</a>
+                    </div>
+                    <div class="mt-3 text-center">
+                        <p class="con_text">condition apply.  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posue</p>
+                    </div>
+                </div>
+                <div class="mt-3 col-md-4" id="sec_flight_tickets_container" style="margin-left: 85px;">
+                    <div class="mt-2" id="sec_firstFLight-details">
+                        <!-- <div class="sbox_div d-flex justify-content-between" id="main-container-flight" >
+                            <div class="d-flex  seat_box_div">
+                                <div class="seat_box">
+                                    <span>1A</span>
+                                </div>
+                                <div class="seat_box">
+                                    <span>1B</span>
+                                </div>
+                                <div class="seat_box">
+                                    <span>1C</span>
+                                </div>
+                            </div>
+                            <div class="d-flex  seat_box_div">
+                                <div class="seat_box">
+                                    <span>1D</span>
+                                </div>
+                                <div class="seat_box">
+                                    <span>1E</span>
+                                </div>
+                                <div class="seat_box">
+                                    <span>1F</span>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="col-md-3 mt-3" id="fd_right_container">
+                    <div class="seat_status_div">
+                        <div class="mt-2">
+                            <h4 class="ss_head mb-0">Seat Status</h4>
+                        </div>
+                        <div class="seat_status mt-2 mb-2">
+                            <div class="d-flex mb-0 justify-content-between">
+                                <p class="bs_text mt-2 mb-0">Booked Seats</p>
+                                <div class="mt-2 mb-0" style="background-color: #000; width: 28px;height: 28px; border-radius: 2px;"></div>
+                            </div>
+                            <div class="d-flex mb-0 justify-content-between">
+                                <p class="bs_text mt-2 mb-0">Selected Seats</p>
+                                <div class="mt-2 mb-0" style="background-color: #50EB37;width: 28px;height: 28px; border-radius: 2px;"></div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="mt-1">
+                                <h4 class="ss_head mb-0">Seat Fees</h4>
+                            </div>
+                            <div class="seat_fees_div mt-2 mb-2" id="priceContainer2">
+                                <!-- <div class="seat_fees d-flex align-items-center justify-content-center" style="gap: 20px;">
+                                    <div class="mt-1 mb-0" style="background-color: #50EB37;width: 28px;height: 28px; border-radius: 2px;"></div>
+                                    <p class="sa_price mt-1 mb-0">INR 250.00</p>
+                                </div> -->
+                            </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mt-4" id="fli_orientation">
+                <div class="mt-2 p-3">
+                    <p class="fo_head">Flight Orientaion</p>
+                </div>
+                <div class="mt-0 mb-3" id="flight_pic_div">
+                    <img src="{% static 'image/flight/flight b.svg' %}" class="mb-3" style="transform: rotate(-90deg);" alt="" width="88px" height="88px">
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="mealdata" value="">
+    <input type="hidden" id="baggagedata" value="">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            font-family:'Inter', sans-serif;
+        }
+    .colored {
+    background-color: yellow;
+  }
+
+        .accordion {
+            background: none !important;
+            /* border: none !important; */
+            width: 100% !important;
+            margin: 4px !important;
+        }
+
+        .accordion-header {
+            width: 100%;
+        }
+
+        .accordion-item {
+            /* background: none !important; */
+            /* border: none; */
+            /* color: white !important; */
+            width: 100%;
+        }
+
+        .accordion-button {
+            /* background: none !important; */
+            /* color: white !important; */
+            /* border: none !important; */
+            /* padding: 0px !important; */
+            width: 100% !important;
+        }
+
+        
+
+        Header {
+            background: rgba(74, 74, 74, 0.23);
+            border-radius: 20px;
+            height: 59px;
+            margin: 20px 18px;
+            align-items: center;
+            position: sticky;
+            top: 0; 
+            z-index: 100; 
+        }
+
+        .seat_p{
+            margin: 10px;
+            padding-right: 45px;
+        }
+        .seat_pFT{
+            margin: 10px;
+            padding-right: 45px;
+
+        }
+
+        .seat_ps{
+            margin: 10px;
+            padding-right: 15px;
+            font-size: 18px;
+            font-weight: 700;
+
+            color: rgba(0, 0, 0, 0.64);
+        }
+        .seat_psFT{
+            margin: 10px;
+            padding-right: 15px;
+            font-size: 18px;
+            font-weight: 700;
+
+            color: rgba(0, 0, 0, 0.64);
+        }
+
+        nav {
+            align-items: center;
+            justify-content: center;
+            height: 59px;
+        }
+
+        .nav-item :hover {
+            opacity: 60%;
+            color: white;
+        }
+
+        .nav-item a img{
+            margin-top: -12px;
+            margin-right: 4px;
+        }
+
+        .nav-item .icon {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 1);
+        }
+
+        #img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        .btn-log {
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        #log-btn {
+            color: black;
+            background-color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        #log-btn:hover {
+            background-color: rgba(41, 41, 41, 0.8);
+        }
+
+        #process {
+            /* margin-top: 70px; */
+            width: 100%;
+        }
+
+        .final-pro ul {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            list-style: none;
+            color: rgba(12, 202, 54, 1)!important;
+        }
+
+        .progress {
+            height: 8px;
+        }
+
+        .progress-bar {
+            color: rgba(12, 202, 54, 1);
+        } 
+
+        .fl_rev_div div {
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            text-align: left;
+        }
+
+        .f_dep_div {
+            border-bottom:1px solid rgba(0, 0, 0, 0.30);
+        }
+        
+
+        .f_dep_div div {
+            justify-content: space-around;
+            align-items: center;
+            text-align: left;
+            width: 100%;
+        }
+
+        #airport_div div {
+            justify-content: space-around;
+            align-items: center;
+            text-align: left;
+            width: 100%;
+        }
+
+        .payment_div {
+            padding: 10px;
+            margin: 4px 2px;
+            border: 1.5px solid rgba(208, 213, 221, 1);
+            border-radius: 10px;
+            height: 280px;
+            background: rgba(23, 52, 73, 1);
+            color: rgba(255, 255, 255, 1);
+            /* position: sticky;
+            top: 0; */
+        }
+
+        #fl_rev_details {
+            border: 1px solid #00000038;
+            padding: 10px;
+            border-radius: 10px
+        }
+
+        #fl_rev_details div {
+            margin: 0px 3px;
+        }
+
+        .fr-head {
+           font-size: 16px;
+           font-weight: 600;
+           color: #004EAE;
+        }
+
+        .f-time1 {
+            font-size: 16px;
+            color: #000;
+            font-weight: 400;
+            margin-bottom: 0px;
+        }
+
+        .f-date1 {
+            font-size: 16px;
+            color: #000;
+            font-weight: 400;
+            margin-bottom: 0px;
+        }
+
+        .f-timeduration {
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .f-name {
+            color: #000;
+            font-weight: 600;
+            margin-bottom: 0px;
+            font-size: 14px;
+        }
+
+        .f-sname {
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 60%;
+            margin-bottom: 0px;
+        }
+
+        .f-term {
+            font-weight: 500;
+            font-size: 14px;
+            opacity: 60%;
+        }
+
+        #contact-container{
+            border: 1px solid #00000038;
+            padding: 10px; 
+            border-radius: 10px;
+            background: rgba(198, 198, 198, 0.44);
+        }
+
+        #contact_div {
+            margin: 0px 10px;
+        }
+
+        .f-city {
+            font-weight:700;
+            font-size:14px;
+            color:rgba(0, 0, 0, 0.6);
+        }
+
+        .head_div {
+            background: rgba(23, 52, 73, 1);
+            padding: 6px 10px;
+            border-radius: 10px;
+        }
+        
+        .fl-head {
+            color:rgba(255, 255, 255, 1);
+        }
+         
+        .fls-head {
+            color: #00000099;
+            margin-top: 0px;
+        }
+
+        #seat-container {
+            border: 1px solid #00000038;
+            border-radius: 10px;
+            gap:2px
+        }
+
+        .seat_div {
+            margin: 0px 10px;
+            padding: 6px 10px;
+        }
+
+        .seat_num_div{
+            width: 100%;
+
+            text-align: left;
+        }
+/* 
+        #adult_count p {
+            font-size: 16px;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.64);
+        } */
+
+        #seat_count p {
+            font-size: 20px;
+            font-weight: 600;
+            color:rgba(0, 0, 0, 0.6);
+        } 
+
+        #td_container {
+            border: 1px solid #00000038;
+            border-radius: 10px;
+            gap:2px
+        }
+
+        .td_div {
+            margin: 0px 10px;
+            padding: 6px 10px;
+        }
+
+        #gst_container {
+            border: 1px solid #00000038;
+            border-radius: 10px
+        }
+
+        .gst_div {
+            margin: 0px 10px;
+            padding: 6px 10px;
+        }
+
+        .form-control {
+            width: 90%;
+        }
+
+        #baggage {
+            border: 1px solid #00000038;
+            border-radius: 10px
+        }
+
+        .baggage_div {
+            margin: 0px 10px;
+            padding: 6px 10px;
+        }
+
+        #icon_container {
+            background: rgba(244, 244, 244, 1);
+            border-radius: 12px;
+        }
+
+        #icon_container div {
+            padding: 4px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .icon_div {
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .icon_text {
+            font-size: 14px;
+            padding-top: 17px;
+            color:rgba(0, 0, 0, 0.6);
+            font-weight: 400;
+        }
+
+        .img-class{
+            padding-right: 5px;
+            width: 24px;
+            height: 42px
+        }
+        
+
+        .bag-btn, .meal-btn {
+            padding: 4px 16px;
+            height: 44px;
+            width: 100%;
+            margin: 2px 10px;
+            background: linear-gradient(271deg, #004EAE 2.03%, #538DD6 101.15%);
+            text-align: center;
+        }
+
+        /* Popup */
+
+        /* .seatPopup {
+            border-radius: 12px;
+            padding: 2px 30px 20px;
+            background-image: url("{% static 'image/flight/flight bg.svg' %}");
+            background-color: gray;
+            background-position-x: center;
+            background-repeat: no-repeat;
+            background-size: auto;
+        } */
+
+        .seat-btn {
+            padding: 4px 16px;
+            background: linear-gradient(271deg, #004EAE 2.03%, #538DD6 101.15%);
+            text-align: center;
+            width: 200px;
+            height: 50px;
+        }
+
+        #popup-container  {
+            position: fixed;
+            padding: 2px 214px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-y: scroll;
+            z-index: 999;
+        }
+
+        #popup-container_two{
+            position: fixed;
+            padding: 2px 214px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-y: scroll;
+            z-index: 999;
+            
+        }
+
+
+        #popup-content {
+            position: relative;
+            padding: 20px;
+            margin:  auto;
+            width: 1058px;
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.5) url("{% static 'image/flight/flight bg.svg' %}");
+            background-position-x: center;
+            background-repeat: no-repeat;
+            background-size: auto;
+            background-position: center;
+            text-align: center;
+        }
+        #popup-content_two{
+            position: relative;
+            padding: 20px;
+            margin:  auto;
+            width: 1058px;
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.5) url("{% static 'image/flight/flight bg.svg' %}");
+            background-position-x: center;
+            background-repeat: no-repeat;
+            background-size: auto;
+            background-position: center;
+            text-align: center;
+        }
+
+        #close-popup {
+            position: absolute;
+            top: 6px;
+            right: 10px;
+            cursor: pointer;
+            color: white;
+            background: black;
+            border-radius: 50%;
+            width: 25px;
+        }
+        #sec_close-popup{
+            position: absolute;
+            top: 6px;
+            right: 10px;
+            cursor: pointer;
+            color: white;
+            background: black;
+            border-radius: 50%;
+            width: 25px;
+
+        }
+
+        .seat_price {
+            margin: -32px 0px 10px 12px;
+        }
+        .seat_priceFT{
+            margin: -32px 0px 10px 12px; 
+        }
+
+        .seat_bar {
+            position: sticky;
+            top : 50px;
+            padding: 2px 20px;
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .seat_boxes {
+            
+            width: 28px;
+            height: 28px;
+            padding: 8px;
+            margin: 5px;
+            border-radius: 6px;
+        }
+        #seat_boxesFT{
+            width: 28px;
+            height: 28px;
+            padding: 8px;
+            margin: 5px;
+            border-radius: 6px;
+        }
+
+        #flight_tickets_container {
+            justify-content: center;
+            align-items: center;
+            /* padding: 2px 100px; */
+            margin: 2px 76px;
+        }
+        #sec_flight_tickets_container{
+            justify-content: center;
+            align-items: center;
+            /* padding: 2px 100px; */
+            margin: 2px 76px;
+        }
+
+
+
+        .sbox_div {
+            width: 100%;
+            /* margin: 2px 120px;
+            padding: 2px 10px; */
+        }
+        .sbox_divFT{
+            width: 100%;
+        }
+/* 
+        .seat_box_div :hover{
+            background-color: #50EB37;
+        } */
+
+        .seat_box {
+    /* background-color: blue; */
+    width: 39px;
+    height: 39px;
+    padding: 6px 4px;
+    margin: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.seat_boxFT{
+    width: 39px;
+    height: 39px;
+    padding: 6px 4px;
+    margin: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* .seat_box:focused {
+    background: yellow;
+    color: white;
+} */
+
+        .flight_nc {
+            color: rgba(0, 0, 0, 1);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 0px;
+        }
+
+        .flight_pe {
+            color: rgba(0, 0, 0, 0.64);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        #fd_left_container {
+            position: sticky;
+            top: 100px;
+            height: 100%;
+        }
+
+        #fd_right_container {
+            height: 100%;
+            position: sticky;
+            top: 80px;
+            height: 100%;
+        }
+
+        .seat_status_div {
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 1);
+            border-radius: 12px;
+            height: auto;
+        }
+
+        .ss_head {
+            font-size: 18px;
+            font-weight: 600;
+            color: #004EAE;
+        }
+
+        .seat_status {
+            background: rgba(228, 225, 225, 0.723);
+            border: none;
+            border-radius: 12px;
+            padding: 8px;
+        }
+
+        .seat_fees {
+            background: rgba(228, 225, 225, 0.723);
+            border: none;
+            border-radius: 12px;
+            padding: 8px;
+            margin: 2px;
+        }
+
+        
+        .bs_text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .fd_pop_con {
+            background: rgba(255, 255, 255, 1);
+            padding: 0px 10px;
+            border-radius: 12px; 
+        }
+
+        #fli_orientation {
+            background: rgba(255, 255, 255, 1);
+            padding: 0px 10px; 
+            border-radius: 12px;
+        }
+
+        .fo_head {
+            color:rgba(0, 78, 174, 1);
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        #flight_pic_div {
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .table th {
+            color: rgba(0, 0, 0, 1);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .table tbody td {
+            color: rgba(0, 78, 174, 1);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .ctn_btn {
+            background: rgba(0, 78, 174, 1);
+            padding: 6px 23px !important;
+            border-radius: 22px;
+        }
+
+        .pws_link {
+            font-size: 12px;
+            color: rgba(215, 163, 31, 1);
+        }
+
+        .con_text {
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 11px;
+            font-weight: 500;
+            text-align: justify;
+            padding: 6px;
+        }
+
+        .d-name {
+            color: rgba(0, 0, 0, 0.80);
+            font-family: Inter;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .d-adult {
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 600;
+            color: rgba(0, 0, 0, 0.47);
+            margin-top: -10px;
+        }
+        
+
+        .meal-tab{
+            background: #FFF;
+            padding: 6px;
+            margin: 4px 10px;
+        }
+
+        .meal-tab p:nth-child(1) {
+            font-size: 15px;
+            color: #000;
+            font-weight: 600;
+        }
+
+        .meal-tab:hover {
+            opacity: 60%;
+        }
+
+        .meal-tab:focus {
+            opacity: 60%;
+        }
+
+        .meal-tab:visited {
+            opacity: 60%;
+        }
+
+        .baggage-tab:hover {
+            opacity: 60%;
+        }
+
+        .baggage-tab:focus {
+            opacity: 60%;
+        }
+
+        .baggage-tab:visited {
+            opacity: 60%;
+        }
+
+        
+
+        
+
+        /* .addMeal, #addBaggage {
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.20);
+            backdrop-filter: blur(33px);
+            box-sizing: border-box;
+            padding: 4px 8px;
+        }
+
+        .addMeal{
+            position: fixed;
+            margin: -140px 2px 2px 320px;
+            display: none;
+            z-index: 1000;
+        }
+
+        #addBaggage {
+            position: fixed;
+            margin: -140px 2px 2px 320px;
+            display: none;
+            z-index: 1000;
+        } */
+
+        .cp-img {
+            margin-top: 2px;
+            margin-right: 4px;
+            cursor: pointer;
+        }
+
+        .bc_btn_div {
+            background: rgba(217, 217, 217, 0.21);
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+        .pro-btn {
+            font-size: 14px;
+            color:rgba(255, 255, 255, 1);
+            background: rgba(0, 78, 174, 1);
+            border-radius: 22px;
+            padding: 6px 23px;
+            border: none;
+        }
+
+        .back-btn {
+            font-size: 14px;
+            color:rgba(23, 52, 73, 1);
+            background:rgba(23, 52, 73, 0.15);
+            border-radius: 22px;
+            padding: 6px 23px;
+            border: none;
+            
+        }
+
+        .close {
+            width: 25px;
+            height: 25px;
+            border: none;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: none;
+            margin-top: -10px;
+        }
+
+        /* INCREASE AND DECREASE */
+
+        #count_form {
+  /* width: 300px; */
+  margin: 0 auto;
+  text-align: center;
+  /* padding-top: 50px; */
+}
+
+.value-button {
+  display: inline-block;
+  border: 1px solid #ddd;
+  margin: 0px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 11px 0;
+  background: #eee;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.value-button:hover {
+  cursor: pointer;
+}
+
+#count_form #decrease {
+  margin-right: -4px;
+  border-radius: 8px 0 0 8px;
+}
+
+#count_form #increase {
+  margin-left: -4px;
+  border-radius: 0 8px 8px 0;
+}
+
+#count_form #input-wrap {
+  margin: 0px;
+  padding: 0px;
+}
+
+.count_inp#number {
+  text-align: center;
+  border: none;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  margin: 0px;
+  width: 40px;
+  height: 40px;
+}
+
+.count_inp[type=number]::-webkit-inner-spin-button,
+.count_inp[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.meal-tab {
+    background: rgba(23, 52, 73, 0.15);;
+    margin: 2px;
+    border-radius: 6px !important;
+    padding: 16px !important;
+    cursor: pointer;
+}
+
+.baggage-tab {
+     background: rgba(23, 52, 73, 0.15);;
+    margin: 2px;
+    border-radius: 6px !important;
+    padding: 16px !important;
+    cursor: pointer;
+}
+
+       
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- INCREASE DECREASE MEALS AND BAGGAGE VALUE -->
+<!-- 
+    <script>
+        function increaseValue() {
+  var value = parseInt(document.getElementById('number').value, 10);
+  value = isNaN(value) ? 0 : value;
+  value++;
+  document.getElementById('number').value = value;
+}
+
+function decreaseValue() {
+  var value = parseInt(document.getElementById('number').value, 10);
+  value = isNaN(value) ? 0 : value;
+  value < 1 ? value = 1 : '';
+  value--;
+  document.getElementById('number').value = value;
+}
+    </script> -->
+  
+<!-- ---------------------------------------------------input name get funcvtion----------------------------------------- -->
+<input type="hiddden" id="mealcode" value="">
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // Function to generate traveler details
+        function generateTravelerDetails(guestDetails) {
+            var container = document.getElementById('multiCollapseExample1');
+            container.innerHTML = '';
+
+            function createTravelerContainer(type, index) {
+                var travelerContainer = document.createElement('div');
+                travelerContainer.className = 'mt-3';
+                travelerContainer.innerHTML = `
+                <div>
+            <p style="font-weight: 600;">${type.toUpperCase()} ${index + 1}</p>
+        </div>
+        <div class="row d-flex">
+            <div class="col-md-12 d-flex mb-2">
+                <div class="form-group col-md-4">
+                    <select class="form-control mt-2" name="${type}${index}Gender">
+                        <option value="Mr">Mr</option>
+                        <option value="Mrs">Mrs</option>
+                        <option value="Miss">Miss</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control mt-2" placeholder="First Name" name="${type}${index}FirstName">
+                    <span class="error" id="${type}${index}FirstNameError" style="color: red;font-size: 12px;"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control mt-2" placeholder="Last Name" name="${type}${index}LastName">
+                    <span class="error" id="${type}${index}LastNameError"  style="color: red;font-size: 12px;"></span>
+                </div>
+            </div>
+            <input type="hidden" id="${type}${index}Passport" name="${type}${index}Passport" value="{{flight_details.0.passfulldetail}}">
+            <input id="${type}${index}passengerType" name="${type}${index}passengerType" value="${type}" style="display:none;"><div class="d-flex">
+                <div class="col-md-3">
+                    <p class="mb-0 mt-3 ">Date Of Birth</p>
+                    <span class="error" id="${type}${index}dobError"  style="color: red;font-size: 12px;"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <select id="${type}${index}day" class="form-control mt-2" name="${type}${index}day">
+                        <option value=""> Day</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <select id="${type}${index}month" class="form-control mt-2" name="${type}${index}month">
+                        <option value="">Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <select id="${type}${index}year" class="form-control mt-2" name="${type}${index}year">
+                        <option value="">Year</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row d-flex">
+                <div class="col-md-12 d-flex mb-2" >
+                    <div class="form-group col-md-4" id="${type}${index}PassportDiv">
+                        <input type="text" class="form-control mt-2" placeholder="Passport Number" name="${type}${index}PassportNumber">
+                        <span class="error" id="${type}${index}passportError"  style="color: red;font-size: 12px;"></span>
+                    </div>
+                    <div class="form-group col-md-8 justify-content-between d-flex" id="${type}${index}PassportdateDiv">
+                        <p class="col-md-4 mt-3 mb-0">Passport Expiry Date</p>
+                        <input type="date" class="form-control mt-2" placeholder="Passport Expiry Date" name="${type}${index}ExpiryDate">
+                        <span class="error" id="${type}${index}edateError"  style="color: red;font-size: 12px;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+                `;
+                return travelerContainer;
+            }
+
+            
+
+        for (var category in guestDetails) {
+                if (guestDetails.hasOwnProperty(category)) {
+                    for (var i = 0; i < guestDetails[category]; i++) {
+                        var travelerContainer = createTravelerContainer(category, i);
+                        container.appendChild(travelerContainer);
+                    }
+                }
+                function populateDays(type, index) {
+                var month = document.getElementById(`${type}${index}month`).value.trim();
+                var year = document.getElementById(`${type}${index}year`).value.trim();
+                var daySelect = document.getElementById(`${type}${index}day`);
+                // Clear existing options
+                daySelect.innerHTML = "<option value=''>Day</option>";
+                var daysInMonth = new Date(year, month, 0).getDate(); // Get the number of days in the selected month
+                for (var i = 1; i <= daysInMonth; i++) {
+                    var option = document.createElement("option");
+                    option.text = i;
+                    option.value = i;
+                    daySelect.appendChild(option);
+                }
+        }
+            function populateYears(type, index) {
+                var passengerType = document.getElementById(`${type}${index}passengerType`);
+                var yearSelect = document.getElementById(`${type}${index}year`);
+                var currentYear = new Date().getFullYear();
+
+                // Clear existing options
+                yearSelect.innerHTML = "<option value=''>Year</option>";
+
+                // Populate years based on passenger type
+                if (passengerType.value.trim() === "infant") {
+                    for (var i = currentYear; i >= currentYear - 2; i--) {
+                        var option = document.createElement("option");
+                        option.text = i;
+                        option.value = i;
+                        yearSelect.appendChild(option);
+                    }
+                } else if (passengerType.value.trim() === "child") {
+                    for (var i = currentYear; i >= currentYear - 12; i--) {
+                        var option = document.createElement("option");
+                        option.text = i;
+                        option.value = i;
+                        yearSelect.appendChild(option);
+                    }
+                } else if (passengerType.value.trim() === "adult") {
+                    for (var i = 1900; i <= currentYear; i++) {
+                        var option = document.createElement("option");
+                        option.text = i;
+                        option.value = i;
+                        yearSelect.appendChild(option);
+                    }
+                }
+            }
+        
+        
+
+$(document).ready(function() {
+    // Call populateYears and populateDays for each category in guestDetails
+    for (var category in guestDetails) {
+        if (guestDetails.hasOwnProperty(category)) {
+            for (var i = 0; i < guestDetails[category]; i++) {
+                populateYears(category, i);
+                populateDays(category, i);
+            }
+        }
+    }
+});
+
+          }
+            var passportElements = document.querySelectorAll('[id$="Passport"]');
+            // alert(passportElements.value)
+            passportElements.forEach(function(element) {
+              
+            var passportDivId = element.id.replace('Passport', 'PassportDiv');
+            var passportdateDivId = element.id.replace('Passport', 'PassportdateDiv');
+            var passportDiv = document.getElementById(passportDivId);
+            var passpordatetDiv = document.getElementById(passportdateDivId);
+            if (element.value === 'True') {
+                passportDiv.style.visibility = "visible";
+                passpordatetDiv.style.visibility = "visible"
+            } else {
+                passportDiv.style.visibility = "hidden";
+                passpordatetDiv.style.visibility = "hidden"
+            }
+        });
+    }
+
+        var guestData = document.getElementById('hiddenGuestData').textContent;
+        var jsonArray = JSON.parse(guestData);
+        var guestDetails = jsonArray[0];
+        console.log(guestDetails)
+        generateTravelerDetails(guestDetails);
+        
+
+        var continueButton = document.getElementById('myButton');
+        continueButton.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            var adultDetailsArray = [];
+            var childDetailsArray = [];
+            var infantDetailsArray = [];
+
+            var isValid = true;
+
+            for (var category in guestDetails) {
+                if (guestDetails.hasOwnProperty(category)) {
+                    for (var i = 0; i < guestDetails[category]; i++) {
+                        var genderElem = document.querySelector(`[name="${category}${i}Gender"]`);
+                        var firstNameElem = document.querySelector(`[name="${category}${i}FirstName"]`);
+                        var lastNameElem = document.querySelector(`[name="${category}${i}LastName"]`);
+                       
+                        var passportElem = document.querySelector(`[name="${category}${i}PassportNumber"]`);
+                        var ExdateElem = document.querySelector(`[name="${category}${i}ExpiryDate"]`);
+                        var passporttrue = document.querySelector(`[name="${category}${i}Passport"]`);
+                        var passporttrueValue = passporttrue ? passporttrue.value : undefined;
+                        var dayElem = document.getElementById(`${category}${i}day`);
+                        var monthElem = document.getElementById(`${category}${i}month`);
+                        var yearElem = document.getElementById(`${category}${i}year`);
+                        
+                        
+                        if (genderElem && firstNameElem && lastNameElem  && passportElem && ExdateElem && passporttrue&& dayElem && monthElem && yearElem) {
+                            // Validate first name
+                            
+                            if (firstNameElem.value.trim() === '') {
+                                document.getElementById(`${category}${i}FirstNameError`).innerText = 'Please Enter Your First Name.';
+                                firstNameElem.style.border = '1px solid red';
+                                isValid = false;
+                            } else {
+                                document.getElementById(`${category}${i}FirstNameError`).innerText = '';
+                                firstNameElem.style.border = '';
+                            }
+
+                            // Validate last name
+                            if (lastNameElem.value.trim() === '') {
+                                document.getElementById(`${category}${i}LastNameError`).innerText = 'Please Enter Your Last Name.';
+                                lastNameElem.style.border = '1px solid red';
+                                isValid = false;
+                            } else {
+                                document.getElementById(`${category}${i}LastNameError`).innerText = '';
+                                lastNameElem.style.border = '';
+                            }
+
+                            // Validate date of birth format
+                            if (dayElem.value.trim() === '') {
+                                dayElem.style.border = '1px solid red';
+                                document.getElementById(`${category}${i}dobError`).innerText = 'Please Enter Your Date Of Birth.';
+                                // Handle empty day
+                                // You can customize the error message and styling as needed
+                                isValid = false;
+                            } else {
+                                document.getElementById(`${category}${i}dobError`).innerText = '';
+                                dayElem.style.border = '';
+                            }
+                            // Validate month
+                            if (monthElem.value.trim() === '') {
+                                monthElem.style.border = '1px solid red';
+                                document.getElementById(`${category}${i}dobError`).innerText = 'Please Enter Your Date Of Birth.';
+                                // Handle empty month
+                                // You can customize the error message and styling as needed
+                                isValid = false;
+                            } else {
+                                document.getElementById(`${category}${i}dobError`).innerText = '';
+                                monthElem.style.border = '';
+                            }
+                            // Validate year
+                            if (yearElem.value.trim() === '') {
+                                yearElem.style.border = '1px solid red';
+                                document.getElementById(`${category}${i}dobError`).innerText = 'Please Enter Your Date Of Birth.';
+                                // Handle empty year
+                                // You can customize the error message and styling as needed
+                                isValid = false;
+                            } else {
+                                document.getElementById(`${category}${i}dobError`).innerText = '';
+                                yearElem.style.border = '';
+                            }
+                            
+                            if( passporttrue.value === 'False'){
+                                if (passportElem.value.trim() !== '') {
+                                    document.getElementById(`${category}${i}passportError`).innerText = 'Please Enter your Passport Number.';
+                                    passportElem.style.border = '1px solid red';
+                                    isValid = false;
+                                }else {
+                                    document.getElementById(`${category}${i}passportError`).innerText = '';
+                                    passportElem.style.border = '';
+                                }
+                            }else if(passporttrue.value === 'True' ){
+                                    if (passportElem.value.trim() === '') {
+                                    document.getElementById(`${category}${i}passportError`).innerText = 'Please Enter your Passport Number.';
+                                    passportElem.style.border = '1px solid red';
+                                    isValid = false;
+                                }else {
+                                    document.getElementById(`${category}${i}passportError`).innerText = '';
+                                    passportElem.style.border = '';
+                                } 
+                            }
+                            if( passporttrue.value === 'False'){
+                                if (ExdateElem.value.trim() !== '') {
+                                document.getElementById(`${category}${i}edateError`).innerText = 'Please Enter Passport Expiry Date.';
+                                ExdateElem.style.border = '1px solid red';
+                                isValid = false;
+                            } else {
+                                document.getElementById(`${category}${i}edateError`).innerText = '';
+                                ExdateElem.style.border = '';
+                            }
+                            }else if(passporttrue.value === 'True' ){
+                                if (ExdateElem.value.trim() === '') {
+                                document.getElementById(`${category}${i}edateError`).innerText = 'Please Enter Passport Expiry Date.';
+                                ExdateElem.style.border = '1px solid red';
+                                isValid = false;
+                            } else {
+                                document.getElementById(`${category}${i}edateError`).innerText = '';
+                                ExdateElem.style.border = '';
+                            }
+                            }
+
+                            
+
+                            // Proceed with collecting data if validation passes
+                            if (isValid) {
+                                var dob = `${dayElem.value}/${monthElem.value}/${yearElem.value}`;
+                                var travelerDetails = {
+                                    gender: genderElem.value,
+                                    firstName: firstNameElem.value,
+                                    lastName: lastNameElem.value,
+                                    dob:dob,
+                                    passportNumber:passportElem.value,
+                                    exDate:ExdateElem.value,
+                                    // day: dayElem.value, // Add day value to traveler details
+                                    // month: monthElem.value, // Add month value to traveler details
+                                    // year: yearElem.value,
+                                };
+
+                                if (category === 'adult') {
+                                    adultDetailsArray.push(travelerDetails);
+                                } else if (category === 'child') {
+                                    childDetailsArray.push(travelerDetails);
+                                } else if (category === 'infant') {
+                                    infantDetailsArray.push(travelerDetails);
+                                }
+                            }
+                        } else {
+                            console.error("One or more elements not found.");
+                        }
+                    }
+                }
+            }
+
+            if (isValid) {
+                console.log("Adult details:", adultDetailsArray);
+                console.log("Child details:", childDetailsArray);
+                console.log("Infant details:", infantDetailsArray);
+
+                var userInformation = {
+                    adults: adultDetailsArray,
+                    children: childDetailsArray,
+                    infants: infantDetailsArray
+                };
+                console.log(userInformation);
+
+                var jsonString = JSON.stringify(userInformation);
+                document.querySelector('[name="user_information"]').value = jsonString;
+                // alert(jsonString)
+            }
+        function generateTravelerDetails(guestDetails) {
+            var container = document.getElementById('multiCollapseExample3');
+            container.innerHTML = '';
+
+            function createTravelerContainer(name, type, index, startPoint, endPoint) {
+                var travelerContainer = document.createElement('div');
+                travelerContainer.id = `${type}_${index + 1}`;
+                travelerContainer.innerHTML = `
+                    <div class="d-flex  mt-2" style="width:100%">
+                        <div class="mb-2 col-md-2 p-1">
+                            <p class="d-name">${name}</p> 
+                            <p class="d-adult">${type.toUpperCase()}${index + 1}</p>
+                        </div>
+                        <div class="d-flex col-md-3 align-items-center justify-content-evenly">
+                            <p class="f-city">{{single_flight_del.start_point}}</p>
+                            <img src="{% static 'image/flight/flight 12.svg' %}" alt="" style="margin-top:-10px">
+                            <p class="f-city">{{single_flight_del.end_point}}</p>
+                        </div>
+                        <div class="d-flex col-md-7  align-items-center justify-content-between">
+                            <button class="btn btn-primary mr-2 meal-btn" type="button" data-toggle="modal" data-target="#exampleModalCenter_${type}_${index + 1}" id="hiddenmeal_${type}_${index + 1}" ><span style="margin: 0px 10px 0px -15px;"><img src="{% static 'image/flight/meal.svg' %}" alt=""></span>Meals</button>
+                            <button class="btn btn-secondary bag-btn" type="button" type="button" data-toggle="modal" data-target="#exampleModalCenter2_${type}_${index + 1}" id="hiddenbaggage_${type}_${index + 1}"><span style="margin: 0px 10px 0px -15px;"><img src="{% static 'image/flight/luggage w.svg' %}" alt=""></span>Baggage</button>
+                        </div>
+                    </div>`;
+                return travelerContainer;
+            }
+
+            for (var i = 0; i < guestDetails.adults.length; i++) {
+                var adults = guestDetails.adults[i];
+                var name = `${adults.gender}. ${adults.firstName} ${adults.lastName}`;
+                container.appendChild(createTravelerContainer(name, 'adult', i, adults.startPoint, adults.endPoint));
+            }
+
+            for (var j = 0; j < guestDetails.children.length; j++) {
+                var children = guestDetails.children[j];
+                var name = `${children.gender}. ${children.firstName} ${children.lastName}`;
+                container.appendChild(createTravelerContainer(name, 'child', j, children.startPoint, children.endPoint));
+            }
+        }
+
+        var selectedMeals = {
+    adultsMeal: [],
+    childMeal: []
+};
+
+var previousCheckbox = null;
+
+function mealPriceAdd(checkbox) {
+    var foodCode = checkbox.parentNode.querySelector('.meal-code').value;
+    console.log("Selected food code:", foodCode);
+
+    var travelerNameInput = checkbox.closest('.modal').querySelector('.traveler-name');
+    console.log("Traveler's name:", travelerNameInput.value);
+
+    var travelerType = checkbox.getAttribute('data-traveler-type');
+    console.log("Traveler's type:", travelerType);
+    
+
+    if (checkbox.checked) {
+        if ((travelerType === 'adult' && selectedMeals.adultsMeal.length >= 1) || 
+            (travelerType === 'child' && selectedMeals.childMeal.length >= 1)) {
+            alert("Only 1 meal can be selected for " + travelerType + ".");
+            checkbox.checked = false;
+        }
+        return;
+        
+        if (travelerType === 'adult') {
+            selectedMeals.adultsMeal.push(foodCode);
+        } else if (travelerType === 'child') {
+            selectedMeals.childMeal.push(foodCode);
+        }
+    } else {
+        if (travelerType === 'adult') {
+            var index = selectedMeals.adultsMeal.indexOf(foodCode);
+            if (index !== -1) {
+                selectedMeals.adultsMeal.splice(index, 1);
+            }
+        } else if (travelerType === 'child') {
+            var index = selectedMeals.childMeal.indexOf(foodCode);
+            if (index !== -1) {
+                selectedMeals.childMeal.splice(index, 1);
+            }
+        }
+    }
+
+    document.getElementById('mealdata').value = JSON.stringify(selectedMeals);
+
+    var modalBody = checkbox.closest('.modal-body');
+    var index = checkbox.parentNode.parentNode.getAttribute('data-index');
+    var checkboxes = modalBody.getElementById(`checkbox_${type.toUpperCase()}${index + 1}_${difid}`);
+
+    checkboxes.forEach(function(cb) {
+        if (cb !== checkbox) {
+            cb.checked = false;
+        }
+    });
+
+    console.log(selectedMeals);
+
+    previousCheckbox = checkbox;
+}
+
+document.addEventListener('change', function(event) {
+    if (event.target.classList.contains('meal-checkbox')) {
+        var checkbox = event.target;
+        mealPriceAdd(checkbox);
+    }
+});
+
+window.addEventListener('beforeunload', function(event) {
+    if (previousCheckbox && !previousCheckbox.checked) {
+        previousCheckbox.checked = true;
+    }
+});
+
+
+// This function generates traveler meal details based on the provided guest details
+function generateTravelerMealDetails(guestDetails) {
+    var bodyContainer = document.body; // Select the body container
+
+    function createTravelerContainer(name, difid,type, index, ) {
+        var travelerContainer = document.createElement('div');
+        travelerContainer.className = "col-md-4 addMeal modal fade " + type;
+        travelerContainer.id = "exampleModalCenter_" + type + "_" + (index + 1);
+        travelerContainer.tabIndex = "-1";
+        travelerContainer.role = "dialog";
+        travelerContainer.setAttribute("aria-labelledby", "exampleModalLongTitle" + name + index);
+        travelerContainer.setAttribute("aria-hidden", "true");
+
+        // Create hidden input tags to store the names
+        var hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.className = 'traveler-name';
+        hiddenInput.value = name;
+        travelerContainer.appendChild(hiddenInput);
+
+        travelerContainer.innerHTML += `
+            <div class="mt-2 mb-2 d-flex justify-content-between modal-dialog modal-dialog-centered" role="document"> 
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="mb-3 modal-title" style="font-size: 22px;margin: 4px 12px;" id="exampleModalLongTitle${index}">Add On Meal</h2>
+                        <button type="button" class="close" id="mealClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body" >
+                        {% for food in foods %}
+                        <div class="mt-1">
+                            <div data-index="${type.toUpperCase()}${index + 1}_${difid}" class="meal-tab d-flex justify-content-between align-items-center mb-2" style="width: 100%;">
+                                <div class="d-flex">
+                                    <div>
+                                        <input type="hidden"  class="meal-code" value="{{food.Code}}">
+                                        <input type="checkbox" id="checkbox_${type.toUpperCase()}${index + 1}_${difid}" data-traveler-type="${type}" class="meal-checkbox" style="width: 20px;height: 20px;">
+                                        <p class="m-0 meal-name">{{food.MealName}}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="m-0 meal-price">{{food.Currency}} {{food.MealPrice}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %} 
+                    </div>
+                </div>
+            </div>`;
+        return travelerContainer;
+    }
+
+    // Check if 'adults' and 'children' arrays exist in guestDetails object
+    if (guestDetails.adults && Array.isArray(guestDetails.adults)) {
+        for (var i = 0; i < guestDetails.adults.length; i++) {
+            var adult = guestDetails.adults[i];
+            var name = `${adult.gender}. ${adult.firstName} ${adult.lastName}`;
+            var difid=`${adult.firstName}${adult.lastName}${adult.dob}`
+            
+            bodyContainer.appendChild(createTravelerContainer(name,difid, 'adult', i,)); // Append to body container
+        }
+    }
+
+    if (guestDetails.children && Array.isArray(guestDetails.children)) {
+        for (var j = 0; j < guestDetails.children.length; j++) {
+            var child = guestDetails.children[j];
+            var name = `${child.gender}. ${child.firstName} ${child.lastName}`;
+            bodyContainer.appendChild(createTravelerContainer(name, 'child', j)); // Append to body container
+        }
+    }
+}
+
+
+var selectedbaggage = {
+    adults: [],
+    child: []
+};
+// var selectedbaggageJSON = JSON.stringify(selectedbaggage);
+// document.getElementById('baggagedata').value = selectedbaggageJSON;
+
+// Variable to store the previously selected checkbox
+var previousCheckbox = null;
+
+// Function to handle checkbox selection and update selectedMeals object
+function baggagePriceAdd(checkbox) {
+    // Retrieve the selected food code
+    var baggageCode = checkbox.parentNode.querySelector('.baggage-code').value;
+    console.log("Selected baggage code:", baggageCode);
+
+    // Find the hidden input tag containing the traveler's name
+    var travelerNameInput = checkbox.closest('.modal').querySelector('.traveler-names');
+    console.log("Traveler's name:", travelerNameInput.value);
+
+    // Retrieve the traveler type
+    var travelerType = checkbox.getAttribute('data-traveler-types');
+    console.log("Traveler's type:", travelerType);
+
+    // // Update the selected meals based on the traveler type
+    // if (travelerType === 'adult') {
+    //     // Check if the selected food code is already in the selectedMeals.adults array
+    //     var indexvalue = selectedbaggage.adults.indexOf(baggageCode);
+    //     if (indexvalue !== -1) {
+    //         // If the food code is already selected, remove it
+    //         selectedbaggage.adults.splice(indexvalue, 1);
+    //     } else {
+    //         // If the food code is not selected, add it
+    //         selectedbaggage.adults.push(baggageCode);
+    //     }
+    // } else if (travelerType === 'child') {
+    //     // Check if the selected food code is already in the selectedMeals.child array
+    //     var indexvalue = selectedbaggage.child.indexOf(baggageCode);
+    //     if (indexvalue !== -1) {
+    //         // If the food code is already selected, remove it
+    //         selectedbaggage.child.splice(indexvalue, 1);
+    //     } else {
+    //         // If the food code is not selected, add it
+    //         selectedbaggage.child.push(baggageCode);
+    //     }
+    // }
+
+    
+    // Check if the checkbox is checked
+    if (checkbox.checked) {
+        // Check if the maximum number of meals is reached for the traveler type
+        if ((travelerType === 'adult' && selectedbaggage.adults.length >= 1) || 
+            (travelerType === 'child' && selectedbaggage.child.length >= 1)) {
+            alert("Only 1 baggage can be selected for " + travelerType + ".");
+            checkbox.checked = false; // Uncheck the checkbox
+            return;
+        }
+        
+        // Update the selected meals based on the traveler type
+        if (travelerType === 'adult') {
+            selectedbaggage.adults.push(baggageCode);
+        } else if (travelerType === 'child') {
+            selectedbaggage.child.push(baggageCode);
+        }
+    } else {
+        // If unchecked, remove the food code from the selected meals
+        if (travelerType === 'adult') {
+            var indexvalue =  selectedbaggage.adults.indexOf(baggageCode);
+            if (indexvalue !== -1) {
+                selectedbaggage.adults.splice(indexvalue, 1);
+            }
+        } else if (travelerType === 'child') {
+            var indexvalue =  selectedbaggage.child.indexOf(baggageCode);
+            if (indexvalue !== -1) {
+                selectedbaggage.child.splice(indexvalue, 1);
+            }
+        }
+    }
+    
+    document.getElementById('baggagedata').value = JSON.stringify(selectedbaggage);
+    // Find all checkboxes in the same modal body
+    var modalBody = checkbox.closest('.modal-body2');
+    var checkboxes = modalBody.querySelectorAll('.baggage-checkbox');
+
+    // Loop through all checkboxes to uncheck them except the selected one
+    checkboxes.forEach(function(cb) {
+        if (cb !== checkbox) {
+            cb.checked = false;
+        }
+    });
+
+
+    // Log the updated selectedMeals object
+    console.log(selectedbaggage);
+
+    // Store the current checkbox as the previous checkbox
+    previousCheckbox = checkbox;
+}
+
+// Call the mealPriceAdd function when a meal checkbox is changed
+document.addEventListener('change', function(event) {
+    if (event.target.classList.contains('baggage-checkbox')) {
+        var checkbox = event.target;
+        baggagePriceAdd(checkbox);
+    }
+});
+
+window.addEventListener('beforeunload', function(event) {
+    // If there was a previous checkbox and it was unchecked, check it again
+    if (previousCheckbox && !previousCheckbox.checked) {
+        previousCheckbox.checked = true;
+    }
+});
+
+
+// This function generates traveler meal details based on the provided guest details
+function generateTravelerBaggageDetails(guestDetails) {
+    var bodyContainer = document.body; // Select the body container
+
+    function createTravelerContainer(name, type, index) {
+        var travelerContainer = document.createElement('div');
+        travelerContainer.className = "col-md-4 addbaggage modal fade " + type;
+        travelerContainer.id = "exampleModalCenter2_" + type + "_" + (index + 1);
+        travelerContainer.tabIndex = "-1";
+        travelerContainer.role = "dialog";
+        travelerContainer.setAttribute("aria-labelledby", "exampleModalLongTitle" + name + index);
+        travelerContainer.setAttribute("aria-hidden", "true");
+
+        // Create hidden input tags to store the names
+        var hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.className = 'traveler-names';
+        hiddenInput.value = name;
+        travelerContainer.appendChild(hiddenInput);
+
+        travelerContainer.innerHTML += `
+            <div class="mt-2 mb-2 d-flex justify-content-between modal-dialog modal-dialog-centered" role="document"> 
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="mb-3 modal-title" style="font-size: 22px;margin: 4px 12px;" id="exampleModalLongTitle${index}">Add On Baggage</h2>
+                    </div>
+                    <div class="modal-body2" >
+                        {% for baggage in baggage_details %}
+                        <div class="mt-1">
+                            <div data-index="${index}" class="baggage-tab d-flex justify-content-between align-items-center mb-2" style="width: 100%;">
+                                <div class="d-flex">
+                                    <div>
+                                        <input type="hidden"  class="baggage-code" value="{{baggage.Code}}">
+                                        <input type="checkbox" data-traveler-types="${type}" class="baggage-checkbox" name="fav_language" style="width: 20px;height: 20px;">
+                                        <p class="m-0 baggtage-name">{{baggage.Weight}} kg extra at</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="m-0 baggage-price">{{baggage.Currency}} {{baggage.Price}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %} 
+                    </div>
+                </div>
+            </div>`;
+        return travelerContainer;
+    }
+    
+    // Check if 'adults' and 'children' arrays exist in guestDetails object
+    if (guestDetails.adults && Array.isArray(guestDetails.adults)) {
+        for (var i = 0; i < guestDetails.adults.length; i++) {
+            var adult = guestDetails.adults[i];
+            var name = `${adult.gender}. ${adult.firstName} ${adult.lastName}`;
+            bodyContainer.appendChild(createTravelerContainer(name, 'adult', i)); // Append to body container
+        }
+    }
+
+    if (guestDetails.children && Array.isArray(guestDetails.children)) {
+        for (var j = 0; j < guestDetails.children.length; j++) {
+            var child = guestDetails.children[j];
+            var name = `${child.gender}. ${child.firstName} ${child.lastName}`;
+            bodyContainer.appendChild(createTravelerContainer(name, 'child', j)); // Append to body container
+        }
+    }
+}
+        function MealBAggaename(){
+            var jsonString = document.querySelector('[name="user_information"]').value;
+            var guestDetails = JSON.parse(jsonString);
+            generateTravelerDetails(guestDetails);
+            generateTravelerMealDetails(guestDetails);
+            generateTravelerBaggageDetails(guestDetails)
+
+        }
+
+           
+
+        if (isValid) {
+        validShow();
+        MealBAggaename();
+        }
+
+        function validShow() {
+        document.getElementById("multiCollapseExample1").style.display = "none";
+        
+        // Show the next container
+        document.getElementById("multiCollapseExample3").style.display = "block";
+        document.getElementById("buttsh").style.display = "none"
+        document.getElementById("bt-com").style.display="block"
+        }
+                    
+        
+                
+        });
+    });
+</script>
+
+<script>
+    var guestDatas = document.getElementById('first-flight-price-list').textContent;
+    var jsonArrays = JSON.parse(guestDatas);
+
+    var arrayLengths = jsonArrays.length;
+    console.log("Array Length:", arrayLengths);
+    console.log(jsonArrays);
+    
+    var priceContainer1 = document.getElementById('priceContainer1');
+    var colors1 = ['#5f9ea0', '#FFA0DB', '#A0F4FF', '#FFA1A1', '#FFE09F','#A0C2FF', '#A7A0FF', '#778899', '#ee82ee', '#ff6347']; // Array of colors for priceContainer1
+    
+    // Object to hold arrays
+    var priceColorData = {
+        prices: [],
+        colors: []
+    };
+    
+    var newPrices1 = jsonArrays[0]; // First set of prices
+    
+    newPrices1.forEach(function(item, index) {
+        var rowDiv = document.createElement('div');
+        rowDiv.className = 'seat_fees d-flex align-items-center ';
+        rowDiv.style.gap='31px'
+
+        var seatBoxDiv = document.createElement('div');
+        seatBoxDiv.className = 'mt-1 mb-0';
+        seatBoxDiv.style.width='28px';
+        seatBoxDiv.style.height='28px';
+        
+       
+        
+        // Set the background color based on the index of the array
+        var color = colors1[index % colors1.length]; // Get color based on index for priceContainer1
+    
+        seatBoxDiv.style.backgroundColor = color;
+    
+        var priceParagraph = document.createElement('p');
+        priceParagraph.className = 'sa_price mt-1 mb-0';
+        priceParagraph.textContent = 'INR ' + item.price;
+    
+        // Push price and color into arrays
+        priceColorData.prices.push(item.price);
+        priceColorData.colors.push(color);
+    
+        // Append seatBoxDiv and priceParagraph to rowDiv
+        rowDiv.appendChild(seatBoxDiv);
+        rowDiv.appendChild(priceParagraph);
+    
+        priceContainer1.appendChild(rowDiv);
+    
+        // Log price and color for each item
+        console.log("Price: Rs", item.price, "Color:", color);
+    });
+    
+   
+    console.log("Prices:", priceColorData.prices);
+    console.log("Colors:", priceColorData.colors);
+    
+    </script>
+
+<!-- ---------------------------------seats condainer all code on sdcript ------------------------------------------------------------- -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var guestData = document.getElementById('hiiddengustcount').value;
+        var jsonArrayas = JSON.parse(guestData);
+        var guestCounts = jsonArrayas[0]; // Since your hidden input contains an array with a single object
+        console.log(guestCounts);
+
+
+let selectedSeats = []; // Array to store selected seat codes
+let selectedSeatPrices = []; // Array to store selected seat prices
+let seat_code = []
+let push_color = []
+function generatePassengerRows(guestCounts, selectedSeats) {
+    const tableBody = document.getElementById('passengerTableBody');
+    tableBody.innerHTML = ''; // Clear existing rows
+
+    let seatIndex = 0; // Change const to let to allow reassignment
+
+    for (const [passengerType, count] of Object.entries(guestCounts)) {
+        for (let i = 1; i <= parseInt(count); i++) {
+            const row = document.createElement('tr');
+            const seatCode = selectedSeats[seatIndex] ? selectedSeats[seatIndex].code : ''; // Get the selected seat code
+            const seatPrice = selectedSeats[seatIndex] ? selectedSeats[seatIndex].price : ''; // Get the selected seat price
+            
+            row.innerHTML = `
+                <td>${passengerType.toUpperCase()} ${i}</td>
+                <td>${seatCode}</td>
+                <td>${seatPrice}</td>
+            `;
+            tableBody.appendChild(row);
+            
+            seatIndex++; // Increment seatIndex here to move to the next seat
+            // seat_code.push(seatCode);
+        }
+    }
+    
+}
+
+function handleClick(seatBox, totalGuestCount,seat,pricedataa) {
+    var seatCode = seatBox.querySelector('span p').textContent;
+    var seatPrice = null;
+//     var new_pricedata = pricedataa
+//   alert("newwwwwwwwwwwww",new_pricedata)
+    var index = selectedSeats.findIndex(seat => seat.code === seatCode);
+//     var seatCode = seat.Code;
+//     var seatPrice = seat.Price;
+//     console.log(seatCode,seatPrice)
+//     // var index = selectedSeats.indexOf(seatCode);
+//     var priceIndex = pricedataa.prices.indexOf(seatPrice);
+    // if(seat.SeatType === 0 ){
+    //     index.style.backgroundColor = 'black';
+                
+    // }
+    if (index !== -1) {
+        // If the seat is already selected, remove it
+        selectedSeats.splice(index, 1);
+        seat_code.splice(index,1)
+        selectedSeatPrices.splice(index, 1); 
+        push_color.splice(index, 1)// Remove corresponding price
+        console.log("Removed Seat: Code - " + seatCode + ", Price - " + seatPrice);
+        seatBox.classList.remove('selected');
+
+        var priceIndex = pricedataa.prices.indexOf(seat.Price);
+        seatBox.style.backgroundColor = pricedataa.colors[priceIndex]; // Remove the selected class
+        
+    } else {
+        if (selectedSeats.length >= totalGuestCount) {
+            console.log("Maximum seat limit reached.");
+            return; // Exit function if the limit is reached
+        }
+        
+        // Find the price for the selected seat
+        jsonArray.forEach(function (seatArray) {
+            seatArray.forEach(function (seat) {
+                if (seat.Code === seatCode) {
+                    seatPrice = seat.Price;
+                }
+            });
+        });
+
+        // Store the seat code and price
+        selectedSeats.push({ code: seatCode, price: seatPrice });
+        seat_code.push(seatCode)
+        selectedSeatPrices.push(seatPrice); 
+        console.log("Stored Seat: Code - " + seatCode + ", Price - " + seatPrice);
+        seatBox.style.backgroundColor='' // Remove the unselected class
+        seatBox.classList.add('selected');// Add the selected class
+         // Change to desired color when selected
+        
+    }
+    console.log(seat_code);
+    console.log(selectedSeats);
+    console.log(selectedSeatPrices);
+
+    
+    // Update the table with selected seats and prices
+    generatePassengerRows(guestCounts, selectedSeats);
+}
+
+// Initial generation of table rows
+generatePassengerRows(guestCounts, selectedSeats);
+
+    
+// -------------------------------------------- seat adult count based view this function ----------------------------- 
+    function addGuestElements(containerId, count, prefix) {
+            var container = document.getElementById(containerId);
+            
+            for (var i = 1; i <= count; i++) {
+                var element = document.createElement('p');
+                element.className='seat_ps'
+                element.textContent = prefix + ' ' + i;
+                container.appendChild(element);
+            }
+        }
+    
+        function createMainDiv(parentId, containerId, className) {
+            var mainDiv = document.createElement('div');
+            mainDiv.className = className;
+            mainDiv.id = containerId;
+            document.getElementById(parentId).appendChild(mainDiv);
+            return mainDiv;
+        }
+    
+        function createGuestContainers(mainDiv, type, count) {
+            var guestDiv = document.createElement('div');
+            guestDiv.className = "d-flex seat_num_div";
+            guestDiv.id = type + "_count";
+            mainDiv.appendChild(guestDiv);
+            addGuestElements(guestDiv.id, count, type.charAt(0).toUpperCase() + type.slice(1));
+        }
+    
+        function createSeatCountDiv(parentId, containerId, count) {
+            var seatContainer = document.createElement('div');
+            seatContainer.className = "d-flex seat_num_div";
+            seatContainer.id = containerId;
+    
+            for (var i = 0; i < count; i++) {
+                var seatElement = document.createElement('p');
+                seatElement.className='seat_p'
+                seatElement.textContent = "---";
+                seatContainer.appendChild(seatElement);
+            }
+    
+            document.getElementById(parentId).appendChild(seatContainer);
+        }
+    
+        // Create main seat number container div
+        var seatNumberContainerDiv = document.createElement('div');
+        seatNumberContainerDiv.className = "col-md-8 justify-content-between";
+        seatNumberContainerDiv.id = "seat-number-container";
+        document.getElementById("seat-main-div").appendChild(seatNumberContainerDiv);
+    
+        // Create col-md-6 divs for each category
+        var categories = ['adult', 'child', 'infant'];
+        categories.forEach(function(category) {
+            var categoryMainDiv = createMainDiv("seat-number-container", category + "-main-div", "col-md-6");
+            createGuestContainers(categoryMainDiv, category, parseInt(guestCounts[category]));
+            createSeatCountDiv(categoryMainDiv.id, category + "-seat-count", parseInt(guestCounts[category]));
+        });
+
+        // Create the button
+        var buttonDiv = document.createElement('div');
+        buttonDiv.className = "col-md-4 mt-4 text-center";
+        var button = document.createElement('button');
+        button.type = "button";
+        button.className = "btn btn-primary seat-btn mr-2";
+        button.id = "open-popup";
+        button.innerHTML = 'Select Seat';
+        buttonDiv.appendChild(button);
+        document.getElementById("seat-main-div").appendChild(buttonDiv);
+
+        
+// ---------------------------Add your code to handle button click event (e.g., open a popup)
+        document.getElementById("open-popup").addEventListener("click", function() {
+        document.getElementById("popup-container").style.display = "block";
+        });
+        
+
+        document.getElementById("close-popup").addEventListener("click", function() {
+        document.getElementById("popup-container").style.display = "none";
+        });
+
+    document.getElementById("Continue-seatHome").addEventListener("click", function() {
+    // Your code here
+    
+    var selectSeatButton = document.getElementById("open-popup");
+    var seatnum = document.getElementsByClassName("seat_p");
+    selectSeatButton.innerHTML = "Change Seat";
+
+    
+    for (let i = 0; i < seat_code.length; i++) {
+        seatnum[i].innerHTML = seat_code[i]; // Display seat code
+    }
+    
+    document.getElementById("popup-container").style.display = "none";
+});
+
+// ----------------------------------seat mappling script code--------------------------------
+
+// Initialize selectedCount
+var selectedCount = 0;
+var jsonArray; // Declare jsonArray variable outside event listener
+
+
+var continueButton = document.getElementById('open-popup');
+continueButton.addEventListener('click', function () {
+    var guestData = document.getElementById('hidden-fir-flight-seats').textContent;
+    jsonArray = JSON.parse(guestData); 
+    seatnumber=document.getElementById('flight-seatnumber-list').textContent
+    seatnoArray = JSON.parse(seatnumber); 
+    var newlist = seatnoArray[0];
+    console.log(newlist);
+    var pricedataa = priceColorData; // Assuming priceColorData is defined somewhere
+    console.log(pricedataa);
+    var styleElement = document.createElement('style');
+    var mainContainer = document.getElementById('firstFLight-details');
+   
+    
+    // Clear the main container before adding new content
+    mainContainer.innerHTML = '';
+
+    // Loop through each array in jsonArray
+    jsonArray.forEach(function (columnArray) {
+        // Create the sboxDiv element for each columnArray
+        var sboxDiv = document.createElement('div');
+        sboxDiv.className = 'sbox_div d-flex ';
+
+        // Loop through each item in newlist
+        newlist.forEach(function (seatNo) {
+            // Find the seat object from columnArray based on seatNo
+            var seat = columnArray.find(function (seats) {
+                return seats.SeatNo === seatNo;
+            });
+
+            // Create the seatBoxDiv element
+            var seatBoxDiv = document.createElement('div');
+            if (seat && seat.SeatTypevalue === 'A') {
+                seatBoxDiv.className = `d-flex seat_box_${seat.SeatNo}`;
+            } else {
+                seatBoxDiv.className = 'd-flex seat_box_div';
+            }
+
+            // Create the seatBox element
+            var seatBox = document.createElement('div');
+            seatBox.className = 'seat_box';
+            // seatBox.textContent = seat ? seat.Code : ''; // Set code or empty string
+
+            // Apply styles or event listeners as needed
+            if (pricedataa && seat) {
+                if (seat.AvailablityType !== 3 && seat.SeatType !== 0 && seat.SeatType !== 50 ) { // Corrected spelling of AvailabilityType
+                    var priceIndex = pricedataa.prices.indexOf(seat.Price);
+                    if (priceIndex !== -1) {
+                        seatBox.style.backgroundColor = pricedataa.colors[priceIndex];
+                    }
+                    // Add click event listener to seatBox
+                    seatBox.addEventListener("click", function() {
+                        handleClick(seatBox, totalGuestCount, seat, pricedataa);
+                    });
+                } else if (seat.AvailablityType === 3 && seat.SeatType !== 50) {
+                    seatBox.style.backgroundColor = 'black'; 
+                    seatBox.style.color = 'white';
+                }
+            }
+            if (seat &&(seat_code.includes(seat.Code))) {
+                seatBox.style.backgroundColor = '#50EB37';
+            }
+
+            if (seat && (seat.SeatType === 0 || seat.SeatType === 50)) {
+                var span = document.createElement('span');
+                span.style.display = 'none';
+            } else {
+                var span = document.createElement('span');
+            }
+
+            // Create a paragraph element
+            var pg = document.createElement('p');
+            pg.textContent = seat ? seat.Code : ''; // Set code or empty string
+
+            // Append paragraph to span
+            span.appendChild(pg);
+
+            // Append span to seatBox
+            seatBox.appendChild(span);
+
+            // Append seatBox to seatBoxDiv
+            seatBoxDiv.appendChild(seatBox);
+
+            // Append seatBoxDiv to sboxDiv
+            sboxDiv.appendChild(seatBoxDiv);
+        });
+        // Append sboxDiv to the main container
+        mainContainer.appendChild(sboxDiv);
+        var css = `
+        .seat_box_A,
+        .seat_box_F
+         {
+            padding-right: 25px;
+        }
+
+    .seat_box_B,
+    .seat_box_D,
+    .seat_box_G{
+        padding-left:25px;
+    }
+
+
+    
+    .selected {
+        
+        background-color: #50EB37;
+        color: black;
+    }
+   
+`;
+
+var style = document.createElement('style');
+style.type = 'text/css';
+if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+} else {
+    style.appendChild(document.createTextNode(css));
+}
+document.head.appendChild(style);
+    });
+});
+
+
+// ----------------------------------------passanger total count -----------------------------
+
+
+
+function getTotalGuestCount(guestCounts) {
+    let totalCount = 0;
+    for (const count of Object.values(guestCounts)) {
+        totalCount += parseInt(count);
+    }
+    return totalCount;
+}
+
+const totalGuestCount = getTotalGuestCount(guestCounts);
+console.log("Total Guest Count:", totalGuestCount);
+
+});
+
+    
+</script>
+
+
+
+
+<!-- -------------------------------------------------------second flight seat selection------------------------------------- -->
+<script>
+    
+   
+    var SguestDatas = document.getElementById('scond-flight-price-list').textContent;
+    var SjsonArrays = JSON.parse(SguestDatas);
+
+    // Count the length of the array
+    var arrayLengths2 = SjsonArrays.length;
+    console.log("Array Length:", arrayLengths2);
+    console.log(SjsonArrays);
+
+    var SpriceContainer1 = document.getElementById('priceContainer2');
+    var Scolors1 = ['#A0C2FF', '#A7A0FF', '#778899', '#ee82ee', '#ff6347','#5f9ea0', '#FFA0DB', '#A0F4FF', '#FFA1A1', '#FFE09F']; // Array of colors for priceContainer1
+
+    // Object to hold arrays
+    var PCData = {
+        prices2: [],
+        colors2: []
+    };
+
+    var newPrices = SjsonArrays[0]; // First set of prices
+    console.log("first object value",newPrices)
+    newPrices.forEach(function (item, index2) {
+        var newrowDiv = document.createElement('div');
+        newrowDiv.className = 'seat_fees d-flex align-items-center ';
+        newrowDiv.style.gap='31px'
+
+        var newseatBoxDiv = document.createElement('div');
+        newseatBoxDiv.className = 'mt-1 mb-0';
+        newseatBoxDiv.style.width='28px';
+        newseatBoxDiv.style.height='28px';
+        // Set the background color based on the index of the array
+        var Scolor = Scolors1[index2 % Scolors1.length]; // Get color based on index for priceContainer1
+
+        newseatBoxDiv.style.backgroundColor = Scolor;
+
+        var newpriceParagraph = document.createElement('p');
+        newpriceParagraph.className = 'sa_price mt-1 mb-0';
+        newpriceParagraph.textContent = 'INR ' + item.price;
+
+        // Push price and color into arrays
+        PCData.prices2.push(item.price);
+        PCData.colors2.push(Scolor);
+
+        // Append seatBoxDiv and priceParagraph to rowDiv
+        newrowDiv.appendChild(newseatBoxDiv);
+        newrowDiv.appendChild(newpriceParagraph);
+
+        SpriceContainer1.appendChild(newrowDiv);
+
+        // Log price and color for each item
+        console.log("Price: Rs", item.price, "Color:", Scolor);
+    });
+
+   
+    console.log("sec Prices:", PCData.prices2);
+    console.log("sec Colors:", PCData.colors2);
+    console.log("full color details :",PCData)
+
+
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var SguestData = document.getElementById('hiiddengustcount').value;
+        var jsonArrayas2 = JSON.parse(SguestData);
+        var SguestCounts = jsonArrayas2[0]; // Since your hidden input contains an array with a single object
+        console.log(SguestCounts);
+
+
+let selectedSeats2 = []; // Array to store selected seat codes
+let selectedSeatPrices2 = []; // Array to store selected seat prices
+let seat_code2 = []
+let push_color2 = []
+function secgeneratePassengerRows(SguestCounts, selectedSeats2) {
+    const tableBody = document.getElementById('sec_passengerTableBody');
+    tableBody.innerHTML = ''; // Clear existing rows
+
+    let seatIndex2 = 0; // Change const to let to allow reassignment
+
+    for (const [passengerType, count] of Object.entries(SguestCounts)) {
+        for (let i = 1; i <= parseInt(count); i++) {
+            const row = document.createElement('tr');
+            const seatCode2 = selectedSeats2[seatIndex2] ? selectedSeats2[seatIndex2].code : ''; // Get the selected seat code
+            const seatPrice2 = selectedSeats2[seatIndex2] ? selectedSeats2[seatIndex2].price : ''; // Get the selected seat price
+            
+            row.innerHTML = `
+                <td>${passengerType.toUpperCase()} ${i}</td>
+                <td>${seatCode2}</td>
+                <td>${seatPrice2}</td>
+            `;
+            tableBody.appendChild(row);
+            
+            seatIndex2++; // Increment seatIndex here to move to the next seat
+            // seat_code.push(seatCode);
+        }
+    }
+    
+}
+
+function sechandleClick(seatBox2, sectotalGuestCount,seat2,secpricedata2) {
+    var seatCode = seatBox2.querySelector('span p').textContent;
+    var seatPrice = null;
+//     var new_pricedata = pricedataa
+//   alert("newwwwwwwwwwwww",new_pricedata)
+    var index2 = selectedSeats2.findIndex(seat2 => seat2.code === seatCode);
+//     var seatCode = seat.Code;
+//     var seatPrice = seat.Price;
+//     console.log(seatCode,seatPrice)
+//     // var index = selectedSeats.indexOf(seatCode);
+//     var priceIndex = pricedataa.prices.indexOf(seatPrice);
+    if (index2 !== -1) {
+        // If the seat is already selected, remove it
+        selectedSeats2.splice(index2, 1);
+        seat_code2.splice(index2,1)
+        selectedSeatPrices2.splice(index2, 1); 
+        push_color2.splice(index2, 1)// Remove corresponding price
+        console.log("sec Removed Seat: Code - " + seatCode + ", Price - " + seatPrice);
+        seatBox2.classList.remove('selected');
+
+        var priceIndex2 = secpricedata2.prices2.indexOf(seat2.Price);
+        seatBox2.style.backgroundColor = secpricedata2.colors2[priceIndex2]; // Remove the selected class
+        
+    } else {
+        if (selectedSeats2.length >= sectotalGuestCount) {
+            console.log("Maximum seat limit reached.");
+            return; // Exit function if the limit is reached
+        }
+        
+        // Find the price for the selected seat
+        newjsonArray.forEach(function (seatArray2) {
+            seatArray2.forEach(function (seat2) {
+                if (seat2.Code === seatCode) {
+                    seatPrice = seat2.Price;
+                }
+            });
+        });
+
+        // Store the seat code and price
+        selectedSeats2.push({ code: seatCode, price: seatPrice });
+        seat_code2.push(seatCode)
+        selectedSeatPrices2.push(seatPrice); 
+        console.log("sec Stored Seat: Code - " + seatCode + ", Price - " + seatPrice);
+        seatBox2.style.backgroundColor='' // Remove the unselected class
+        seatBox2.classList.add('selected');// Add the selected class
+         // Change to desired color when selected
+        
+    }
+    console.log(seat_code2);
+    console.log(selectedSeats2);
+    console.log(selectedSeatPrices2);
+
+    
+    // Update the table with selected seats and prices
+    secgeneratePassengerRows(SguestCounts, selectedSeats2);
+}
+
+// Initial generation of table rows
+secgeneratePassengerRows(SguestCounts, selectedSeats2);
+
+    
+// -------------------------------------------- seat adult count based view this function ----------------------------- 
+    function addGuestElements(containerId, count, prefix) {
+            var container = document.getElementById(containerId);
+            
+            for (var i = 1; i <= count; i++) {
+                var element = document.createElement('p');
+                element.className='seat_psFT'
+                element.textContent = prefix + ' ' + i;
+                container.appendChild(element);
+            }
+        }
+    
+        function createMainDiv(parentId, containerId, className) {
+            var mainDiv = document.createElement('div');
+            mainDiv.className = className;
+            mainDiv.id = containerId;
+            document.getElementById(parentId).appendChild(mainDiv);
+            return mainDiv;
+        }
+    
+        function createGuestContainers(mainDiv, type, count) {
+            var guestDiv = document.createElement('div');
+            guestDiv.className = "d-flex seat_num_divFT";
+            guestDiv.id = type + "_countFT";
+            mainDiv.appendChild(guestDiv);
+            addGuestElements(guestDiv.id, count, type.charAt(0).toUpperCase() + type.slice(1));
+        }
+    
+        function createSeatCountDiv(parentId, containerId, count) {
+            var seatContainer = document.createElement('div');
+            seatContainer.className = "d-flex seat_num_divFT";
+            seatContainer.id = containerId;
+    
+            for (var i = 0; i < count; i++) {
+                var seatElement = document.createElement('p');
+                seatElement.className='seat_pFT'
+                seatElement.textContent = "---";
+                seatContainer.appendChild(seatElement);
+            }
+    
+            document.getElementById(parentId).appendChild(seatContainer);
+        }
+    
+        // Create main seat number container div
+        var seatNumberContainerDiv = document.createElement('div');
+        seatNumberContainerDiv.className = "col-md-8 justify-content-between";
+        seatNumberContainerDiv.id = "seat-number-containerFT";
+        document.getElementById("seat-main-div-two").appendChild(seatNumberContainerDiv);
+    
+        // Create col-md-6 divs for each category
+        var categories = ['adult', 'child', 'infant'];
+        categories.forEach(function(category) {
+            var categoryMainDiv = createMainDiv("seat-number-containerFT", category + "-main-divFT", "col-md-6");
+            createGuestContainers(categoryMainDiv, category, parseInt(SguestCounts[category]));
+            createSeatCountDiv(categoryMainDiv.id, category + "-seat-countFT", parseInt(SguestCounts[category]));
+        });
+
+        // Create the button
+        var buttonDiv = document.createElement('div');
+        buttonDiv.className = "col-md-4 mt-4 text-center";
+        var button = document.createElement('button');
+        button.type = "button";
+        button.className = "btn btn-primary seat-btn mr-2";
+        button.id = "open-popupFT";
+        button.innerHTML = 'Select Seat';
+        buttonDiv.appendChild(button);
+        document.getElementById("seat-main-div-two").appendChild(buttonDiv);
+
+        
+// ---------------------------Add your code to handle button click event (e.g., open a popup)
+        document.getElementById("open-popupFT").addEventListener("click", function() {
+        document.getElementById("popup-container_two").style.display = "block";
+        });
+        
+
+        document.getElementById("sec_close-popup").addEventListener("click", function() {
+        document.getElementById("popup-container_two").style.display = "none";
+        });
+
+    document.getElementById("sec_Continue-seatHome").addEventListener("click", function() {
+    // Your code here
+    
+    var selectSeatButton = document.getElementById("open-popupFT");
+    var seatnum = document.getElementsByClassName("seat_pFT");
+    selectSeatButton.innerHTML = "Change Seat";
+
+    
+    for (let i = 0; i < seat_code2.length; i++) {
+        seatnum[i].innerHTML = seat_code2[i]; // Display seat code
+    }
+    
+    document.getElementById("popup-container_two").style.display = "none";
+});
+
+// ----------------------------------seat mappling script code--------------------------------
+
+// Initialize selectedCount
+var selectedCount = 0;
+var newjsonArray; // Declare jsonArray variable outside event listener
+
+var continueButton2 = document.getElementById('open-popupFT');
+continueButton2.addEventListener('click', function () {
+    
+    var SguestData = document.getElementById('hidden-second-flight-seats').textContent;
+    newjsonArray = JSON.parse(SguestData); // Assign value to jsonArray
+    // console.log(jsonArrayas2)
+    seatnumbers=document.getElementById('flight-seatnumber-list').textContent
+    seatnoArrays = JSON.parse(seatnumbers);
+
+    var secpricedata2 = PCData; 
+    console.log("check formation :",secpricedata2);
+    var styleElement = document.createElement('style');
+    var mainContainers = document.getElementById('sec_firstFLight-details');
+    var newlists = seatnoArrays[1];
+    console.log(newlists);
+    // Clear the main container before adding new content
+    mainContainers.innerHTML = '';
+
+    newjsonArray.forEach(function (columnArray) {
+        // Create the sboxDiv element for each columnArray
+        var sboxDiv2 = document.createElement('div');
+        sboxDiv2.className = 'sbox_divFT d-flex ';
+
+        // Loop through each item in newlist
+        newlists.forEach(function (seatNo) {
+            // Find the seat object from columnArray based on seatNo
+            var seat2 = columnArray.find(function (seats) {
+                return seats.SeatNo === seatNo;
+            });
+
+            // Create the seatBoxDiv element
+            var seatBoxDiv2 = document.createElement('div');
+            if (seat2 && seat2.SeatTypevalue === 'A') {
+                seatBoxDiv2.className = `d-flex seat_box_${seat2.SeatNo}`;
+            } else {
+                seatBoxDiv2.className = 'd-flex seat_box_divFT';
+            }
+
+            // Create the seatBox element
+            var seatBox2 = document.createElement('div');
+            seatBox2.className = 'seat_boxFT';
+            // seatBox.textContent = seat ? seat.Code : ''; // Set code or empty string
+
+            // Apply styles or event listeners as needed
+            if (secpricedata2 && seat2) {
+                if (seat2.AvailablityType !== 3 && seat2.SeatType !== 0 && seat2.SeatType !== 50 ) { // Corrected spelling of AvailabilityType
+                    var priceIndex = secpricedata2.prices2.indexOf(seat2.Price);
+                    if (priceIndex !== -1) {
+                        seatBox2.style.backgroundColor = secpricedata2.colors2[priceIndex];
+                    }
+                    // Add click event listener to seatBox
+                    seatBox2.addEventListener("click", function() {
+                        sechandleClick(seatBox2, SguestCounts, seat2, secpricedata2);
+                    });
+                } else if (seat2.AvailablityType === 3 && seat2.SeatType !== 50) {
+                    seatBox2.style.backgroundColor = 'black'; 
+                    seatBox2.style.color = 'white';
+                }
+            }
+            if (seat2 &&(seat_code2.includes(seat2.Code))) {
+                seatBox2.style.backgroundColor = '#50EB37';
+            }
+
+            if (seat2 && (seat2.SeatType === 0 || seat2.SeatType === 50)) {
+                var spans = document.createElement('span');
+                spans.style.display = 'none';
+            } else {
+                var spans = document.createElement('span');
+            }
+
+            // Create a paragraph element
+            var pgs = document.createElement('p');
+            pgs.textContent = seat2 ? seat2.Code : ''; // Set code or empty string
+
+            // Append paragraph to span
+            spans.appendChild(pgs);
+
+            // Append span to seatBox
+            seatBox2.appendChild(spans);
+
+            // Append seatBox to seatBoxDiv
+            seatBoxDiv2.appendChild(seatBox2);
+
+            // Append seatBoxDiv to sboxDiv
+            sboxDiv2.appendChild(seatBoxDiv2);
+        });
+        // Append sboxDiv to the main container
+        mainContainers.appendChild(sboxDiv2);
+        var css = `
+        .seat_box_A,
+        .seat_box_F
+         {
+            padding-right: 25px;
+        }
+        
+    .seat_box_B,
+    .seat_box_D,
+    .seat_box_G{
+        padding-left:25px;
+    }
+
+
+
+    
+    .selected {
+        
+        background-color: #50EB37;
+        color: black;
+    }
+   
+`;
+
+var style = document.createElement('style');
+style.type = 'text/css';
+if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+} else {
+    style.appendChild(document.createTextNode(css));
+}
+document.head.appendChild(style);
+    });
+});
+
+
+  function SecgetTotalGuestCount(SguestCounts) {
+    let totalCount = 0;
+    for (const count of Object.values(SguestCounts)) {
+        totalCount += parseInt(count);
+    }
+    return totalCount;
+}
+
+const sectotalGuestCount = SecgetTotalGuestCount(SguestCounts);
+console.log("Total Guest Count:", sectotalGuestCount);
+
+});
+
+    
+</script>
+
+
+
+    
+</body>
+</html>

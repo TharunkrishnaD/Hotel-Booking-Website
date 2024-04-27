@@ -1,0 +1,3474 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fight Oneway</title>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- range -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/flight/oneway.css' %}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+    {% block content %}
+    <Header>
+        <div class="container-fluid header" id="head_div">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="navbar-brand" href="#" >
+                    <img src="{% static 'image/flight/Magnet logo.png' %}"alt="logo" width="79px" height="79px">
+                </a>
+                <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto mt-2"> <!-- mx-auto for centering -->
+                        <li class="nav-item">
+                            <a class="nav-link" href=" "><img src="{% static 'image/flight/flight w.svg' %}"  alt=""><p>Flights</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'hotel' %}"><img src="{% static 'image/flight/hotel w.svg' %}"  alt=""><p>Hotels</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/flight/holiday w.svg' %}" alt=""><p>Holidays</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/flight/island w.svg' %}" alt=""><p>Island</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/flight/visa w 1 icon.svg' %}" alt=""><p>Visa</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/flight/more w 1 icon.svg' %}" alt=""><p>More</p></a>
+                        </li>
+                    </ul>
+                    <div class="d-flex btn-log mb-2">
+                        <button class="btn btn-primary" id="log-btn">LOG IN</button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </Header>
+    <div id="flight_details" style="display: none;">{{ FLight_list }}</div>
+    <input type="hidden" id="Sort_F_details" name="Sort_F_details" value="">
+    <section class="container-fluid section_home mb-4">
+        <div id="home-sec">
+            <div id="trip" class="d-flex justify-content-between">
+                <div class="head">
+                    <p style="color: rgba(86, 86, 86, 1);">Where are you flying?</p>
+                </div>
+                <div id="trip-plan-btn" class="mt-2">
+                    <div class="nav nav-tabs text-end" id="myTab" role="tablist">
+                        <!-- <li class="nav-item" role="presentation"> -->
+                            <button class="nav-link show active  trip-btn" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true" autofocus >One Trip</button>
+                        <!-- </li> -->
+                        <!-- <li class="nav-item" role="presentation"> -->
+                            <button class="nav-link  trip-btn" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Round Trip</button>
+                        <!-- </li> -->
+                        <!-- <li class="nav-item" role="presentation"> -->
+                            <button class="nav-link  trip-btn" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Multi Trip</button>
+                        <!-- </li> -->
+                    </div>
+                </div>
+            </div>
+            <div id="input-sec" class="row"  >
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                        <form id="one-trip" method="GET" action="{% url 'one_trip' %}" onsubmit="return validateForm()">
+                            {% csrf_token %}
+                            <div class="row justify-content-between mb-2">
+                                <fieldset class="scheduler-border ot_fieldset col-md-2">
+                                    <legend class="ot_legend scheduler-border">{{fromAircode}}</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text"  id="from" placeholder="Enter The City" value="{{fromcityname}}"  style="font-size: 14px;" name="from-one-trip">
+                                            <input type="hidden" id="citycodeInput" name="from_city_code">
+                                            <input type="hidden" id="airportCodeInput" name="fromAirportCode">
+                                            <input type="hidden" id="aircityname" name="fromcityname">
+                                            <i class="icon-time"></i>
+                                            <script>
+                                                $(function () {
+                                                    $("#from").autocomplete({
+                                                        source: function (request, response) {
+                                                            $.ajax({
+                                                                url: "/search_destinations_flight/",
+                                                                dataType: "json",
+                                                                data: {
+                                                                    query: request.term
+                                                                },
+                                                                success: function (data) {
+                                                                    response(data.data);
+                                                                }
+                                                            });
+                                                        },
+                                                        minLength: 2,
+                                                        select: function (event, ui) {
+                                                            // Update the hidden input fields with selected values
+                                                            $("#citycodeInput").val(ui.item.cityCode);
+                                                            $("#airportCodeInput").val(ui.item.AirportCode);
+                                                            $("#aircityname").val(ui.item.CityName);
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border ot_fieldset col-md-2">
+                                    <legend class="scheduler-border ot_legend">{{toAircode}}</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" id="to" placeholder="Enter The City" value="{{tocityname}}"  style="font-size: 14px;" name="to-one-trip">
+                                            <input type="hidden" id="tocitycodeInput" name="to_city_code">
+                                            <input type="hidden" id="toairportCodeInput" name="toAirportCode">
+                                            <input type="hidden" id="toaircityname" name="tocityname">
+
+                                            <i class="icon-time"></i>
+                                            <script>
+                                                $(function () {
+                                                    $("#to").autocomplete({
+                                                        source: function (request, response) {
+                                                            $.ajax({
+                                                                url: "/search_destinations_flight/",
+                                                                dataType: "json",
+                                                                data: {
+                                                                    query: request.term
+                                                                },
+                                                                success: function (data) {
+                                                                    response(data.data);
+                                                                }
+                                                            });
+                                                        },
+                                                        minLength: 2,
+                                                        select: function (event, ui) {
+                                                            // Update the hidden input fields with selected values
+                                                            $("#tocitycodeInput").val(ui.item.cityCode);
+                                                            $("#toairportCodeInput").val(ui.item.AirportCode);
+                                                            $("#toaircityname").val(ui.item.CityName);
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border ot_fieldset col-md-2">
+                                    <legend class="scheduler-border ot_legend">Departure</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" class="check" data-date="" data-date-format="DD MMMM YYYY"  style="font-size: 14px;" name="check-in" id="check-in" >
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                    <script>
+                                        $(function () {
+                                           // Initialize Datepicker for the first date
+                                           $("#check-in").datepicker({
+                                           minDate: 0, // Minimum date is today
+                                           dateFormat: 'dd MM yy', // Set the date format
+                                           onSelect: function (dateText, inst) {
+                                               // Update the data-date attribute using moment.js
+                                               $(this).attr("data-date", moment(dateText, "DD MMMM YYYY").format($(this).attr("data-date-format")));
+                                
+                                               // Calculate the next date using moment.js
+                                               var nextDate = moment(dateText, "DD MMMM YYYY").add(1, 'days').format("DD MMMM YYYY");
+                                
+                                               // Set the default date for the second datepicker to one day after the selected date
+                                               $("#check-out").datepicker("option", "minDate", nextDate);
+                                               $("#check-out").datepicker("setDate", nextDate);
+                                           }
+                                           });
+                                
+                                           // Initialize Datepicker for the second date
+                                           $("#check-out").datepicker({
+                                           minDate: 1, // Minimum date is one day after today
+                                           dateFormat: 'dd MM yy', // Set the date format
+                                           });
+                                
+                                           // Set the default date to today for the first datepicker
+                                           $("#check-in").datepicker("setDate", new Date());
+                                
+                                           // Set the default date for the second datepicker to one day after today
+                                           var nextDefaultDate = moment().add(1, 'days').format("DD MMMM YYYY");
+                                           $("#check-out").val(nextDefaultDate);
+                                       });
+                                
+                                   </script>
+                                </fieldset>
+                                <fieldset class="scheduler-border ot_fieldset col-md-1" id="return">
+                                    <legend class="scheduler-border ot_legend" >Return</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" class="check" data-date="" data-date-format="DD MMMM YYYY" value="Enter The Date"  style="font-size: 14px;"  id="retrun-date-onetrip"  disabled>
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border ot_fieldset col-md-1">
+                                    <legend class="scheduler-border ot_legend">Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <select class="f_types" name= "classes">
+                                                <option selected value="1">All</option>
+                                                <option value="2">Econamy</option>
+                                                <option value="3">PremiumEconomy</option>
+                                                <option value="4">Business</option>
+                                                <option value="5">PremiumBusiness</option>
+                                                <option value="6">First</option>
+                                            </select>
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border ot_fieldset col-md-2">
+                                    <legend class="scheduler-border ot_legend">Travellers & Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" value="" readonly id="pasInput" style="font-size: 14px;"  onclick="showFlightForm()">
+                                            <input type="hidden" id="NoOfPas" value="{{NoOfAdults}}">
+                                            <input type="hidden" id="NoOfChild" value="{{NoOfChild}}">
+                                            <input type="hidden" id="NoOfInfant" value="{{NoOfInfant}}">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", function() {
+                                        var NoOfAdults = document.getElementById("NoOfAdults");
+                                        var NoOfChild = document.getElementById("NoOfChild");
+                                        var NoOfInfant = document.getElementById("NoOfInfant");
+                                        document.getElementById("Adult_inp").value = NoOfAdults.value;
+                                        document.getElementById("Child_inp").value = NoOfChild.value;
+                                        document.getElementById("Infant_inp").value = NoOfInfant.value;
+                                
+                                        document.getElementById("NoOfPas").value = NoOfAdults.value + " Adult, " + NoOfChild.value + " Child, " + NoOfInfant.value + " Infant";
+                                    });
+                                    
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                                // Get select elements
+                                                const adultSelect = document.getElementById('Adult_inp');
+                                                const childSelect = document.getElementById('Child_inp');
+                                                const infantSelect = document.getElementById('Infant_inp');
+                                        
+                                                // Get input element
+                                                const pasInput = document.getElementById('NoOfPas');
+                                        
+                                                // Update input value function
+                                                function updateInputValue() {
+                                                    const adults = adultSelect.value;
+                                                    const children = childSelect.value;
+                                                    const infants = infantSelect.value;
+                                                    pasInput.value = `${adults} Adults, ${children} Child, ${infants} Infant`;
+                                                }
+                                        
+                                                // Listen for changes in select elements
+                                                adultSelect.addEventListener('change', updateInputValue);
+                                                childSelect.addEventListener('change', updateInputValue);
+                                                infantSelect.addEventListener('change', updateInputValue);
+                                        
+                                                // Initial update
+                                                updateInputValue();
+                                            });
+            
+                                    
+                                        function hideFlightForm() {
+                                            var flightForm = document.getElementById("flight_inp_form")
+                                            if(flightForm.style.display === "block") {
+                                                        flightForm.style.display = "none";
+                                                    } else {
+                                                        flightForm.style.display = "block"
+                                                    }
+                                        }
+            
+                                    function showFlightForm() {
+                                        var flightForm = document.getElementById("flight_inp_form")
+                                        if(flightForm.style.display === "none") {
+                                            flightForm.style.display = "block";
+                                            console.log("show")
+                                        } else {
+                                            flightForm.style.display = "none"
+                                        }
+                                    }
+                                </script>
+                                
+                            </div>
+                            <div class="d-flex justify-content-between" id="flight_radio_div">
+                                <div class="col-md-9 d-flex radio-inp">
+                                    <p>Special Fares (Optional):</p>
+                                    <input type="radio" id="regular" name="fav_language" value="Regular" checked>
+                                    <label for="Regular Fares">Regular Fares</label>
+                                    <input type="radio" id="Student" name="fav_language" value="Student">
+                                    <label for="Student Fares">Student Fares</label>
+                                    <input type="radio" id="Senior" name="fav_language" value="Senior">
+                                    <label for="Senior citizen Fares">Senior Citizen Fares</label>
+                                </div>
+                                <div  class="col-md-3 justify-content-between d-flex">
+                                    <div class="form-check form-switch">
+                                        <label class="form-check-label df_text" for="flexSwitchCheckDefault">Direct Flight</label>
+                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                                        <input type="hidden" id="resultValue" value="" name="resultdir">
+                                    </div>
+                                    <script>
+                                        // JavaScript code to handle checkbox changes
+                                        var checkbox = document.getElementById("flexSwitchCheckDefault");
+                                        var resultInput = document.getElementById("resultValue");
+                                    
+                                        function updateResult() {
+                                            var formattedValue = checkbox.checked ? "True" : "False";
+                                            resultInput.value = formattedValue;
+                                            console.log("DirectFlight is now: " + formattedValue);
+                                        }
+                                    
+                                        // Add an event listener to detect changes
+                                        checkbox.addEventListener("change", updateResult);
+                                    
+                                        // Initial update
+                                        updateResult();
+                                    </script>
+                                    <div class="text-end">
+                                         <button type="submit" class="btn btn-primary search-btn" id="btn-search" >Modify Flight</button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div id="flight_inp_form" class="fi_form">
+                                
+                                <div class="inp-form">
+                                    <div class="d-flex">
+                                        <div class="col_1">
+                                            <label for="Adults">Adults</label>
+                                            <select name="Adults"  id="Adult_inp">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                            </select>
+                                        </div>
+                                        <div class="col_1">
+                                            <label for="Child">Child</label>
+                                            <select name="Childs"  id="Child_inp">
+                                                <option value="0">Select</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                            </select>
+                                        </div>
+                                        <div class="col_1">
+                                            <label for="Infant">Infant</label>
+                                            <select name="Infants"  id="Infant_inp">
+                                                <option value="0">Select</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                            </select>
+                                        </div>
+                                        <div class="text-end" style="margin-top: -10px;">
+                                            <button type="button" onclick="hideFlightForm()" class="close-btn"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                           
+                            
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    // Get select elements
+                                    const adultSelect = document.getElementById('Adult_inp');
+                                    const childSelect = document.getElementById('Child_inp');
+                                    const infantSelect = document.getElementById('Infant_inp');
+                            
+                                    // Get input element
+                                    const pasInput = document.getElementById('pasInput');
+                            
+                                    // Update input value function
+                                    function updateInputValue() {
+                                        const adults = adultSelect.value;
+                                        const children = childSelect.value;
+                                        const infants = infantSelect.value;
+                                        pasInput.value = `${adults} Adults, ${children} Child, ${infants} Infant`;
+                                    }
+                            
+                                    // Listen for changes in select elements
+                                    adultSelect.addEventListener('change', updateInputValue);
+                                    childSelect.addEventListener('change', updateInputValue);
+                                    infantSelect.addEventListener('change', updateInputValue);
+                            
+                                    // Initial update
+                                    updateInputValue();
+                                });
+                            </script>
+                            
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                        <form id="round-trip" method="GET" action="{% url 'round_trip'%}">
+                            {% csrf_token %}
+                           <div class="row  justify-content-between">
+                                <fieldset class="scheduler-border col-md-2">
+                                    <legend class="scheduler-border">From</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text"  id="round-from" placeholder="Enter The City" style="font-size: 14px;" name="from-round-trip">
+                                            <input type="hidden" id="FcitycodeInput" name="from_city_code">
+                                            <input type="hidden" id="FairportCodeInput" name="from_airport_code">
+                                            <input type="hidden" id="Fcityname" name="cityname-from">
+                                            <i class="icon-time"></i>
+                                            <script>
+                                                $(function () {
+                                                    $("#round-from").autocomplete({
+                                                        source: function (request, response) {
+                                                            $.ajax({
+                                                                url: "/search_destinations_flight/",
+                                                                dataType: "json",
+                                                                data: {
+                                                                    query: request.term
+                                                                },
+                                                                success: function (data) {
+                                                                    response(data.data);
+                                                                }
+                                                            });
+                                                        },
+                                                        minLength: 2,
+                                                        select: function (event, ui) {
+                                                            // Update the hidden input fields with selected values
+                                                            $("#FcitycodeInput").val(ui.item.cityCode);
+                                                            $("#FairportCodeInput").val(ui.item.AirportCode);
+                                                            $("#Fcityname").val(ui.item.CityName);
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-2">
+                                    <legend class="scheduler-border">To</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" id="round-to" placeholder="Enter The City" value="{{tocityname}}" style="font-size: 14px;" name="to-round-trip">
+                                            <input type="hidden" id="tcitycodeInput" name="to_city_code">
+                                            <input type="hidden" id="tairportCodeInput" name="to_airport_code">
+                                            <input type="hidden" id="tcitynmae" name="cityname-to">
+                                            <i class="icon-time"></i>
+                                            <script>
+                                                $(function () {
+                                                    $("#round-to").autocomplete({
+                                                        source: function (request, response) {
+                                                            $.ajax({
+                                                                url: "/search_destinations_flight/",
+                                                                dataType: "json",
+                                                                data: {
+                                                                    query: request.term
+                                                                },
+                                                                success: function (data) {
+                                                                    response(data.data);
+                                                                }
+                                                            });
+                                                        },
+                                                        minLength: 2,
+                                                        select: function (event, ui) {
+                                                            // Update the hidden input fields with selected values
+                                                            $("#tcitycodeInput").val(ui.item.cityCode);
+                                                            $("#tairportCodeInput").val(ui.item.AirportCode);
+                                                            $("#tcitynmae").val(ui.item.CityName);
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-1">
+                                    <legend class="scheduler-border">Departure</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <!-- <input type="date" id="checkOutDate"  class="check" data-date="" data-date-format="DD MMMM YYYY" value="2023-12-23" style="font-size: 14px;"> -->
+                                            <input type="text" class="check rtcheck-in" data-date="" data-date-format="DD MMMM YYYY"  style="font-size: 14px;"  name="start-date-roundtrip">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-1 mb-3">
+                                    <legend class="scheduler-border">Return</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <!-- <input type="date" id="checkOutDate"  class="check" data-date="" data-date-format="DD MMMM YYYY" value="2023-12-23" style="font-size: 14px;" name="return-date-roundtrip"> -->
+                                            <input type="text" class="check rtcheck-out" data-date="" data-date-format="DD MMMM YYYY" style="font-size: 14px;" name="retrun-date-onetrip" >
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                
+    <!-- DATE FUNCTIONS -->
+    <script>
+        $(function () {
+           // Initialize Datepicker for the first date
+           $(".rtcheck-in").datepicker({
+           minDate: 0, // Minimum date is today
+           dateFormat: 'dd MM yy', // Set the date format
+           onSelect: function (dateText, inst) {
+               // Update the data-date attribute using moment.js
+               $(this).attr("data-date", moment(dateText, "DD MMMM YYYY").format($(this).attr("data-date-format")));
+
+               // Calculate the next date using moment.js
+               var nextDate = moment(dateText, "DD MMMM YYYY").add(1, 'days').format("DD MMMM YYYY");
+
+               // Set the default date for the second datepicker to one day after the selected date
+               $(".rtcheck-out").datepicker("option", "minDate", nextDate);
+               $(".rtcheck-out").datepicker("setDate", nextDate);
+           }
+           });
+
+           // Initialize Datepicker for the second date
+           $(".rtcheck-out").datepicker({
+           minDate: 1, // Minimum date is one day after today
+           dateFormat: 'dd MM yy', // Set the date format
+           });
+
+           // Set the default date to today for the first datepicker
+           $(".rtcheck-in").datepicker("setDate", new Date());
+
+           // Set the default date for the second datepicker to one day after today
+           var nextDefaultDate = moment().add(1, 'days').format("DD MMMM YYYY");
+           $(".rtcheck-out").val(nextDefaultDate);
+       });
+
+   </script>
+
+                                <fieldset class="scheduler-border col-md-2 mb-3">
+                                    <legend class="scheduler-border">Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <select style="border: none;padding: 2px 3px;" name= "classes" class="f_types">
+                                                <option value="All">All</option>
+                                                <option selected value="Econamy">Econamy</option>
+                                                <option value="Business">Business</option>
+                                                <option value="First">First</option>
+                                            </select>
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-2 mb-3">
+                                    <legend class="scheduler-border">Travellers & Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" value="2 Adults, 1 Child" id="room" style="font-size: 14px;" onclick="showFlightForm2()">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="d-flex mt-2" id="rt_radio_div">
+                                <div class="col-md-9 d-flex radio-inp">
+                                    <p>Special Fares (Optional):</p>
+                                    <input type="radio" id="regular" name="fav_language" value="regular" checked>
+                                    <label for="Regular Fares">Regular Fares</label>
+                                    <input type="radio" id="Student" name="fav_language" value="regular">
+                                    <label for="Student Fares">Student Fares</label>
+                                    <input type="radio" id="Senior" name="fav_language" value="regular">
+                                    <label for="Senior citizen Fares">Senior Citizen Fares</label>
+                                </div>
+                                <div class="col-md-3 text-end">
+                                    <button class="btn btn-primary search-btn2" >Search Flight</button>
+                                </div>
+                            </div>
+                            <div class="inp-form fi_form" id="flight_inp_form2" >
+                                <div class="d-flex">
+                                    <div class="col_1">
+                                        <label for="Adults">Adults</label>
+                                        <select name="Adults1" id="Adult_inp">
+                                            <option value="0">Select</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                        </select>
+                                    </div>
+                                    <div class="col_1"> 
+                                        <label for="Child">Child</label>
+                                        <select name="Child1" id="Child_inp">
+                                            <option value="0">Select</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                        </select>
+                                    </div>
+                                    <div class="col_1">
+                                        <label for="Infant">Infant</label>
+                                        <select name="Infant1" id="Adult_inp">
+                                            <option value="0">Select</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                        </select>
+                                    </div>
+                                </div>
+                           </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                            <form id="multi-trip" method="get" >
+                                <div class="row" id="multitrip-container">
+                                    <div class="row">
+                                        <fieldset class="scheduler-border col-md-3">
+                                            <legend class="scheduler-border">From</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <input type="text"  id="multi-from" placeholder="Enter The City" style="font-size: 14px;" name="from-multi-trip">
+                                                    <input type="hidden" id="citycodeInput" name="to_city_code">
+                                                    <input type="hidden" id="airportCodeInput" name="to_airport_code">
+                                                    <i class="icon-time"></i>
+                                                    <script>
+                                                        $(function () {
+                                                            $("#multi-from").autocomplete({
+                                                                source: function (request, response) {
+                                                                    $.ajax({
+                                                                        url: "/search_destinations_flight/",
+                                                                        dataType: "json",
+                                                                        data: {
+                                                                            query: request.term
+                                                                        },
+                                                                        success: function (data) {
+                                                                            response(data.data);
+                                                                        }
+                                                                    });
+                                                                },
+                                                                minLength: 2,
+                                                                select: function (event, ui) {
+                                                                    // Update the hidden input fields with selected values
+                                                                    $("#citycodeInput").val(ui.item.cityCode);
+                                                                    $("#airportCodeInput").val(ui.item.AirportCode);
+                                                                }
+                                                            });
+                                                        });
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="scheduler-border col-md-2">
+                                            <legend class="scheduler-border">To</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <input type="text" id="multi-to" placeholder="Enter The City" style="font-size: 14px;" name="to-multi-trip">
+                                                    <input type="hidden" id="citycodeInput" name="to_city_code">
+                                                    <input type="hidden" id="airportCodeInput" name="to_airport_code">
+                                                    <i class="icon-time"></i>
+                                                    <script>
+                                                        $(function () {
+                                                            $("#multi-to").autocomplete({
+                                                                source: function (request, response) {
+                                                                    $.ajax({
+                                                                        url: "/search_destinations_flight/",
+                                                                        dataType: "json",
+                                                                        data: {
+                                                                            query: request.term
+                                                                        },
+                                                                        success: function (data) {
+                                                                            response(data.data);
+                                                                        }
+                                                                    });
+                                                                },
+                                                                minLength: 2,
+                                                                select: function (event, ui) {
+                                                                    // Update the hidden input fields with selected values
+                                                                    $("#citycodeInput").val(ui.item.cityCode);
+                                                                    $("#airportCodeInput").val(ui.item.AirportCode);
+                                                                }
+                                                            });
+                                                        });
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="scheduler-border col-md-2">
+                                            <legend class="scheduler-border">Departure</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <input type="date" id="checkOutDate"  class="check" data-date="" data-date-format="DD MMMM YYYY" value="2023-12-23" style="font-size: 14px;" name="start-multi-trip">
+                                                    <i class="icon-time"></i>
+                                                    
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="scheduler-border col-md-1 mb-3">
+                                            <legend class="scheduler-border">Class</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <select style="border: none;padding: 2px 3px;" name= "classes"  class="f_types">
+                                                        <option selected value="All">All</option>
+                                                        <option value="Econamy">Econamy</option>
+                                                        <option value="Business">Business</option>
+                                                        <option value="First">First</option>
+                                                    </select>
+                                                    <i class="icon-time"></i>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="scheduler-border col-md-3 mb-3">
+                                            <legend class="scheduler-border">Travellers & Class</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <input type="text" value="2 Adults, 1 Child"  id="room" style="font-size: 14px;" onclick="showForm()">
+                                                    <i class="icon-time"></i>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="row">
+                                        <fieldset class="scheduler-border col-md-3">
+                                            <legend class="scheduler-border">From</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <input type="text"  id="from-multi" placeholder="Enter The City" style="font-size: 14px;">
+                                                    <i class="icon-time"></i>
+                                                    <script>
+                                                        $(function () {
+                                                            $("#from-multi").autocomplete({
+                                                                source: function (request, response) {
+                                                                    $.ajax({
+                                                                        url: "/search_destinations_flight/",
+                                                                        dataType: "json",
+                                                                        data: {
+                                                                            query: request.term
+                                                                        },
+                                                                        success: function (data) {
+                                                                            response(data.data);
+                                                                        }
+                                                                    });
+                                                                },
+                                                                minLength: 2,
+                                                                select: function (event, ui) {
+                                                                    // Update the hidden input fields with selected values
+                                                                    $("#citycodeInput").val(ui.item.cityCode);
+                                                                    $("#airportCodeInput").val(ui.item.AirportCode);
+                                                                }
+                                                            });
+                                                        });
+                                                    </script>
+                                                    
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="scheduler-border col-md-2">
+                                            <legend class="scheduler-border">To</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <input type="text" id="to-multi" placeholder="Enter The City" style="font-size: 14px;">
+                                                    <i class="icon-time"></i>
+                                                    <script>
+                                                        $(function () {
+                                                            $("#to-multi").autocomplete({
+                                                                source: function (request, response) {
+                                                                    $.ajax({
+                                                                        url: "/search_destinations_flight/",
+                                                                        dataType: "json",
+                                                                        data: {
+                                                                            query: request.term
+                                                                        },
+                                                                        success: function (data) {
+                                                                            response(data.data);
+                                                                        }
+                                                                    });
+                                                                },
+                                                                minLength: 2,
+                                                                select: function (event, ui) {
+                                                                    // Update the hidden input fields with selected values
+                                                                    $("#citycodeInput").val(ui.item.cityCode);
+                                                                    $("#airportCodeInput").val(ui.item.AirportCode);
+                                                                }
+                                                            });
+                                                        });
+                                                    </script>
+
+                                                    </div>
+                                                </div>
+                                        </fieldset>
+                                        <fieldset class="scheduler-border col-md-2">
+                                            <legend class="scheduler-border">Departure</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <input type="date" id="checkOutDate"  class="check" data-date="" data-date-format="DD MMMM YYYY" value="2023-12-23" style="font-size: 14px;">
+                                                    <i class="icon-time"></i>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="scheduler-border col-md-1 mb-3">
+                                            <legend class="scheduler-border">Class</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <select style="border: none;padding: 2px 3px;" name= "classes"  class="f_types">
+                                                        <option selected value="All">All</option>
+                                                        <option value="Econamy">Econamy</option>
+                                                        <option value="Business">Business</option>
+                                                        <option value="First">First</option>
+                                                    </select>
+                                                    <i class="icon-time"></i>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="scheduler-border col-md-3 mb-3">
+                                            <legend class="scheduler-border">Travellers & Class</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <input type="text" value="2 Adults, 1 Child" id="room" style="font-size: 14px;" onclick="showForm2()">
+                                                    <i class="icon-time"></i>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="row" class="multitrip-container" id="multitrip-add" style="display:none;">
+                                    </div>
+                                </div>
+                                <div id="ar-btn">
+                                    <button type="button" class="btn btn-primary" onclick="addFlight()">Add Flight</button>
+                                    <button  class="btn btn-primary">Search Flight</button>
+                                </div>
+                                <div class="col-md-12 d-flex">
+                                    <div class="col-md-8 d-flex radio-inp">
+                                        <p>Special Fares (Optional):</p>
+                                        <input type="radio" id="regular" name="fav_language" value="regular" checked>
+                                        <label for="Regular Fares">Regular Fares</label>
+                                        <input type="radio" id="Student" name="fav_language" value="regular">
+                                        <label for="Student Fares">Student Fares</label>
+                                        <input type="radio" id="Senior" name="fav_language" value="regular">
+                                        <label for="Senior citizen Fares">Senior Citizen Fares</label>
+                                    </div>
+                                </div>
+                            </form>     
+                        </div> 
+                </div>
+                <!-- <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                        <div class="row" id="multitrip-container">
+                            <form id="multi-trip" method="GET" action="{% url 'multitrip' %}" >
+                                {% csrf_token %}
+                                <div class="row">
+                                    <fieldset class="scheduler-border col-md-3">
+                                        <legend class="scheduler-border">From</legend>
+                                        <div class="control-group">
+                                            <div class="controls bootstrap-timepicker">
+                                                <input type="text"  id="multi-from" placeholder="Enter The City" style="font-size: 14px;" name="from-multi-trip">
+                                                <input type="hidden" id="citycodeInput" name="to_city_code">
+                                                <input type="hidden" id="airportCodeInput" name="to_airport_code">
+                                                <i class="icon-time"></i>
+                                                <script>
+                                                    $(function () {
+                                                        $("#multi-to").autocomplete({
+                                                            source: function (request, response) {
+                                                                $.ajax({
+                                                                    url: "/search_destinations_flight/",
+                                                                    dataType: "json",
+                                                                    data: {
+                                                                        query: request.term
+                                                                    },
+                                                                    success: function (data) {
+                                                                        response(data.data);
+                                                                    }
+                                                                });
+                                                            },
+                                                            minLength: 2,
+                                                            select: function (event, ui) {
+                                                                // Update the hidden input fields with selected values
+                                                                $("#citycodeInput").val(ui.item.cityCode);
+                                                                $("#airportCodeInput").val(ui.item.AirportCode);
+                                                            }
+                                                        });
+                                                    });
+                                                });
+                                            </script>
+                                </div>
+                            </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-2">
+                                    <legend class="scheduler-border">To</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" id="multi-to" placeholder="Enter The City" style="font-size: 14px;" name="to-multi-trip">
+                                            <input type="hidden" id="citycodeInput" name="to_city_code">
+                                            <input type="hidden" id="airportCodeInput" name="to_airport_code">
+                                            <i class="icon-time"></i>
+                                            <script>
+                                                $(function () {
+                                                    $("#multi-to").autocomplete({
+                                                        source: function (request, response) {
+                                                            $.ajax({
+                                                                url: "/search_destinations_flight/",
+                                                                dataType: "json",
+                                                                data: {
+                                                                    query: request.term
+                                                                },
+                                                                success: function (data) {
+                                                                    response(data.data);
+                                                                }
+                                                            });
+                                                        },
+                                                        minLength: 2,
+                                                        select: function (event, ui) {
+                                                            // Update the hidden input fields with selected values
+                                                            $("#citycodeInput").val(ui.item.cityCode);
+                                                            $("#airportCodeInput").val(ui.item.AirportCode);
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-2">
+                                    <legend class="scheduler-border">Departure</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="date" id="checkOutDate"  class="check" data-date="" data-date-format="DD MMMM YYYY" value="2023-12-23" style="font-size: 14px;" name="start-multi-trip">
+                                            <i class="icon-time"></i>
+                                            
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-1 mb-3">
+                                    <legend class="scheduler-border">Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <select style="border: none;padding: 2px 3px;" name= "classes">
+                                                <option value="All">All</option>
+                                                <option selected value="Econamy">Econamy</option>
+                                                <option value="Business">Business</option>
+                                                <option value="First">First</option>
+                                            </select>
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-3 mb-3">
+                                    <legend class="scheduler-border">Travellers & Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" placeholder="1 Room & 0 Adults" id="room" style="font-size: 14px;" onclick="showForm()">
+                                            <input type="hidden" id="roomInfoInput" name="roomInfo">
+                                            <input type="hidden" id="totalRoomInfoInput" name="totalRoomInfo">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="row">
+                                <fieldset class="scheduler-border col-md-3">
+                                    <legend class="scheduler-border">From</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text"  id="from-multi" placeholder="Enter The City" style="font-size: 14px;">
+                                            <i class="icon-time"></i>
+                                            <script>
+                                                $(function () {
+                                                    $("#from-multi").autocomplete({
+                                                        source: function (request, response) {
+                                                            $.ajax({
+                                                                url: "/search_destinations_flight/",
+                                                                dataType: "json",
+                                                                data: {
+                                                                    query: request.term
+                                                                },
+                                                                success: function (data) {
+                                                                    response(data.data);
+                                                                }
+                                                            });
+                                                        },
+                                                        minLength: 2,
+                                                        select: function (event, ui) {
+                                                            // Update the hidden input fields with selected values
+                                                            $("#citycodeInput").val(ui.item.cityCode);
+                                                            $("#airportCodeInput").val(ui.item.AirportCode);
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+                                            
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-2">
+                                    <legend class="scheduler-border">To</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" id="to-multi" placeholder="Enter The City" style="font-size: 14px;">
+                                            <i class="icon-time"></i>
+                                            <script>
+                                                $(function () {
+                                                    $("#to-multi").autocomplete({
+                                                        source: function (request, response) {
+                                                            $.ajax({
+                                                                url: "/search_destinations_flight/",
+                                                                dataType: "json",
+                                                                data: {
+                                                                    query: request.term
+                                                                },
+                                                                success: function (data) {
+                                                                    response(data.data);
+                                                                }
+                                                            });
+                                                        },
+                                                        minLength: 2,
+                                                        select: function (event, ui) {
+                                                            // Update the hidden input fields with selected values
+                                                            $("#citycodeInput").val(ui.item.cityCode);
+                                                            $("#airportCodeInput").val(ui.item.AirportCode);
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+
+                                            </div>
+                                        </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-2">
+                                    <legend class="scheduler-border">Departure</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="date" id="checkOutDate"  class="check" data-date="" data-date-format="DD MMMM YYYY" value="2023-12-23" style="font-size: 14px;">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-1 mb-3">
+                                    <legend class="scheduler-border">Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <select style="border: none;padding: 2px 3px;" name= "classes">
+                                                <option value="All">All</option>
+                                                <option selected value="Econamy">Econamy</option>
+                                                <option value="Business">Business</option>
+                                                <option value="First">First</option>
+                                            </select>
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-3 mb-3">
+                                    <legend class="scheduler-border">Travellers & Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" placeholder="1 Room & 0 Adults" id="room" style="font-size: 14px;" onclick="showForm2()">
+                                            <input type="hidden" id="roomInfoInput" name="roomInfo">
+                                            <input type="hidden" id="totalRoomInfoInput" name="totalRoomInfo">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="row" class="multitrip-container" id="multitrip-add" style="display:none;">
+                            </div>
+                        </div>
+                            <div id="ar-btn">
+                                <button type="button" class="btn btn-primary" onclick="addFlight()">Add Flight</button>
+                                <button  class="btn btn-primary">Search Flight</button>
+                            </div>
+                            <div class="col-md-12 d-flex">
+                                <div class="col-md-8 d-flex radio-inp">
+                                    <p>Special Fares (Optional):</p>
+                                    <input type="radio" id="regular" name="fav_language" value="regular" checked>
+                                    <label for="Regular Fares">Regular Fares</label>
+                                    <input type="radio" id="Student" name="fav_language" value="regular">
+                                    <label for="Student Fares">Student Fares</label>
+                                    <input type="radio" id="Senior" name="fav_language" value="regular">
+                                    <label for="Senior citizen Fares">Senior Citizen Fares</label>
+                                </div>
+                            </div>
+                        </form>     
+                    </div> 
+                </div>
+            </div>    
+        </div>
+    </div>
+</section>
+
+<footer class="bg-dark text-white">
+    <div class="container">
+        <div class="row align-items-center footer">
+            <div class="col-md-2 footer-img">
+                <img src="{% static 'image/booking/Magnet logo.png' %}" alt="VF Logo" class="img-fluid">
+            </div>
+            <div class="col-md-2 footer-icons">
+                <img src="{% static 'image/booking/facebook Icons.svg' %}" alt="Facebook Icon" class="footer-icon">
+                <img src="{% static 'image/booking/x Icons.svg' %}" alt="X Icon" class="footer-icon">
+                <img src="{% static 'image/booking/youtube Icons.svg' %}"  alt="YouTube Icon" class="footer-icon">
+                <img src="{% static 'image/booking/insta Icons.svg' %}" alt="Instagram Icon" class="footer-icon">
+                <img src="{% static 'image/booking/linked in Icons.svg' %}" alt="LinkedIn Icon" class="footer-icon">
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function addFlight() {
+    var container = document.getElementById("multitrip-container");
+    var newFlight = document.createElement("div");
+    newFlight.className = "multitrip-container-item";
+    newFlight.style.display = "none";
+
+    newFlight.innerHTML = `<div class="d-flex">
+                                <fieldset class="scheduler-border col-md-3">
+                                    <legend class="scheduler-border">From</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text"  id="from" placeholder="Enter The City" style="font-size: 14px;">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-2">
+                                    <legend class="scheduler-border">To</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" id="to" placeholder="Enter The City" style="font-size: 14px;">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-2">
+                                    <legend class="scheduler-border">Departure</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="date" id="checkOutDate"  class="check" data-date="" data-date-format="DD MMMM YYYY" value="2023-12-23" style="font-size: 14px;">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-1 mb-3">
+                                    <legend class="scheduler-border">Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <select style="border: none;padding: 2px 3px;" name= "classes">
+                                                <option value="All">All</option>
+                                                <option selected value="Econamy">Econamy</option>
+                                                <option value="Business">Business</option>
+                                                <option value="First">First</option>
+                                            </select>
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-3 mb-3">
+                                    <legend class="scheduler-border">Travellers & Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" placeholder="1 Room & 0 Adults" id="room" style="font-size: 14px;" onclick="showForm2()">
+                                            <input type="hidden" id="roomInfoInput" name="roomInfo">
+                                            <input type="hidden" id="totalRoomInfoInput" name="totalRoomInfo">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div id="flight_inp_form4" >
+                                    <div class="inp-form" >
+                                        <div class="d-flex">
+                                            <div class="col_1">
+                                                <label for="Adults">Adults</label>
+                                                <select name="Adults" id="Adult_inp">
+                                                    <option value="0">Select</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                </select>
+                                            </div>
+                                            <div class="col_1"> 
+                                                <label for="Child">Child</label>
+                                                <select name="Childs" id="Child_inp">
+                                                    <option value="0">Select</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                </select>
+                                            </div>
+                                            <div class="col_1">
+                                                <label for="Infant">Infant</label>
+                                                <select name="Infants" id="Adult_inp">
+                                                    <option value="0">Select</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="ar-btn">
+                            <button type="button" class="btn btn-primary" onclick="addFlight()">Add Flight</button>
+                            <button  class="btn btn-primary">Search Flight</button>
+                        </div>
+                        <div class="col-md-12 d-flex">
+                            <div class="col-md-8 d-flex radio-inp">
+                                <p>Special Fares (Optional):</p>
+                                <input type="radio" id="regular" name="fav_language" value="regular">
+                                <label for="Regular Fares">Regular Fares</label>
+                                <input type="radio" id="Student" name="fav_language" value="regular">
+                                <label for="Student Fares">Student Fares</label>
+                                <input type="radio" id="Senior" name="fav_language" value="regular">
+                                <label for="Senior citizen Fares">Senior Citizen Fares</label>
+                            </div>
+                        </div>
+                        `; 
+                        
+                    </form>     
+                </div> 
+            </div> -->
+            </div>    
+        </div> 
+    </section>
+    <style>
+         input {
+        position: relative;
+        width: 100%; 
+        height: 30px;
+        border-radius: 6px;
+        border: 1px solid rgba(128, 128, 128, 0.5);
+        border: none;
+        outline: none;
+        padding: 2px;
+        /* margin-top: -20px; */
+    }
+
+    
+    .radio-inp input {
+        width: 15px;
+        height: 15px;
+        margin: 5px 0px 5px 10px;
+    }
+
+    .radio-inp label {
+        font-size: 14px;
+        margin: 2px 0px 5px 10px;
+        color: rgba(102, 112, 133, 1);
+    }
+
+    .radio-inp p {
+        color: rgba(86, 86, 86, 1);
+        font-size: 14px;
+    }
+
+    .section_home {
+        background: white;
+        position: sticky;
+        top: 63px;
+        z-index: 999;
+    }
+
+    #home-sec {
+    margin:4px 60px;
+    border-radius: 10px;
+    background:  rgba(255, 255, 255, 1);
+    box-shadow: 5px 5px 12px grey;
+    }
+
+    #input-sec {
+    margin: 4px 10px; 
+    }
+
+    .head {
+    font-size: 20px;
+    padding: 6px 16px;
+    }
+
+    .head p {
+        margin-bottom: 2px ;
+    }
+
+    .f_types {
+        border: none; 
+        padding:4px; 
+        width: 100%;
+        outline: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+   
+
+    .trip-btn:hover {
+    background-color:rgba(0, 113, 255, 1) !important;
+    color: rgba(255, 255, 255, 1) !important;
+    }
+
+    .trip-btn:focus {
+    background-color:rgba(0, 113, 255, 1) !important;
+    color: rgba(255, 255, 255, 1) !important;
+    }
+
+
+   
+
+    /* input {
+    position: relative;
+    width: 100%; 
+    height: 30px;
+    border-radius: 6px;
+    border: 1px solid rgba(128, 128, 128, 0.5);
+    border: none;
+    outline: none;
+    padding: 6px;
+    margin-top: -20px;
+    } */
+
+    .check:before {
+    position: absolute;
+    top: 3px; 
+    left: 3px;
+    content: attr(data-date);
+    display: inline-block;
+    color: black;
+    }
+
+    .check::-webkit-datetime-edit, .check::-webkit-inner-spin-button, .check::-webkit-clear-button {
+    display: none;
+    }
+
+    .check::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 3px;
+    right: 0;
+    color: black;
+    opacity: 1;
+    }
+
+
+    
+
+    #ar-btn {
+    margin-bottom: 20px;
+    }
+
+    #ar-btn button {
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 22px;
+    width: 112px;
+    }
+
+    #myTab {
+        border-bottom: none;
+    }
+
+    .trip-btn {
+        border: 1px solid rgba(0, 113, 255, 1) !important;
+        color: rgba(0, 113, 255, 1) !important;
+        border-radius: 22px !important;
+        padding: 2px 10px !important;
+        font-size: 14px !important;
+        margin-right: 10px;
+    } 
+
+    
+    fieldset.scheduler-border {
+        border: 1px solid rgba(128, 128, 128, 1) !important;
+        padding:  0em 0.5em!important;
+        border-radius: 12px;
+        margin: 0em 0.4em 0.8em!important;
+        -webkit-box-shadow:  0px 0px 0px 0px #000;
+        box-shadow:  0px 0px 0px 0px #000;
+    }
+
+    legend.scheduler-border {
+        font-size: 0.9em !important;
+        font-weight: normal !important;
+        text-align: left !important;
+    }
+    
+    .ot_fieldset {
+        border: 1px solid rgba(128, 128, 128, 1) !important;
+        padding: 2px 4px !important;
+        border-radius: 12px;
+        /* margin: 4px 20px 8px 2px !important; */
+        -webkit-box-shadow:  0px 0px 0px 0px #000;
+        box-shadow:  0px 0px 0px 0px #000;
+    }
+
+    .ot_legend {
+        font-size: 0.8em !important;
+        font-weight: normal !important;
+        text-align: left !important;
+        margin-bottom: 0 !important;
+    }
+
+    input {
+        position: relative;
+        width: 100%; 
+        height: 30px;
+        border-radius: 6px;
+        border: 1px solid rgba(128, 128, 128, 0.5);
+        border: none;
+        outline: none;
+        padding: 2px;
+        /* margin-top: -20px; */
+    }
+
+    legend {
+        float: none;
+        width: auto;
+        padding: 2px 6px;
+        margin-bottom: 0.5rem;
+        font-size: calc(1.275rem + .3vw);
+        line-height: inherit;
+    }
+
+    
+    .search-btn2 {
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 22px;
+            width: 112px;
+            margin: -4px 0px 10px 20px;
+        }
+
+        
+        .search-btn {
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 22px;
+            width: 112px;
+            margin: -4px 0px 10px 20px;
+        }
+    </style>
+    <!-- <section class="container-fluid" id="form">
+        <form action="{% url 'one_trip' %}"  class="container">
+            <div class="col-md-12 d-flex">
+                <div class="row col-md-10 p-3" id="flight_input_sec">
+                    <div class="col-md-2">
+                        <label for="from" class="fcode-title">{{fromAircode}}</label>
+                        <input type="text" class="form-control" value="{{fromcityname}}">
+                    </div>
+                    <div class="col-md-1 text-center mt-3">
+                        <img src="{% static 'image/flight/flight B.svg.'%}" alt="flight icon" class="img-fluid" style="width: 30px; height: 50px;">
+                    </div>
+                    <div class="col-md-2" >
+                        <label for="to" class="fcode-title">{{toAircode}}</label>
+                        <input type="text" class="form-control" value="{{tocityname}}">
+                    </div>
+                    <div class="col-md-2 inp">
+                        <label for="check-in">Check In</label>
+                        <input type="text" class="check mt-2 input" data-date="" data-date-format="DD MMMM YYYY" style="font-size: 14px;" name="check-in" id="check-in" readonly>
+                        <input type="hidden" value="{{date_object}}" id="checkin">
+                    </div>
+                    <div class="col-md-2 inp" style="display: none;">
+                        <label for="check-out">Check Out</label>
+                        <input type="text" class="check mt-2 input" data-date="" data-date-format="DD MMMM YYYY" value="" style="font-size: 14px;" name="check-out" id="check-out" readonly>
+                        <input type="hidden" value="" id="checkout">
+                    </div>
+                    <script>
+                        $(function () {
+                            function updateDatepickerFromHiddenInput() {
+                                var checkinValue = $("#checkin").val();
+                                var checkinDate = moment(checkinValue, "MMM. D, YYYY, h:mm a").toDate();
+                                $("#check-in").datepicker('setDate', checkinDate);
+                            }
+                    
+                            // Initialize Datepicker for the first date
+                            $("#check-in").datepicker({
+                                minDate: 0, // Minimum date is today
+                                dateFormat: 'dd MM yy', // Set the date format
+                                onSelect: function (dateText, inst) {
+                                    // Update the data-date attribute using moment.js
+                                    $(this).attr("data-date", moment(dateText, "DD MMMM YYYY").format($(this).attr("data-date-format")));
+                    
+                                    // Calculate the next date using moment.js
+                                    var nextDate = moment(dateText, "DD MMMM YYYY").add(1, 'days').format("DD MMMM YYYY");
+                    
+                                    // Set the default date for the second datepicker to one day after the selected date
+                                    $("#check-out").datepicker("option", "minDate", nextDate);
+                                    $("#check-out").datepicker("setDate", nextDate);
+                    
+                                    // Update the value of the hidden input checkin
+                                    $("#checkin").val(moment(dateText, "DD MMMM YYYY, h:mm a").format("MMM. D, YYYY, h:mm a"));
+                                }
+                            });
+                    
+                            // Initialize Datepicker for the second date
+                            $("#check-out").datepicker({
+                                minDate: 1, // Minimum date is one day after today
+                                dateFormat: 'dd MM yy', // Set the date format
+                            });
+                    
+                            // Call the function to update the datepicker from the hidden input on page load
+                            updateDatepickerFromHiddenInput();
+                    
+                            // Add event listener to hidden input change event
+                            $("#checkin").change(updateDatepickerFromHiddenInput);
+                        });
+                    </script>
+                    <div class="col-md-4">
+                        <label for="passengers-class"  class="f-label">Passengers & Class</label>
+                        <input type="text" readonly class="form-control" id="NoOfPas" value="1 pas & economy" onclick="showFlightForm() ">
+                        <input type="hidden" id="NoOfAdults" value="{{NoOfAdults}}">
+                        <input type="hidden" id="NoOfChild" value="{{NoOfChild}}">
+                        <input type="hidden" id="NoOfInfant" value="{{NoOfInfant}}">
+                    </div>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            var NoOfAdults = document.getElementById("NoOfAdults");
+                            var NoOfChild = document.getElementById("NoOfChild");
+                            var NoOfInfant = document.getElementById("NoOfInfant");
+                            document.getElementById("Adult_inp").value = NoOfAdults.value;
+                            document.getElementById("Child_inp").value = NoOfChild.value;
+                            document.getElementById("Infant_inp").value = NoOfInfant.value;
+                    
+                            document.getElementById("NoOfPas").value = NoOfAdults.value + " Adult, " + NoOfChild.value + " Child, " + NoOfInfant.value + " Infant";
+                        });
+                        
+                        document.addEventListener('DOMContentLoaded', function () {
+                                    // Get select elements
+                                    const adultSelect = document.getElementById('Adult_inp');
+                                    const childSelect = document.getElementById('Child_inp');
+                                    const infantSelect = document.getElementById('Infant_inp');
+                            
+                                    // Get input element
+                                    const pasInput = document.getElementById('NoOfPas');
+                            
+                                    // Update input value function
+                                    function updateInputValue() {
+                                        const adults = adultSelect.value;
+                                        const children = childSelect.value;
+                                        const infants = infantSelect.value;
+                                        pasInput.value = `${adults} Adults, ${children} Child, ${infants} Infant`;
+                                    }
+                            
+                                    // Listen for changes in select elements
+                                    adultSelect.addEventListener('change', updateInputValue);
+                                    childSelect.addEventListener('change', updateInputValue);
+                                    infantSelect.addEventListener('change', updateInputValue);
+                            
+                                    // Initial update
+                                    updateInputValue();
+                                });
+
+                        
+                            function hideFlightForm() {
+                                var flightForm = document.getElementById("flight_inp_form")
+                                if(flightForm.style.display === "block") {
+                                            flightForm.style.display = "none";
+                                        } else {
+                                            flightForm.style.display = "block"
+                                        }
+                            }
+
+                        function showFlightForm() {
+                            var flightForm = document.getElementById("flight_inp_form")
+                            if(flightForm.style.display === "none") {
+                                flightForm.style.display = "block";
+                                console.log("show")
+                            } else {
+                                flightForm.style.display = "none"
+                            }
+                        }
+                    </script>
+                    
+                </div>
+                <div class="col-md-1 mt-4 p-2">
+                    <div class="col-md-1 mt-2">
+                        <button type="submit" class="btn btn-primary" id="mod-btn">Modify Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+     -->
+    <section class="container d-flex mt-4">
+        <div id="filter-sec" class="col-md-3" style="margin: 4px;">
+            <div>
+                <div>
+                    <h3 class="mb-0">Filters</h3>
+                    <hr>
+                    <p class="mb-0">Number of Price</p>
+                </div>
+                <div class="wrapper" >
+                    <div class="price-input">
+                        <div class="form-row d-flex">
+                            <div class="col d-flex">
+                                <label for="price" class="price_sym">₹</label>
+                                <input type="number" readonly class="input-min"   value="{{min_price}}">
+                            </div>
+                            <div class="col d-flex" style="margin-left: 120px;">
+                                <label for="price" class="price_sym">₹</label>
+                                <input type="number" readonly class="input-max" value="{{ max_price }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider">
+                        <div class="progress"></div>
+                    </div>
+                    <div class="range-input">
+                        <div class="">
+                            <div class="col">
+                                <input type="range" class="form-range range-min"  min="{{min_price}}" max="{{max_price}}" value="{{min_price}}" step="100">
+                            </div>
+                            <div class="col">
+                                <input type="range" class="form-range range-max"  min="{{min_price}}" max="{{max_price}}" value="{{max_price}}" step="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="row">
+                    <div class="row">
+                        <p class="fil-head">Stops {{fromAircode}} - {{toAircode}}</p>
+                    </div>
+                    <div class="d-flex" style="gap: 20px;">
+                        <div class="form-check" style="gap: 10px;">
+                            <input type="checkbox" class="form-check-input form-check-inputs ch_box" id="nonStop" data-stops ="Non-stop">
+                            <label class="form-check-label mt-1" for="nonStop">Non-stop</label>
+                        </div> 
+                        <div class="form-check" style="gap: 10px;">
+                            <input type="checkbox" class="form-check-input form-check-inputs ch_box" id="oneStop" data-stops ="1-stop(s)">
+                            <label class="form-check-label mt-1" for="oneStop">1 Stop</label>
+                        </div>
+                        <!-- <div class="form-check">
+                            <input type="checkbox" class="form-check-inputs ch_box"  id="twoStop" data-stops ="two-stop">
+                            <label class="form-check-label" for="twoStop">2 Stops</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-inputs ch_box" id="threeStop" data-stops = "three-stop">
+                            <label class="form-check-label" for="threeStop">3 Stops</label>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="row">
+                    <div class="row">
+                        <div>
+                            <p class="fil-head">Take off from {{fromAircode}}</p>
+                        </div>
+                        <div>
+                            <button for="departure-time" class="f-time ftime_btn">Before 6AM</button>
+                            <button for="departure-time" class="f-time ftime_btn">6AM-12PM</button>
+                        </div>
+                        <div>
+                            <button for="departure-time" class="f-time ftime_btn">12PM-6PM</button>
+                            <button for="departure-time" class="f-time ftime_btn">After 6PM</button>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div>
+                            <p class="fil-head">Arrival in {{toAircode}}</p>
+                        </div>
+                        <div>
+                            <button for="arrival-time" class="f-time ftime_btn">Before 6AM</button>
+                            <button for="arrival-time" class="f-time ftime_btn">6AM-12PM</button>
+                        </div>
+                        <div>
+                            <button for="arrival-time" class="f-time ftime_btn">12PM-6PM</button>
+                            <button for="arrival-time" class="f-time ftime_btn">After 6PM</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4" id="airlinesFilterContainer">
+                <div class="row">
+                    <div class="row">
+                        <p class="fil-head">Airlines</p>
+                    </div>
+                    <div class="row">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input ch_box" id="Air-india"  data-airline="Air India">
+                            <label class="form-check-label" for="Air india">Air india</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input ch_box" id="Air-asia" data-airline="Air asia">
+                            <label class="form-check-label" for="Air asia">Air asia</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input ch_box" id="Indigo" data-airline="Indigo">
+                            <label class="form-check-label" for="Indigo">Indigo</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input ch_box" id="Vistara" data-airline="Vistara">
+                            <label class="form-check-label" for="Vistara">Vistara</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="row">
+                        <p class="fil-head">All Itineraries</p>
+                    </div>
+                    <div class="row">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input ch_box" id="Baggage">
+                            <label class="form-check-label" for="Baggage">Baggage Included</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input ch_box" id="Non-Refundable">
+                            <label class="form-check-label" for="Non-Refundable">Non-Refundable</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input ch_box" id="Refundable">
+                            <label class="form-check-label" for="Refundable">Refundable</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input ch_box" id="Par-Refundable">
+                            <label class="form-check-label" for="Partial Refundable">Partial Refundable</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>   
+        <div class="container">
+            <div id="fd-sec" class="col-md-12 fil_div">
+                <div class="d-flex" id="sort-by">
+                    <div class="col-md-6 mt-1">
+                        <h4>Sort By</h4>
+                    </div>
+                    <div id="sortby-div" class="col-md-6" >
+                        <button class="sortby_btn" for="airlinesRadio"  onclick="sortFlight('Name')">Airlines</button>
+                        <button class="sortby_btn" for="departureRadio" onclick="sortFlight('Departure')">Departure</button>
+                        <button class="sortby_btn" for="durationRadio" onclick="sortFlight('Duration')">Duration</button>
+                        <button class="sortby_btn" for="arrivalRadio" onclick="sortFlight('Arrival')">Arrival</button>
+                        <button class="sortby_btn" for="priceRadio" onclick="sortFlight('Price')">Price</button>
+                    </div>
+                </div>
+            </div>
+         
+            <div class="container mt-3">
+                <div id="flightlist">
+                
+               <!-- flight list condainer -->
+               </div>
+              
+            </div>
+    
+        </div>
+    </section>
+
+    <!-- unique numbber flight list -->
+    <script>
+        const FLightL = document.getElementById('flight_details').textContent;
+        // Parse the JSON string
+        const flights = JSON.parse(FLightL);
+        let jsonData = flights
+        console.log("flight details",jsonData)
+        const combinedFlightMap = {};
+    
+        jsonData.forEach(flight => {
+            const combinedKey = flight.AirlineNumber + '-' + flight.SAirlineNumber;
+            if (!combinedFlightMap[combinedKey]) {
+                combinedFlightMap[combinedKey] = [];
+            }
+            combinedFlightMap[combinedKey].push(flight);
+        });
+    
+        const groupedFlights = Object.values(combinedFlightMap);
+    
+        console.log(groupedFlights);
+
+        // Example usage:
+        let flightDataArray = groupedFlights;
+        // console.log("Flight Data Array:", flightDataArray);
+        var jsonString = JSON.stringify(flightDataArray);
+        document.querySelector('[name="Sort_F_details"]').value = jsonString;
+    </script>
+
+<script>
+            document.addEventListener("DOMContentLoaded", function() {
+            let flightsByNumberJSON = document.getElementById('Sort_F_details').value;
+            var flightsByNumber = JSON.parse(flightsByNumberJSON);
+            // console.log(flightsByNumber);
+
+            const flightsContainer = document.getElementById("flightlist");
+
+// Loop through each array and create a details container for each
+flightsByNumber.forEach((array, index) => {
+    const arrayDiv = document.createElement('div');
+    arrayDiv.classList.add('details-container');
+
+    // Create HTML for details of the first object in the array
+    const flight = array[0];
+    const priceContainerHTML = array.map(flight => {
+        return `<div class="row">
+                            <div class="col-md-12 mt-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex col-md-6" style="gap:60px; width:40%">
+                                        <div>
+                                            <p class="f-fil">SAVER</p>
+                                        </div>
+                                        <div>
+                                            <h4 class="f-price1">₹ ${flight.OffredFare}</h4>
+                                        </div>
+                                    </div>
+                                    <div style="width:40%;text-align:start;">
+                                        <p class="f-class">${flight.AirlineType} / ${flight.FlightClass}</p>
+                                    </div>
+                                    <div class="f-sel-btn mb-3"  style="width:20%">
+                                        <button type="button" data-flight="${flight.ResultIndex}"  class="btn btn-primary select-btn price-class">Select</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+    }).join('');
+
+    if(flight.Stopconformation === 'Non-stop') {
+        arrayDiv.innerHTML = ` <div class="flight-container" class="flight" ticket-price="${flight.OffredFare}" flight-name="${flight.AirlineName}" 
+                ticket-duration-hours="${flight.totalhour}" ticket-duration-minutes="${flight.totalminute}"  flight-departure-time="${flight.departurehoure}:${flight.departureminute}" flight-arrival-time="${flight.arrivalhoure}:${flight.arrivalminute}" Flight-stop="${flight.Stopconformation}">
+                    <div class="row">
+                        <div class="col-md-1 mt-3">
+                            <img src="{% static 'image/AirlineLogo/' %}${ flight.AirlineCode }.gif" alt="Flight-logo" >
+                        </div>
+                        <div class="col-md-3 align-items-center mt-3">
+                            <h4 class="f-name">${flight.AirlineName} | ${flight.AirlineCode}-${flight.AirlineNumber}</h4>
+                            <p class="f-class change-F-class">${flight.AirlineType} / ${flight.FlightClass}</p>
+                        </div>
+                        <div class="col-md-1 d-flex justify-content-between p-2">
+                            <img src="{% static 'image/flight/refuntable ico.svg.'%}"alt="R-icon" class="r-icon">
+                            <img src="{% static 'image/flight/luggage.svg.'%}" alt="lug-icon" class="icon">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="flight-timings">
+                                <div class=" d-flex" style="border-bottom: 1px solid blue;">
+                                    <p class="f-time-in">${flight.departure_H_M}</p>
+                                    <p class="f_to_time">${flight.total_H_M}</p>
+                                    <p class="f-time-in">${flight.arrival_H_M}</p>
+                                </div>
+                                <div class="d-flex mt-2">
+                                    <p class="f-code">${flight.OrginAirportCode}</p>
+                                    <p class="f_to_time">${flight.Stopconformation}</p>
+                                    <p class="f-code">${flight.DestinationAirportCode}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 flight-price">
+                            <h4 class="f-price change-price" >₹ ${flight.OffredFare}</h4>  
+                            <button type="button"   class="btn btn-primary book-btn book-button1" data-trace-id="${flight.TraceId}" data-result-index="${flight.ResultIndex}" 
+                            onclick="handleSelectFlight('${ flight.TraceId }', '${ flight.ResultIndex }','{{ token_id }}','${flight.Stopconformation}','${flight.FlightClass}','${flight.start_date}','${flight.total_H_M}','${flight.OrginAirportCode}','${flight.DestinationAirportCode}','${flight.AirlineCode}')">Book Now</button>
+                        </div>
+                        <div id="flight-details"></div>
+                    </div>
+                    <div class="container">
+                        <div class="flight-features d-flex">
+                            <div class="mr-2">
+                                <button type="button" class="btn btn-primary more-btn" id="${flight.ResultIndex}2" onclick="showFare('${flight.ResultIndex}','${flight.ResultIndex}','${flight.ResultIndex}')">More Fare</button>
+                            </div>
+                            <div>
+                                <button type="button" id="${flight.ResultIndex}01" class="btn flight-btn" onclick="showFlightDetail('${flight.ResultIndex}','${flight.ResultIndex}','${flight.ResultIndex}')">Flight Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container mt-3" style="display: none;background: #D9D9D945; border-radius: 8px; align-items: center; justify-content: center;text-align: center;"  id="${flight.ResultIndex}3">
+                        ${priceContainerHTML}
+                    </div>
+
+                    <input type="hidden"  class="flight-fare fare-summary1" value='[{"passengerCount": "${flight.APassengerCount}","passengerType": "${flight.APassengerType}","baseFare": "${flight.ABaseFare}","tax": "${flight.ATax}","discount1":"${flight.discount1}","discount2":"${flight.discount2}","AdditionalTxnFeePub":"${flight.AdditionalTxnFeePub}","OtherCharges":"${flight.OtherCharges}","ServiceFee":"${flight.ServiceFee}","AirlineTransFee":"${flight.AirlineTransFee}","IncentiveEarned":"${flight.IncentiveEarned}"},{"passengerCount": "${flight.BPassengerCount}","passengerType": "${flight.BPassengerType}","baseFare": "${flight.BBaseFare}","tax": "${flight.BTax}"},{"passengerCount": "${flight.CPassengerCount}","passengerType": "${flight.CPassengerType}","baseFare": "${flight.CBaseFare}","tax": "${flight.CTax}"}]'>
+
+                    <div id="${flight.ResultIndex}4" class="container mt-3" style="display: none;">
+                        <div>
+                            <div>
+                                <ul class="nav nav-tabs " id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active btn" id="${flight.ResultIndex}home-tab"  data-bs-toggle="tab" data-bs-target="#${flight.ResultIndex}home-tab-pane" type="button" role="tab" aria-controls="${flight.ResultIndex}home-tab-pane" aria-selected="true" autofocus>Flight Detailes</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link btn" id="${flight.ResultIndex}profile-tab"  data-bs-toggle="tab" data-bs-target="#${flight.ResultIndex}profile-tab-pane" type="button" role="tab" aria-controls="${flight.ResultIndex}profile-tab-pane" aria-selected="false" >Fare Summary</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link btn" class="fare_details_1" id="${flight.ResultIndex}contact-tab"   data-bs-toggle="tab" data-bs-target="#${flight.ResultIndex}contact-tab-pane" type="button" role="tab" aria-controls="${flight.ResultIndex}contact-tab-pane" aria-selected="false" >Fare Rules</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link btn" id="${flight.ResultIndex}bag-tab"  data-bs-toggle="tab" data-bs-target="#${flight.ResultIndex}bag-tab-pane" type="button" role="tab" aria-controls="${flight.ResultIndex}contact-tab-pane" aria-selected="false">Baggage Info</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content mt-2" id="myTabContent">
+                                    <div class="tab-pane fade show active col-md-12" id="${flight.ResultIndex}home-tab-pane"  role="tabpanel" aria-labelledby="${flight.ResultIndex}home-tab" tabindex="0">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <img src="{% static 'image/AirlineLogo/' %}${ flight.AirlineCode }.gif" alt="Flight-logo" style="width: 43%; height: 75px; padding-bottom: 10px;">
+                                                    <h4 class="f-name">${flight.AirlineName} | ${flight.AirlineCode}-${flight.AirlineNumber}</h4>
+                                                    <p class="f-class change-F-class2"> ${flight.AirlineType} / ${flight.FlightClass}</p>
+                                                </div> 
+                                                <div class="col-md-6">
+                                                    <div class="flight-timings">
+                                                        <div class="d-flex" style="border-bottom: 1px solid blue;">
+                                                            <p class="f-time-in">${flight.departure_H_M}</p>
+                                                            <p class="f_to_time">${flight.total_H_M}</p>
+                                                            <p class="f-time-in">${flight.arrival_H_M}</p>
+                                                        </div>
+                                                        <div class="d-flex mt-2">
+                                                            <div>
+                                                                <p class="f-code">${flight.OrginAirportCode} ${flight.OrginAirportName}</p>
+                                                                <p class="f-code2">${flight.OrginAirportCityName}, ${flight.OrginAirportCoutryName}</p>
+                                                                <p class="f-term">Terminal: ${flight.OrginAirportTerminal}</p>
+                                                            </div>
+                                                            <div>
+                                                                <p class="f-code">${flight.DestinationAirportCode} ${flight.DestinationAirportName}</p>
+                                                                <p class="f-code2">${flight.DestinationCityName}, ${flight.DestinationCountryName}</p>
+                                                                <p class="f-term">Terminal: ${flight.DestinationTerminal}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 ms-12" style="text-align: center;">
+                                                    <p class="f-refund">${flight.nonrefund}</p>
+                                                    <p class="f-code2">Seat Left: ${flight.setsAvailable}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show" role="tabpanel" id="${flight.ResultIndex}profile-tab-pane" aria-labelledby="${flight.ResultIndex}home-tab" tabindex="0">
+                                        <div class="container">
+                                            <div>
+                                                <table class="table" id="passengerTable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>TYPE</th>
+                                                            <th>BASE FARE</th>
+                                                            <th>TAXES & FEES</th>
+                                                            <th>TOTAL</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show" id="${flight.ResultIndex}contact-tab-pane"  role="tabpanel" aria-labelledby="${flight.ResultIndex}home-tab" tabindex="0">
+                                        <div class="container">
+                                            <div>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>SECTOR</th>
+                                                            <th>TIME FRAME</th>
+                                                            <th>CHARGES & DISCRIPTION</th>
+                                                            <th>FARE DETAILS</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="f-code">${flight.OrginAirportCode} - ${flight.DestinationAirportCode}</td>
+                                                            <td>From & Above Before Dept</td>
+                                                            <td>INR 4000* + 0</td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-primary book-btn book-btn1" data-toggle="modal" data-target="#${ flight.ResultIndex}exampleModal" result-index="${flight.ResultIndex}" onclick="show_fare_details('{{ token_id }}','${ flight.TraceId }','${flight.ResultIndex}' )" >View Fare Rule</button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="modal fade" id="${ flight.ResultIndex}exampleModal" tabindex="-1" role="${ flight.ResultIndex}dialog" aria-labelledby="${ flight.ResultIndex}exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Fare Rules</h5>
+                                                        <button type="button" class="close-btn" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div id="${ flight.ResultIndex}00"></div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="book-btn" data-dismiss="modal" aria-label="Close" style="color: white;border: none;width: 100px;">
+                                                                Ok
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show" id="${flight.ResultIndex}bag-tab-pane"  role="tabpanel" aria-labelledby="${flight.ResultIndex}home-tab" tabindex="0">
+                                        <div class="container">
+                                            <div>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>SECTOR</th>
+                                                            <th>CHECK IN</th>
+                                                            <th>CABIN</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="f-code">${flight.OrginAirportCode} - ${flight.DestinationAirportCode}</td>
+                                                            <td>${flight.checkinbag} / Person</td>
+                                                            <td>${flight.combainbag} / Person</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> `;
+            
+    } else if (flight.Stopconformation === '1-stop(s)'){
+        arrayDiv.innerHTML =`<div class="flight-container1" class="flight" ticket-prices="${flight.OffredFare}" flight-names="${flight.FirstAirlineName}" 
+                ticket-duration-hours="${flight.Firsttotalhour}" ticket-duration-minutes="${flight.Firsttotalhour}" ticket-duration-minutes="${flight.Firsttotalminute}"  flight-departure-times="${flight.Firstdeparturehoure}:${flight.Firstdepartureminute}" flight-arrival-times="${flight.Firstarrivalhoure}:${flight.Firstarrivalminute} " Flight-stops="${flight.Stopconformation}">
+                    <div class="row">
+                        <div class="col-md-1 mt-3">
+                            <img src="{% static 'image/AirlineLogo/' %}${ flight.FirstAirlineCode }.gif" alt="Flight-logo">
+                        </div>
+                        <div class="col-md-3 align-items-center mt-3">
+                            <h4 class="f-name">${flight.FirstAirlineName} | ${flight.FirstAirlineCode}-${flight.AirlineNumber}</h4>
+                            <p class="f-class change-F-class">${flight.AirlineType} / ${flight.FlightClass}</p>
+                        </div>
+                        <div class="col-md-1 d-flex justify-content-between p-2">
+                            <img src="{% static 'image/flight/refuntable ico.svg.'%}"alt="R-icon" class="r-icon">
+                            <img src="{% static 'image/flight/luggage.svg.'%}" alt="lug-icon" class="icon">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="flight-timings">
+                                <div class=" d-flex" style="border-bottom: 1px solid blue;">
+                                    <p class="f-time-in">${flight.Firstdepartur_H_M}</p>
+                                    <p class="f_to_time">${flight.FinalTotal_H_M}</p>
+                                    <p class="f-time-in">${flight.Scondarrival_H_M}</p>
+                                </div>
+                                <div class="d-flex mt-2">
+                                    <p class="f-code">${flight.FristOrginAirportCode}</p>
+                                    <p class="f_to_time">${flight.Stopconformation}</p>
+                                    <p class="f-code">${flight.SecondDestinationAirportCode}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 flight-price">
+                            <h4 class="f-price change-price" >₹ ${flight.OffredFare}</h4>  
+                            <button type="button" class="btn btn-primary book-btn book-button2" data-trace-id="${flight.TraceId}" data-result-index="${flight.ResultIndex}" 
+                            onclick="handleSelectFlight('${ flight.TraceId }', '${ flight.ResultIndex }','{{ token_id }}','${flight.Stopconformation}','${flight.FlightClass}','${flight.Firstdstart_date}','${flight.FinalTotal_H_M}','${flight.FristOrginAirportCode}','${flight.SecondDestinationAirportCode}','${flight.FirstAirlineCode}')">Book Now</button>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="flight-features d-flex">
+                            <div class="mr-2">
+                                <button type="button" class="btn btn-primary more-btn" id="${flight.ResultIndex}2" onclick="showFare('${flight.ResultIndex}','${flight.ResultIndex}','${flight.ResultIndex}')">More Fare</button>
+                            </div>
+                            <div>
+                                <button type="button" id="${flight.ResultIndex}01" class="btn flight-btn" onclick="showFlightDetail('${flight.ResultIndex}','${flight.ResultIndex}','${flight.ResultIndex}')">Flight Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="container mt-3" style="display: none;background: #D9D9D945; border-radius: 8px; align-items: center; justify-content: center;text-align: center;"  id="${flight.ResultIndex}3">
+                        ${priceContainerHTML}
+                    </div>
+
+                    <input type="hidden" id="fare-summary2" class="flight-fare" value='[{"passengerCount": "${flight.APassengerCount}","passengerType": "${flight.APassengerType}","baseFare": "${flight.ABaseFare}","tax": "${flight.ATax}","discount1":"${flight.discount1}","discount2":"${flight.discount2}","AdditionalTxnFeePub":"${flight.AdditionalTxnFeePub}","OtherCharges":"${flight.OtherCharges}","ServiceFee":"${flight.ServiceFee}","AirlineTransFee":"${flight.AirlineTransFee}","IncentiveEarned":"${flight.IncentiveEarned}"},{"passengerCount": "${flight.BPassengerCount}","passengerType": "${flight.BPassengerType}","baseFare": "${flight.BBaseFare}","tax": "${flight.BTax}"},{"passengerCount": "${flight.CPassengerCount}","passengerType": "${flight.CPassengerType}","baseFare": "${flight.CBaseFare}","tax": "${flight.CTax}"}]'>
+
+                    <div id="${flight.ResultIndex}4" class="container mt-3" style="display: none;">
+                        <div>
+                            <div>
+                                <ul class="nav nav-tabs " id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active btn" id="${flight.ResultIndex}home-tab"  data-bs-toggle="tab" data-bs-target="#${flight.ResultIndex}home-tab-pane" type="button" role="tab" aria-controls="${flight.ResultIndex}home-tab-pane" aria-selected="true" autofocus>Flight Detailes</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link btn" id="${flight.ResultIndex}profile-tab"  data-bs-toggle="tab" data-bs-target="#${flight.ResultIndex}profile-tab-pane" type="button" role="tab" aria-controls="${flight.ResultIndex}profile-tab-pane" aria-selected="false">Fare Summary</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link btn" id="${flight.ResultIndex}contact-tab"   data-bs-toggle="tab" data-bs-target="#${flight.ResultIndex}contact-tab-pane" type="button" role="tab" aria-controls="${flight.ResultIndex}contact-tab-pane" aria-selected="false"  >Fare Rules</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link btn" id="${flight.ResultIndex}bag-tab"  data-bs-toggle="tab" data-bs-target="#${flight.ResultIndex}bag-tab-pane" type="button" role="tab" aria-controls="${flight.ResultIndex}contact-tab-pane" aria-selected="false">Baggage Info</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content mt-2" id="myTabContent">
+                                    <div class="tab-pane fade show active col-md-12" id="${flight.ResultIndex}home-tab-pane"  role="tabpanel" aria-labelledby="${flight.ResultIndex}home-tab" tabindex="0">
+                                        <div class="container">
+                                              
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <img src="{% static 'image/AirlineLogo/' %}${ flight.FirstAirlineCode }.gif" alt="Flight-logo" style="width: 43%; height: 75px; padding-bottom: 10px;">
+                                                    <h4 class="f-name">${flight.FirstAirlineName} | ${flight.FirstAirlineCode}-${flight.AirlineNumber}</h4>
+                                                    <p class="f-class change-F-class2">${flight.AirlineType} / ${flight.FlightClass}</p>
+                                                </div> 
+                                                <div class="col-md-6">
+                                                    <div class="flight-timings">
+                                                        <div class="d-flex" style="border-bottom: 1px solid blue;">
+                                                            <p class="f-time-in">${flight.Firstdepartur_H_M}</p>
+                                                            <p class="f_to_time">${flight.Firsttotal_H_M}</p>
+                                                            <p class="f-time-in">${flight.Firstarrival_H_M}</p>
+                                                        </div>
+                                                        <div class="d-flex mt-2">
+                                                            <div>
+                                                                <p class="f-code">${flight.FristOrginAirportCode} ${flight.FristOrginAirportName}</p>
+                                                                <p class="f-code2">${flight.FristOrginAirportCityName}, ${flight.FristOrginAirportCoutryName}</p>
+                                                                <p class="f-term">Terminal: ${flight.FristOrginAirportTerminal}</p>
+                                                            </div>
+                                                            <div>
+                                                                <p class="f-code">${flight.FristDestinationAirportCode} ${flight.FristDestinationAirportName}</p>
+                                                                <p class="f-code2">${flight.FristDestinationCityName}, ${flight.FristDestinationCountryName}</p>
+                                                                <p class="f-term">Terminal: ${flight.FristDestinationTerminal}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 ms-12" style="text-align: center;">
+                                                    <p class="f-refund">${flight.onerefund}</p>
+                                                    <p class="f-code2">Seat Left: ${flight.FristsetsAvailable}</p>
+                                                </div>
+                                            </div>
+                                              
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <img src="{% static 'image/AirlineLogo/' %}${ flight.SecondAirlineCode }.gif" alt="Flight-logo" style="width: 43%; height: 75px; padding-bottom: 10px;">
+                                                    <h4 class="f-name">${flight.SecondAirlineName} | ${flight.SecondAirlineCode}-${flight.SAirlineNumber}</h4>
+                                                    <p class="f-class change-F-class3">${flight.AirlineType} / ${flight.SecondFlightClass}</p>
+                                                </div> 
+                                                <div class="col-md-6">
+                                                    <div class="flight-timings">
+                                                        <div class="d-flex" style="border-bottom: 1px solid blue;">
+                                                            <p class="f-time-in">${flight.Sconddeparture_H_M}</p>
+                                                            <p class="f_to_time">${flight.Scondtotal_H_M}</p>
+                                                            <p class="f-time-in">${flight.Scondarrival_H_M}</p>
+                                                        </div>
+                                                        <div class="d-flex mt-2">
+                                                            <div>
+                                                                <p class="f-code">${flight.SecondOrginAirportCode} ${flight.SecondOrginAirportName}</p>
+                                                                <p class="f-code2">${flight.SecondOrginAirportCityName}, ${flight.SecondOrginAirportCoutryName}</p>
+                                                                <p class="f-term">Terminal: ${flight.SecondOrginAirportTerminal}</p>
+                                                            </div>
+                                                            <div>
+                                                                <p class="f-code">${flight.SecondDestinationAirportCode} ${flight.SecondDestinationAirportName}</p>
+                                                                <p class="f-code2">${flight.SecondDestinationCityName}, ${flight.SecondDestinationCountryName}</p>
+                                                                <p class="f-term">Terminal: ${flight.SecondDestinationTerminal}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 ms-12" style="text-align: center;">
+                                                    <p class="f-refund">${flight.onerefund}</p>
+                                                    <p class="f-code2">Seat Left: ${flight.SecondsetsAvailable}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show" role="tabpanel" id="${flight.ResultIndex}profile-tab-pane" aria-labelledby="${flight.ResultIndex}home-tab" tabindex="0">
+                                        <div class="container">
+                                            <div>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>TYPE</th>
+                                                            <th>BASE FARE</th>
+                                                            <th>TAXES & FEES</th>
+                                                            <th>TOTAL</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show" id="${flight.ResultIndex}contact-tab-pane"  role="tabpanel" aria-labelledby="${flight.ResultIndex}home-tab" tabindex="0">
+                                        <div class="container">
+                                            <div>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>SECTOR</th>
+                                                            <th>TIME FRAME</th>
+                                                            <th>CHARGES & DISCRIPTION</th>
+                                                            <th>FARE DETAILS</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="f-code">${flight.FristOrginAirportCode} - ${flight.FristDestinationAirportCode} - ${flight.SecondDestinationAirportCode}</td>
+                                                            <td>From & Above Before Dept</td>
+                                                            <td>INR 4000* + 0</td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-primary book-btn book-btn1" data-toggle="modal" data-target="#${ flight.ResultIndex}exampleModal" result-index="${flight.ResultIndex}" onclick="show_fare_details('{{ token_id }}','${ flight.TraceId }','${flight.ResultIndex}' )" >View Fare Rule</button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="modal fade" id="${ flight.ResultIndex}exampleModal" tabindex="-1" role="${ flight.ResultIndex}dialog" aria-labelledby="${ flight.ResultIndex}exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Fare Rules</h5>
+                                                        <button type="button" class="close-btn" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div id="${ flight.ResultIndex}00"></div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show" id="${flight.ResultIndex}bag-tab-pane"  role="tabpanel" aria-labelledby="${flight.ResultIndex}home-tab" tabindex="0">
+                                        <div class="container">
+                                            <div>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>SECTOR</th>
+                                                            <th>CHECK IN</th>
+                                                            <th>CABIN</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="f-code">${flight.FristOrginAirportCode} - ${flight.FristDestinationAirportCode}</td>
+                                                            <td>${flight.Fristcheckinbag} / Person</td>
+                                                            <td>${flight.Fristcombainbag} / Person</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="f-code">${flight.SecondOrginAirportCode} - ${flight.SecondDestinationAirportCode}</td>
+                                                            <td>${flight.Secondcheckinbag} / Person</td>
+                                                            <td>${flight.Secondcombainbag} / Person</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+            
+                    
+                </div>`
+               
+    }
+
+    flightsContainer.appendChild(arrayDiv);
+
+   // Add event listener to each price element
+    let priceElements = arrayDiv.querySelectorAll('.price-class');
+    priceElements.forEach(priceElement => {
+    priceElement.addEventListener('click', function(event) {
+        const selectedresultindex =  event.currentTarget.dataset.flight;
+        console.log("selectedPrice",selectedresultindex);
+
+        const flight_fare_details = arrayDiv.querySelector('.book-btn1');
+        const flightfaredetails = arrayDiv.querySelector('.book-btn2');
+        const book_non_flight = arrayDiv.querySelector('.book-button1');
+        const book_one_flight = arrayDiv.querySelector('.book-button2');
+        const flight_faredetails = arrayDiv.querySelector('.flight-fare');
+        console.log(flight_faredetails);
+        const changeprice = arrayDiv.querySelector('.change-price');
+        const flightclass = arrayDiv.querySelector('.change-F-class');
+        const flightclass2 = arrayDiv.querySelector('.change-F-class2');
+        const flightclass3 = arrayDiv.querySelector('.change-F-class3');
+        const selectBtn = arrayDiv.querySelector('.price-class')
+        
+        let selectedFlight = array.find(flight => flight.ResultIndex === selectedresultindex);
+        console.log("flight price",selectedFlight);
+        if (flight_fare_details) {
+            flight_fare_details.setAttribute("onclick", `show_fare_details('{{ token_id }}','${selectedFlight.TraceId}','${selectedFlight.ResultIndex}' )`);
+        } 
+        if (flightfaredetails) {
+            flightfaredetails.setAttribute("onclick", `show_fare_details('{{ token_id }}','${selectedFlight.TraceId}','${selectedFlight.ResultIndex}' )`);
+        }
+        if(book_non_flight){
+            book_non_flight.setAttribute("onclick", `handleSelectFlight('${ selectedFlight.TraceId }', '${ selectedFlight.ResultIndex }','{{ token_id }}','${selectedFlight.Stopconformation}','${selectedFlight.FlightClass}','${selectedFlight.start_date}','${selectedFlight.total_H_M}','${selectedFlight.OrginAirportCode}','${selectedFlight.DestinationAirportCode}','${selectedFlight.AirlineCode}')`)
+        }
+        if(book_one_flight){
+            book_one_flight.setAttribute("onclick",`handleSelectFlight('${ selectedFlight.TraceId }', '${ selectedFlight.ResultIndex }','{{ token_id }}','${selectedFlight.Stopconformation}','${selectedFlight.FlightClass}','${selectedFlight.Firstdstart_date}','${selectedFlight.Firsttotal_H_M}','${selectedFlight.FirstOrginAirportCode}','${selectedFlight.SecondDestinationAirportCode}','${selectedFlight.FirstAirlineCode}')`)
+        }
+        if (flight_faredetails) {
+        flight_faredetails.setAttribute("value",`[{"passengerCount": "${selectedFlight.APassengerCount}","passengerType": "${selectedFlight.APassengerType}","baseFare": "${selectedFlight.ABaseFare}","tax": "${selectedFlight.ATax}","discount1":"${selectedFlight.discount1}","discount2":"${selectedFlight.discount2}","AdditionalTxnFeePub":"${selectedFlight.AdditionalTxnFeePub}","OtherCharges":"${selectedFlight.OtherCharges}","ServiceFee":"${selectedFlight.ServiceFee}","AirlineTransFee":"${selectedFlight.AirlineTransFee}","IncentiveEarned":"${selectedFlight.IncentiveEarned}"},{"passengerCount": "${selectedFlight.BPassengerCount}","passengerType": "${selectedFlight.BPassengerType}","baseFare": "${selectedFlight.BBaseFare}","tax": "${selectedFlight.BTax}"},{"passengerCount": "${selectedFlight.CPassengerCount}","passengerType": "${selectedFlight.CPassengerType}","baseFare": "${selectedFlight.CBaseFare}","tax": "${selectedFlight.CTax}"}]`)
+        }if(changeprice){
+        changeprice.textContent = ` ₹ ${selectedFlight.OffredFare}`;
+        }if(flightclass){
+        flightclass.textContent = `${selectedFlight.AirlineType} / ${selectedFlight.FlightClass}`;
+        }if(flightclass2){
+        flightclass2.textContent = `${selectedFlight.AirlineType} / ${selectedFlight.FlightClass}`;
+        }if(flightclass3){
+        flightclass3.textContent = `${selectedFlight.AirlineType} / ${selectedFlight.SecondFlightClass}`;
+        }
+
+        let selectedButton = null; // Variable to store the currently selected button
+
+        priceElements.forEach(priceElement => {
+            priceElement.addEventListener('click', function(event) {
+                // Deselect the previously selected button, if any
+                if (selectedButton) {
+                    selectedButton.innerHTML = "Select";
+                }
+                
+                // Select the clicked button
+                const selectBtn = event.currentTarget;
+                selectBtn.innerHTML = "Selected";
+                selectedButton = selectBtn; // Update the selectedButton reference
+
+                // Your existing code for handling button click event goes here
+                // ...
+
+            });
+        });
+    });
+});
+
+});
+ // Passenger data
+    
+    
+//     var fareSummaryInput = document.getElementById('fare-summary1');
+
+// if (fareSummaryInput) {
+//     var guestDataString = fareSummaryInput.value; // Get the value of the input
+//     var passengers = JSON.parse(guestDataString);
+    
+//     console.log(passengers);
+// } else {
+//     console.log("No input element found with the id 'fare-summary1'");
+// }
+var passengers = [
+        {"PassengerCount": 2, "PassengerType": 1, "BaseFare": 4752, "Tax": 729, "discount1": 30, "discount2": 60}, 
+        {"PassengerCount": 2, "PassengerType": 2, "BaseFare": 4752, "Tax": 0}, 
+        {"PassengerCount": 2, "PassengerType": 3, "BaseFare": 0, "Tax": 729}
+    ];
+
+    // Function to generate table rows
+    function generateTableRows(passenger) {
+        if (passenger.PassengerType === undefined) {
+            return ''; // Return empty string if passenger type is undefined
+        }
+
+        var type;
+        if (passenger.PassengerType === 1) {
+            type = "Adult";
+        } else if (passenger.PassengerType === 2) {
+            type = "Child";
+        } else if (passenger.PassengerType === 3) {
+            type = "Infant";
+        }
+        
+        var baseFare = "INR " + (passenger.BaseFare || 0).toFixed(2);
+        var tax = "INR " + ((passenger.Tax || 0)+(passenger.OtherCharges || 0)+(passenger.ServiceFee || 0)+(passenger.AdditionalTxnFeepub || 0)+(passenger.AirlineTransFee || 0)).toFixed(2);
+        var total = "INR " + ((passenger.BaseFare || 0) + (passenger.Tax || 0)).toFixed(2);
+
+        return "<tr><td>" + type + " X " + passenger.PassengerCount + "</td><td>" + baseFare + "</td><td>" + tax + "</td><td>" + total + "</td></tr>";
+    }
+
+    // Generate table rows
+    var tableBody = document.querySelector("#passengerTable tbody");
+    passengers.forEach(function(passenger) {
+        tableBody.innerHTML += generateTableRows(passenger);
+    });
+
+    // Calculate total
+    var totalBaseFare = passengers.reduce(function(sum, passenger) {
+        return sum + (passenger.BaseFare || 0); // Ensure adding only if BaseFare is defined
+    }, 0);
+
+    var totalTax = passengers.reduce(function(sum, passenger) {
+        return sum + (passenger.Tax || 0); // Ensure adding only if Tax is defined
+    }, 0);
+
+    var offeredfare = passengers.reduce(function(sum, passenger) {
+        return sum + (passenger.discount1 || 0) + (passenger.discount2 || 0)+(passenger.IncentiveEarned || 0)+(passenger.AdditionalTxnFeePub || 0);
+    }, 0);
+
+    var totalRow = "<tr><td>Total</td><td>INR " + totalBaseFare.toFixed(2) + "</td><td>INR " + totalTax.toFixed(2) + "</td><td>INR " + (totalBaseFare + totalTax).toFixed(2) + "</td></tr>";
+    tableBody.innerHTML += totalRow;
+    var finalfare = "<tr><td><strong>Final total fare</strong></td><td>INR " + offeredfare.toFixed(2) + "</td><td>INR " + (totalBaseFare + totalTax).toFixed(2) + "</td><td><strong>INR " + ((totalBaseFare + totalTax) - offeredfare).toFixed(2) + "</strong></td></tr>";
+    tableBody.innerHTML += finalfare;
+});
+</script>
+<script>
+   
+</script>
+    
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            font-family:'Inter', sans-serif;
+        }
+        Header {
+            background: white;
+            height: auto;
+            margin: 20px 18px;
+            position: sticky;
+            top: 0; 
+            z-index: 999;
+        }
+
+        .fi_form {
+            margin: -50px 2px 2px 850px;
+            width: 301px;
+            height: 80px;
+            border-radius: 12px;
+            background: #FFFFFF !important;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 5px 5px 12px grey;
+            display: none;
+            position: absolute;
+            z-index: 999;
+            position: sticky;
+            top: 140px;
+        }
+
+        
+    .col_1 {
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .close-btn {
+        font-size: 25px;
+        background: none;
+        border: none;
+        background: white;
+    }
+
+    .inp-form {
+        padding: 10px;
+    }
+
+
+    .col_1 select {
+        padding: 5px;
+        border-radius: 12px;
+        text-align: center;
+        font-size: 13px;
+        width: 80px;
+    }
+
+    .col_1 label {
+        font-size: 14px;
+    }
+
+
+        #head_div {
+            background: rgba(74, 74, 74, 0.23);
+            border-radius: 20px;
+            height: auto;
+            align-items: center;
+            position: sticky;
+            top: 5px; 
+            z-index: 100;
+        }
+
+        nav {
+            align-items: center;
+            justify-content: center;
+            height: 59px;
+        }
+
+        .nav-item :hover {
+            opacity: 60%;
+            color: white;
+        }
+
+        .nav-item a img{
+            margin-top: -12px;
+            margin-right: 4px;
+        }
+
+        .nav-item a {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 1);
+        }
+
+        #img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        .btn-log {
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        #log-btn {
+            color: black;
+            background-color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        #log-btn:hover {
+            background-color: rgba(41, 41, 41, 0.8);
+        }
+
+        #mod-btn {
+            color: white;
+            background-color:rgba(41, 41, 41, 1);
+            border: 1px solid white;
+            width: 130px;
+            margin-top: 5px;
+            font-size: 14px;
+            border-radius: 17px;
+        }
+
+        #mod-btn:hover {
+            opacity: 80%;
+        }
+
+        #flight_input_sec {
+            background: #FFFFFF; 
+            margin: 20px;
+            border-radius: 12px;
+        }
+
+        .modal {
+            --bs-modal-width: 1000px;
+        }
+
+        .fcode-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #000000;
+        }
+
+        .price_sym {
+            margin: 6px 2px;
+        }
+
+        .form-row div {
+            margin: 2px 4px;
+        }
+
+        .form-row {
+            justify-content: space-between;
+        }
+
+        .input-min, .input-max {
+            border: none;
+            outline: none;
+            width: 100%;
+            padding: 4px 10px;
+            color:rgba(0, 0, 0, 0.6);
+            font-size: 14px;
+        }
+
+        .f-label {
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        #form {
+            background: #F4F4F4;
+            position:sticky;
+            top:59px;
+            z-index: 999;
+        }
+
+        .fil-head {
+            font-size: 16px;
+            color: #000000;
+            font-weight: 600;
+        }
+
+        .slider{
+            height: 10px;
+            width: 100%;
+            position: relative;
+            background: #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+           
+        }
+
+       .slider .progress{
+            height: 100%;
+            position: absolute;
+            border-radius: 5px;
+            background:rgba(0, 113, 255, 1);
+            margin-top: -4px;
+        }
+
+        .range-input{
+            position: relative;
+        }
+            
+        .range-input input{
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            top: 0px;
+            background: none;
+            margin-bottom: 3px;
+            pointer-events: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        } 
+
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb{
+            height: 14px;
+            width: 14px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid rgba(0, 113, 255, 1);
+            pointer-events: auto;
+            -webkit-appearance: none;
+            box-shadow: 0 0 6px rgba(0,0,0,0.05);
+            margin-top: -16px;
+        }
+
+        input[type="range"]::-moz-range-thumb{
+            height: 15px;
+            width: 17px;
+            border: none;
+            border-radius: 50%;
+            background: white;
+            pointer-events: auto;
+            -moz-appearance: none;
+            box-shadow: rgba(0, 113, 255, 1);
+        }
+
+        .ftime_btn {
+            border: 1px solid #00000099;
+            border-radius: 22px;
+            font-size: 13px;
+            padding:3px 6px;
+            margin: 4px 6px;
+            cursor: pointer;
+        }
+
+        .ftime_btn :hover {
+            opacity: 60% !important;
+        }
+
+        .ftime_btn :active {
+            opacity: 60% !important;
+        }
+
+        .ftime_btn :focus {
+            opacity: 60% !important;
+        }
+
+        .ftime_btn :visited {
+            opacity: 60% !important;
+        }
+
+        .icon {
+            width: 20px;
+            height: 24px;
+        }
+
+        .r-icon {
+            width: 30px;
+            height: 40px;
+            
+        }
+
+        .f-time-in {
+            font-size: 16px;
+            color: #00000099;
+            font-weight: 400;
+        }
+
+        .f_to_time {
+            color:#EA8208;
+            font-size: 13px;
+            font-weight: 400;
+        }
+
+        .f-price {
+            color:  #151515;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .f-sel-btn {
+            text-align: center;
+        }
+
+        .f-price1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0071FF;
+        }
+
+        .form-check label {
+            font-size: 14px;
+        }
+
+        .fil_div {
+            position: sticky;
+            top: 226px;
+            z-index: 100;
+        }
+
+        #sort-by {
+            justify-content: space-between;
+            background: #292929;
+            color: #F0F0F0E0;
+            padding: 3px 6px;
+            border-radius: 7px;
+        }
+
+        #sort-by h4 {
+            font-size: 16px;
+            margin-top: 4px;
+            padding: 0px 6px;
+        }
+
+        #sortby-div {
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+            padding: 5px; 
+        }
+
+        .sortby_btn {
+            margin-right: 7px;
+            border: 0.5px solid #FFFFFF;
+            padding: 2px 8px;
+            border-radius: 22px;    
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .sortby_btn:hover {
+            background-color: black;
+            color: white;
+        }
+
+        .sortby_btn:active {
+            background-color: black;
+            color: white;
+        }
+
+        .sortby_btn:focus {
+            background-color: black;
+            color: white;
+        }
+
+        .flight-container {
+            border:1px solid #00000033;
+            padding: 4px 8px;
+            border-radius: 9px;
+            margin-bottom: 15px;
+        }
+        .flight-container1 {
+            border:1px solid #00000033;
+            padding: 4px 8px;
+            border-radius: 9px;
+            margin-bottom: 15px;
+        }
+
+        .flight-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        .flight-container1 img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .flight-details {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .f-code {
+            font-size: 14px;
+            font-weight: 500;
+            color: #000000;
+        }
+
+        .f-code2 {
+            font-size: 14px;
+            font-weight: 500;
+            color:#00000099;
+
+        }
+
+        .f-code2, .f-term {
+            margin-top: -13px;
+        }
+
+        .f-fil {
+            color: #000000CC;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .f-name {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .f-class {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .flight-details img {
+            margin-right: 10px;
+        }
+
+        .flight-timings {
+            display: flex;
+            align-items: center;
+            
+            margin-top: 10px;
+            flex-direction: column;
+        }
+
+        .flight-timings div {
+            text-align: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .flight-price {
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .flight-features {
+           justify-content: space-between;
+        }
+
+        .more-btn {
+            border: 1px solid #00000099;
+            background: none;
+            color: #000000;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 14px;
+        }
+
+        .flight-btn {
+            background: none;
+            border: none;
+            font-size: 14px;
+            color: #498ADC;
+            margin-right: 39px;
+        }
+
+        .book-btn {
+            background: #0071FF;
+            border-radius: 22px;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 4PX 12PX;
+        }
+
+        .select-btn {
+            background: #0071FF;
+            border-radius: 22px;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 4PX 12PX;
+            margin-right: 50px;
+        }
+
+        .fare-sec {
+            background: #D9D9D945;
+            border-radius: 8px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        #myTab li button {
+            border: 1px solid #0071FF;
+            border-radius: 22px;
+            color:  #0071FF;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 3px 12px;
+            margin: 2px 25px;
+        }
+
+        #myTab li button:hover {
+            background:#0071FF !important;
+            color: white !important;
+        }
+
+        #myTab li button:active {
+            background:#0071FF !important;
+            color: white !important;
+        }
+
+        #myTab li button:focus {
+            background:#0071FF !important;
+            color: white !important;
+        }
+
+        #myTab li button:visited {
+            background:#0071FF !important;
+            color: white !important;
+        }
+
+        #myTab li {
+            margin: 2px;
+            justify-content: space-between;
+        }
+
+        #myTab {
+            border-bottom: none;
+        }
+
+        .f-term {
+            font-weight: 700;
+        }
+
+        .f-refund {
+            color: #FFB800;
+        }
+
+        table {
+           border: none;
+           border-bottom: none;
+           outline: none;
+        }
+
+        .fare-sec  {
+            display: none;
+        }
+
+        .flight-det-sec{
+            display: none;
+        }
+
+        #filter-sec {
+            height: 900px;
+            position: sticky;
+            top: 229px; 
+            z-index: 100;
+            border:1px solid #00000033;
+            padding: 4px 8px 4px 10px;
+            border-radius: 9px;
+            margin: 2px 6px;
+        }
+
+        hr {
+            margin: 0.5rem 0;
+            border-width: 2px;
+        }
+
+        .close-btn {
+            font-size: 25px;
+            background: none;
+            border: none;
+            color: #0071FF !important;
+        }
+
+        .modal-body {
+            font-size: 14px;
+            border-radius: 15px !important;
+            margin-top: -25px !important;
+            padding: 10px !important;
+        }
+
+        .modal-body div {
+           background-color: rgb(194, 193, 193);
+           border-radius: 4px;
+           padding: 4px;
+        }
+
+
+        .modal-header h5 {
+            color:  #0071FF;
+            font-size: 18px !important;
+            font-weight: 600 !important;
+        }
+
+        .modal-header {
+            border-bottom: none !important;
+            margin-top: -10px ;
+        }
+
+        .ch_box  {
+            width: 20px !important;
+            height: 20px !important;
+            padding-right: 5px !important;
+        }
+
+       
+    </style>
+    
+    <script>
+        function showFare(flightcode) {
+            var showFare = document.getElementById(flightcode+'3');
+            var lessFare = document.getElementById(flightcode+'2');
+            var show_FlightDetail = document.getElementById(flightcode+'01');
+            if(showFare.style.display === "none") {
+                showFare.style.display = "block";
+                lessFare.innerHTML = "Less Fare";
+                show_FlightDetail.style.display = "none"
+                
+            } else {
+                showFare.style.display = "none";
+                lessFare.innerHTML = "More Fare";
+                show_FlightDetail.style.display = "block"
+            }
+        }
+        
+        function showFlightDetail(flightcode) {
+            var showFlightDetail = document.getElementById(flightcode+'4');
+            var lessFare = document.getElementById(flightcode+'2');
+            if(showFlightDetail.style.display === "none") {
+                showFlightDetail.style.display = "block";
+                lessFare.style.display = "none";
+            } else {
+                showFlightDetail.style.display = "none";
+                lessFare.style.display = "block";
+            }
+        }
+
+    </script>
+    <!-- ----------------flight sort by content --------------------------- -->
+    <script>
+        function sortFlight(criteria) {
+            var flightLists = document.querySelectorAll('#flightlist');
+    
+            flightLists.forEach(function(flightList) {
+                var flights = Array.from(flightList.querySelectorAll('.flight-container, .flight-container1'));
+    
+                var sortOrder = flightList.getAttribute('data-sort-order') || 'asc';
+    
+                flights.sort(function(a, b) {
+                    var aValue, bValue;
+    
+                    if (criteria === 'Price') {
+                        aValue = parseFloat(a.getAttribute('ticket-price')) || parseFloat(a.getAttribute('ticket-prices'));
+                        bValue = parseFloat(b.getAttribute('ticket-price')) || parseFloat(b.getAttribute('ticket-prices'));
+                    } else if (criteria === 'Duration') {
+                        aValue = parseInt(a.getAttribute('ticket-duration-hours') || 0) * 60 + parseInt(a.getAttribute('ticket-duration-minutes') || 0);
+                        bValue = parseInt(b.getAttribute('ticket-duration-hours') || 0) * 60 + parseInt(b.getAttribute('ticket-duration-minutes') || 0);
+                    } else if (criteria === 'Departure') {
+                        var aDeparture = a.getAttribute('flight-departure-time') || a.getAttribute('flight-departure-times');
+                        var bDeparture = b.getAttribute('flight-departure-time') || b.getAttribute('flight-departure-times');
+                        return sortOrder === 'asc' ? aDeparture.localeCompare(bDeparture) : bDeparture.localeCompare(aDeparture);
+                    } else if (criteria === 'Arrival') {
+                        var aArrival = a.getAttribute('flight-arrival-time') || a.getAttribute('flight-arrival-times');
+                        var bArrival = b.getAttribute('flight-arrival-time') || b.getAttribute('flight-arrival-times');
+                        return sortOrder === 'asc' ? aArrival.localeCompare(bArrival) : bArrival.localeCompare(aArrival);
+                    } else if (criteria === 'Name') {
+                        var aName = a.getAttribute('flight-name') || a.getAttribute('flight-names');
+                        var bName = b.getAttribute('flight-name') || b.getAttribute('flight-names');
+                        return sortOrder === 'asc' ? aName.localeCompare(bName) : bName.localeCompare(aName);
+                    }
+    
+                    return sortOrder === 'asc' ? aValue - bValue : bValue - aValue;
+                });
+    
+                flightList.innerHTML = '';
+    
+                flights.forEach(function(flight) {
+                    flightList.appendChild(flight);
+                });
+    
+                flightList.setAttribute('data-sort-order', sortOrder === 'asc' ? 'desc' : 'asc');
+            });
+        }
+    </script>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+
+<!-- max and min value bASED FLIGHT -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        const rangeInput = $(".range-input input"),
+            priceInput = $(".price-input input"),
+            range = $(".slider .progress"),
+            priceGap = 1000;
+
+        priceInput.on("input", function () {
+            let minPrice = parseInt(priceInput.eq(0).val()),
+                maxPrice = parseInt(priceInput.eq(1).val());
+
+            if (maxPrice - minPrice < priceGap) {
+                if ($(this).hasClass("input-min")) {
+                    rangeInput.eq(0).val(maxPrice - priceGap);
+                } else {
+                    rangeInput.eq(1).val(minPrice + priceGap);
+                }
+            } else {
+                updateSlider(minPrice, maxPrice);
+            }
+        });
+
+        rangeInput.on("input", function () {
+            RangeSlider();
+        });
+
+        RangeSlider();
+
+        function RangeSlider() {
+            let minVal = parseInt(rangeInput.eq(0).val()),
+                maxVal = parseInt(rangeInput.eq(1).val());
+
+            if (maxVal - minVal < priceGap) {
+                rangeInput.eq(0).val(maxVal - priceGap);
+                minVal = parseInt(rangeInput.eq(0).val());
+            }
+
+            updateSlider(minVal, maxVal);
+        }
+
+        function updateSlider(minVal, maxVal) {
+            priceInput.eq(0).val(minVal);
+            priceInput.eq(1).val(maxVal);
+            range.css({
+                left: (minVal / rangeInput.eq(0).attr("max")) * 100 + "%",
+                right: (100 - (maxVal / rangeInput.eq(1).attr("max")) * 100) + "%"
+            });
+
+            filterFlightsByPrice(minVal, maxVal);
+            console.log(minVal, maxVal);
+        }
+
+        function filterFlightsByPrice(minPrice, maxPrice) {
+            console.log("Filtering by Price:", minPrice, maxPrice);
+
+            $(".flight-container,.flight-container1").each(function () {
+                var flightPrice = parseInt($(this).attr("ticket-price")) || parseInt($(this).attr("ticket-prices"));
+
+                console.log("Flight Price:", flightPrice);
+
+                if (flightPrice >= minPrice && flightPrice <= maxPrice + 1000) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+    });
+</script>
+
+
+
+    
+
+
+<!-- airline name check box function -->
+<script>
+    document.querySelectorAll('.form-check-input').forEach(function (checkbox) {
+    checkbox.addEventListener('change', function () {
+        updateFlightList();
+    });
+});
+
+function updateFlightList() {
+    var selectedAirlines = Array.from(document.querySelectorAll('.form-check-input:checked'))
+        .map(function (checkbox) {
+            return checkbox.getAttribute('data-airline').toLowerCase(); // Convert to lowercase
+        });
+
+    document.querySelectorAll('.flight-container, .flight-container1').forEach(function (flight) {
+        var airlineName = flight.getAttribute('flight-name') || flight.getAttribute('flight-names');
+        if (airlineName) {
+            airlineName = airlineName.toLowerCase(); // Convert to lowercase
+            if (selectedAirlines.length === 0 || selectedAirlines.includes(airlineName)) {
+                flight.style.display = 'block';
+            } else {
+                flight.style.display = 'none';
+            }
+        } else {
+            flight.style.display = 'none'; // Handle case where flight-name attribute is missing
+        }
+    });
+}
+</script>
+
+
+
+<!-- flight timne base flight list view -->
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+    $(".f-time").click(function () {
+        var selectedTime = $(this).text();
+        var timeType = $(this).attr("for").split("-")[0]; // "departure" or "arrival"
+
+        // Hide all flights
+        $(".flight-container, .flight-container1").hide();
+
+        // Show flights based on selected time
+        $(".flight-container, .flight-container1").each(function () {
+            var timeAttr;
+            if (timeType === "departure") {
+                timeAttr = $(this).attr("flight-departure-time") || $(this).attr("flight-departure-times");
+            } else if (timeType === "arrival") {
+                timeAttr = $(this).attr("flight-arrival-time") || $(this).attr("flight-arrival-times");
+            }
+
+            if (timeAttr && isTimeInRange(timeAttr, selectedTime)) {
+                $(this).show();
+            }
+        });
+    });
+
+    // Function to check if a given time is in the selected range
+    function isTimeInRange(flightTime, selectedTime) {
+        var selectedHour = parseInt(selectedTime.split(":")[0], 10);
+        var flightHour = parseInt(flightTime.split(":")[0], 10);
+
+        return (selectedTime.includes("Before 6AM") && flightHour < 6) ||
+            (selectedTime.includes("6AM-12PM") && flightHour >= 6 && flightHour < 12) ||
+            (selectedTime.includes("12PM-6PM") && flightHour >= 12 && flightHour < 18) ||
+            (selectedTime.includes("After 6PM") && flightHour >= 18);
+    }
+});
+
+</script>
+
+<!-- ----------------flight stops list -->
+<script>
+    document.querySelectorAll('.form-check-inputs').forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            updateFlightLists();
+        });
+    });
+
+    function updateFlightLists() {
+        var selectedAirlinesClass = Array.from(document.querySelectorAll('.form-check-inputs:checked'))
+            .map(function (checkbox) {
+                return checkbox.getAttribute('data-stops').toLowerCase(); // Convert to lowercase
+            });
+
+        document.querySelectorAll('.flight-container, .flight-container1').forEach(function (flight) {
+            var airlineClass = flight.getAttribute('flight-stop') || flight.getAttribute('flight-stops'); // Corrected attribute names
+            if (airlineClass) {
+                airlineClass = airlineClass.toLowerCase(); // Convert to lowercase
+                if (selectedAirlinesClass.length === 0 || selectedAirlinesClass.includes(airlineClass)) {
+                    flight.style.display = 'block';
+                } else {
+                    flight.style.display = 'none';
+                }
+            } else {
+                flight.style.display = 'none'; // Handle case where flight-stop or flight-stops attribute is missing
+            }
+        });
+    }
+</script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+function show_fare_details( tokenId,traceId,resultIndex) {
+    
+    var csrftoken = document.cookie.match(/csrftoken=([\w-]+)/)[1];
+    $.ajax({
+        url: "/Fare_rule_details/",  // Replace with the actual URL of your views.py
+        type: "POST",
+        data:{
+            // "EndUserIp": "192.168.11.120",
+            "tokenId": tokenId,
+            "traceId": traceId,
+            "resultIndex": resultIndex,
+        },
+        
+        headers: {
+            'X-CSRFToken': csrftoken  // Include the CSRF token in the headers
+        },
+        success: function(response) {
+            // var roomDetailsData = response.room_details;
+            // updateRoomDetails(roomDetailsData, hotelCode);
+            document.getElementById(resultIndex +'00').innerHTML = response.fare_details_html;
+            // console.log(roomDetailsData);
+        },
+        error: function(error) {
+            document.getElementById(resultIndex +'00').innerHTML = "<a>N0 fare rule details Available</a>"
+            console.error(error);
+        }
+    });
+}
+// show_fare_details();
+</script>
+<!-- <script>
+    function show_fare_details(traceId, resultIndex, tokenId) {
+        // Fetch CSRF token from cookies
+        var csrftoken = getCookie('csrftoken');
+
+        $.ajax({
+            url: "/Fare_rule_details/",
+            type: "POST",
+            data: {
+                "EndUserIp" :"192.168.11.120",
+                "traceId": traceId,
+                "resultIndex": resultIndex,
+                "tokenId": tokenId
+            },
+            headers: {
+                'X-CSRFToken': csrftoken
+            },
+            success: function(response) {
+                console.log(response);
+                // Process the response here (e.g., display in a modal)
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                // Handle error (e.g., show an error message)
+            }
+        });
+    }
+
+    // Function to get CSRF token from cookies
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script> -->
+
+
+
+    
+
+<!-- preview page  -->
+<script>
+function handleSelectFlight(traceId, resultIndex, tokenId, FlightStop, FlightClass, Flightdate, Total_H_M, FlightStrat, FlightEnt, Airlinecode) {
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/flightreview/'; // Update with the appropriate URL
+    var csrfToken = document.cookie.match(/csrftoken=([\w-]+)/)[1];
+    // Create hidden input fields for necessary data
+    var csrfTokenField = document.createElement('input');
+    csrfTokenField.type = 'hidden';
+    csrfTokenField.name = 'csrfmiddlewaretoken';
+    csrfTokenField.value = csrfToken;
+    form.appendChild(csrfTokenField);
+// Add other necessary hidden input fields
+    var traceIdField = document.createElement('input');
+    traceIdField.type = 'hidden';
+    traceIdField.name = 'traceId';
+    traceIdField.value = traceId;
+    form.appendChild(traceIdField);
+    var resultIndexField = document.createElement('input');
+    resultIndexField.type = 'hidden';
+    resultIndexField.name = 'resultIndex';
+    resultIndexField.value = resultIndex;
+    form.appendChild(resultIndexField);
+    var tokenIdField = document.createElement('input');
+    tokenIdField.type = 'hidden';
+    tokenIdField.name = 'tokenId';
+    tokenIdField.value = tokenId;
+    form.appendChild(tokenIdField);
+    var flightStopField = document.createElement('input');
+    flightStopField.type = 'hidden';
+    flightStopField.name = 'flightstops';
+    flightStopField.value = FlightStop;
+    form.appendChild(flightStopField);
+    var flightclassField = document.createElement('input');
+    flightclassField.type = 'hidden';
+    flightclassField.name = 'flightclass';
+    flightclassField.value = FlightClass;
+    form.appendChild(flightclassField);
+    var flightdateField = document.createElement('input');
+    flightdateField.type = 'hidden';
+    flightdateField.name = 'flightdate';
+    flightdateField.value = Flightdate;
+    form.appendChild(flightdateField);
+    var flightH_MField = document.createElement('input');
+    flightH_MField.type = 'hidden';
+    flightH_MField.name = 'flighttodal_h_m';
+    flightH_MField.value = Total_H_M;
+    form.appendChild(flightH_MField);
+    var flightstartField = document.createElement('input');
+    flightstartField.type = 'hidden';
+    flightstartField.name = 'flightstartpoint';
+    flightstartField.value = FlightStrat;
+    form.appendChild(flightstartField)
+    var flightendField = document.createElement('input');
+    flightendField.type = 'hidden';
+    flightendField.name = 'flightendpoint';
+    flightendField.value = FlightEnt;
+    form.appendChild(flightendField)
+    var AirlinecodeField = document.createElement('input');
+    AirlinecodeField.type = 'hidden';
+    AirlinecodeField.name = 'Airlinecode';
+    AirlinecodeField.value = Airlinecode;
+    form.appendChild(AirlinecodeField)
+  
+    document.body.appendChild(form);
+    form.submit();
+}
+</script>
+<script>
+window.addEventListener('pageshow', function(event) {
+    // Check if the page is being shown from the bfcache (back-forward cache)
+    if (event.persisted) {
+        // Reload the page
+        window.location.reload();
+    }
+});
+</script>
+{% endblock %} 
+</body>
+
+</body>
+</html>

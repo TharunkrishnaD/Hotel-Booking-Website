@@ -1,0 +1,101 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family:'Inter', sans-serif;
+}
+
+.details_key {
+    color: rgba(23, 52, 73, 1);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.details_value {
+    color: rgba(23, 52, 73, 0.8);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.voucher_head {
+    color: rgba(0, 0, 0, 1);
+    font-size: 36px;
+    font-weight: 600;
+}
+
+.web_link {
+    color: rgba(0, 78, 174, 1);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+#bd_container {
+    border-top: 1px solid rgba(213, 232, 255, 1);
+}
+
+#bd_head_div {
+    border-bottom: 1px solid rgba(213, 232, 255, 1);
+}
+
+.bd_head {
+    color: rgba(0, 78, 174, 1);
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.details_div1 {
+    margin-left:  -20px;
+}
+
+.details_div2 {
+    margin-right:  -40px;
+} 
+
+.table_container {
+    border-bottom: 1px solid rgba(213, 232, 255, 1)
+}
+
+.table {
+    border: 1px solid rgba(0, 78, 174, 1) !important;
+}
+
+.remarks {
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(23, 52, 73, 1);
+}
+
+.terms_conditions li {
+    color: rgba(23, 52, 73, 1);
+    font-size: 15px;
+    font-weight: 500;
+    margin: 4px 12px;
+    padding: 2px 6px;
+}
+
+.terms_conditions li::marker {
+    color: rgba(0, 78, 174, 1) ;
+}
+
+.hotel_policies li {
+    color: rgba(23, 52, 73, 1);
+    font-size: 15px;
+    font-weight: 500;
+    margin: 4px 12px;
+    padding: 2px 6px;
+}
+
+.hotel_policies li::marker {
+    color: rgba(0, 78, 174, 1) ;
+}
+
+.loc_vf {
+    color: rgba(23, 52, 73, 1);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+address {
+    color: rgba(23, 52, 73, 0.8);
+    font-size: 16px;
+    font-weight: 600;
+}

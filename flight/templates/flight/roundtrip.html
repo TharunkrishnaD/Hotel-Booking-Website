@@ -1,0 +1,1582 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fight Round Trip</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/flight/oneway.css' %}">
+</head>
+<body>
+    <Header>
+        <div class="container-fluid header">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="navbar-brand" href="#" >
+                    <img src="{% static 'image/flight/Magnet logo.png' %}"alt="logo" width="79px" height="79px">
+                </a>
+                <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto mt-2"> <!-- mx-auto for centering -->
+                        <li class="nav-item">
+                            <a class="nav-link" href=" "><img src="{% static 'image/flight/flight w.svg' %}"  alt=""><p>Flights</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'hotel' %}"><img src="{% static 'image/flight/hotel w.svg' %}"  alt=""><p>Hotels</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/flight/holiday w.svg' %}" alt=""><p>Holidays</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/flight/island w.svg' %}" alt=""><p>Island</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/flight/visa w 1 icon.svg' %}" alt=""><p>Visa</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/flight/more w 1 icon.svg' %}" alt=""><p>More</p></a>
+                        </li>
+                    </ul>
+                    <div class="d-flex btn-log mb-2">
+                        <button class="btn btn-primary" id="log-btn">LOG IN</button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </Header>
+    <section class="container-fluid" id="form" style="background: #F4F4F4;">
+        <form action="submit" class="containeralign-items-center  row p-2" style="background: #FFFFFF; margin: 20px 50px 0px 50px;">
+            <div class="col-md-12">
+                <div class="row ">
+                    <div class="col-md-2">
+                        <label for="from" class="fcode-title">{{fromAircode}}</label>
+                        <input type="text" class="form-control" value="{{fromcityname}}">
+                    </div>
+                    <div class="col-md-1">
+                        <img src="image/flight/flight b.svg" alt="flight icon" class="img-fluid">
+                    </div>
+                    <div class="col-md-2" >
+                        <label for="from" class="fcode-title">{{toAircode}}</label>
+                        <input type="text" class="form-control" value="{{tocityname}}">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="departure date" class="f-label">Departure Date</label>
+                        <input type="date" id="date" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="passengers-class" class="f-label">Passengers & Class</label>
+                        <input type="text" class="form-control" readonly value="1 pas & economy">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary" id="mod-btn">Modify Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+    <section class="container d-flex mt-2">
+        <div id="filter-sec" class=" col-md-3" style="margin: 4;">
+            <div>
+                <div>
+                    <h3>Filters</h3>
+                    <hr>
+                    <p>Number of Price</p>
+                </div>
+                <div class="wrapper">
+                    <div class="price-input">
+                        <div class="form-row d-flex">
+                            <div class="col d-flex">
+                                <label for="price">₹</label>
+                                <input type="number" readonly class="form-control input-min" value="{{ min_price }}">
+                            </div>
+                            <div class="separator">-</div>
+                            <div class="col d-flex">
+                                <label for="price">₹</label>
+                                <input type="number" readonly class="form-control input-max" value="{{ max_price }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider">
+                        <div class="progress"></div>
+                    </div>
+                    <div class="range-input">
+                        <div class="form-row">
+                            <div class="col">
+                                <input type="range" class="form-range range-min" min="{{ min_price }}" max="{{ max_price }}" value="{{ min_price }}" step="100">
+                            </div>
+                            <div class="col">
+                                <input type="range" class="form-range range-max" min="{{ min_price }}"max="{{ max_price }}" value="{{ max_price }}" step="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="row">
+                        <p class="fil-head">Stops {{fromAircode}} - {{toAircode}}</p>
+                    </div>
+                    <div class="row">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="nonStop">
+                            <label class="form-check-label" for="nonStop">Non-stop</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="oneStop">
+                            <label class="form-check-label" for="oneStop">1 Stop</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="twoStop">
+                            <label class="form-check-label" for="twoStop">2 Stops</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="threeStop">
+                            <label class="form-check-label" for="threeStop">3 Stops</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="row">
+                        <p class="fil-head">Stops {{toAircode}} - {{fromAircode}}</p>
+                    </div>
+                    <div class="row">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="nonStop">
+                            <label class="form-check-label" for="nonStop">Non-stop</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="oneStop">
+                            <label class="form-check-label" for="oneStop">1 Stop</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="twoStop">
+                            <label class="form-check-label" for="twoStop">2 Stops</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="threeStop">
+                            <label class="form-check-label" for="threeStop">3 Stops</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="row">
+                        <div>
+                            <p class="fil-head">Take off from {{fromAircode}}</p>
+                        </div>
+                        <div>
+                            <label for="departure-time" class="f-time first-time">Before 6AM</label>
+                            <label for="departure-time" class="f-time first-time">6AM-12PM</label>
+                        </div>
+                        <div>
+                            <label for="departure-time" class="f-time first-time">12PM-6PM</label>
+                            <label for="departure-time" class="f-time first-time">After 6PM</label>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div>
+                            <p class="fil-head">Arrival in {{toAircode}}</p>
+                        </div>
+                        <div>
+                            <label for="arrival-time" class="f-time first-time">Before 6AM</label>
+                            <label for="arrival-time" class="f-time first-time">6AM-12PM</label>
+                        </div>
+                        <div>
+                            <label for="arrival-time" class="f-time first-time">12PM-6PM</label>
+                            <label for="arrival-time" class="f-time first-time">After 6PM</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="row">
+                        <div>
+                            <p class="fil-head">Take off from {{toAircode}}</p>
+                        </div>
+                        <div>
+                            <label for="departure-time" class="f-time first-times">Before 6AM</label>
+                            <label for="time" class="f-time first-times" >6AM-12PM</label>
+                        </div>
+                        <div>
+                            <label for="departure-times" class="f-time first-times" >12PM-6PM</label>
+                            <label for="departure-times" class="f-time first-times" >After 6PM</label>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div>
+                            <p class="fil-head">Arrival in {{fromAircode}}</p>
+                        </div>
+                        <div>
+                            <label for="arrival-times" class="f-time first-times">Before 6AM</label>
+                            <label for="arrival-times" class="f-time first-times">6AM-12PM</label>
+                        </div>
+                        <div>
+                            <label for="arrival-times" class="f-time first-times">12PM-6PM</label>
+                            <label for="arrival-times" class="f-time first-times">After 6PM</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="row">
+                        <p class="fil-head">Airlines</p>
+                    </div>
+                    <div class="row">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="Air-india"  data-airline="Air India">
+                            <label class="form-check-label" for="Air india">Air india</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="Air-asia" data-airline="Air asia">
+                            <label class="form-check-label" for="Air asia">Air asia</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="Indigo" data-airline="Indigo">
+                            <label class="form-check-label" for="Indigo">Indigo</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="Vistara" data-airline="Vistara">
+                            <label class="form-check-label" for="Vistara">Vistara</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="row">
+                        <p class="fil-head">Return Airlines</p>
+                    </div>
+                    <div class="row">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input-2" id="Air-india" data-airline="Air India">
+                            <label class="form-check-label" for="Air india">Air india</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input-2" id="Air-asia" data-airline="Air asia">
+                            <label class="form-check-label" for="Air asia">Air asia</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input-2" id="Indigo" data-airline="Indigo">
+                            <label class="form-check-label" for="Indigo">Indigo</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input-2" id="Vistara" data-airline="Vistara">
+                            <label class="form-check-label" for="Vistara">Vistara</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="row">
+                        <p class="fil-head">All Itineraries</p>
+                    </div>
+                    <div class="row">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="Baggage">
+                            <label class="form-check-label" for="Baggage">Baggage Included</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="Non-Refundable">
+                            <label class="form-check-label" for="Non-Refundable">Non-Refundable</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="Refundable">
+                            <label class="form-check-label" for="Refundable">Refundable</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="Par-Refundable">
+                            <label class="form-check-label" for="Partial Refundable">Partial Refundable</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <div class="container">
+            <div id="fd-sec" class="col-md-12">
+                <div id="sort-by">
+                    <div id="sortby-label" class="col-md-6 d-flex" onclick="handleClick(event)" >
+                        <label class="form-check-label" for="airlinesRadio" onclick="sortrountFlight('Name')">Airlines</label>
+                        <label class="form-check-label" for="departureRadio" onclick="sortrountFlight('Departure')">Departure</label>
+                        <label class="form-check-label" for="durationRadio" onclick="sortrountFlight('Duration')">Duration</label>
+                        <label class="form-check-label" for="arrivalRadio" onclick="sortrountFlight('Arrival')">Arrival</label>
+                        <label class="form-check-label" for="priceRadio" onclick="sortrountFlight('Price')">Price</label>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-3">
+                <div id="roundflightlist">
+                    {% if error_message %}
+                        <p>{{error_message}}</p>
+                    {% else %}
+                    {% for roundflight in round_flight_info %}
+                    <div class="flight-container col-md-12"  ticket-price="{{roundflight.OfferedFare}}" flight-name="{{roundflight.AirlineName}}" ticket-duration-hours="{{roundflight.totalhour}}" ticket-duration-minutes="{{roundflight.totalminute}}">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img src="{% static 'image/flight/flight w.svg' %}" alt="Flight-logo">
+                                <h4 class="f-name">{{roundflight.AirlineName}} | {{roundflight.AirlineCode}}-{{roundflight.FlightNumber}}</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="flight-timings">
+                                    <div class=" d-flex" style="border-bottom: 1px solid blue;">
+                                        <p class="f-time-in">{{roundflight.departurehoure}}:{{roundflight.departureminute}}</p>
+                                        <p class="f_to_time">{{roundflight.totalhour}}h{{roundflight.totalminute}}m</p>
+                                        <p class="f-time-in">{{roundflight.arrivalhoure}}:{{roundflight.arrivalminute}}</p>
+                                    </div>
+                                    <div class="d-flex mt-2">
+                                        <p class="f-code">{{roundflight.DepartureAirport}}</p>
+                                        <p class="f-code">{{roundflight.ArrivalAirport}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 flight-price">
+                                <h4 class="f-price">₹ {{roundflight.OfferedFare}}</h4>
+                                <button type="button" class="btn btn-primary book-btn">Book Now</button>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="flight-features d-flex">
+                                <div class="mr-2">
+                                    <button type="button" class="btn flight-btn" onclick="showFlightDetail('{{roundflight.FlightNumber}}','{{roundflight.FlightNumber}}')">Flight Details</button>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-primary more-btn" id="{{roundflight.FlightNumber}}22" onclick="showFare('{{roundflight.FlightNumber}}','{{roundflight.FlightNumber}}')">More Fare</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container mt-3" style="display: none;background: #D9D9D945; border-radius: 8px; align-items: center; justify-content: center;text-align: center;" id="{{roundflight.FlightNumber}}23">
+                            <div class="row">
+                                <div class="col-md-12 mt-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex justify-content-between col-md-7">
+                                            <p class="f-fil">SAVER</p>
+                                            <h4 class="f-price1">₹ {{roundflight.OfferedFare}}</h4>
+                                            <p class="f-class">Private/Economy</p>
+                                        </div>
+                                        <div class="f-sel-btn mb-3">
+                                            <button type="button" class="btn btn-primary select-btn">Select</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="{{roundflight.FlightNumber}}24" class="container mt-3" style="display: none;">
+                            <div>
+                                <ul class="nav nav-tabs " id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active btn" id="{{roundflight.FlightNumber}}home-tab"  data-bs-toggle="tab" data-bs-target="#{{roundflight.FlightNumber}}home-tab-pane" type="button" role="tab" aria-controls="{{roundflight.FlightNumber}}home-tab-pane" aria-selected="true" autofocus>Flight Detailes</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link btn" id="{{roundflight.FlightNumber}}profile-tab"  data-bs-toggle="tab" data-bs-target="#{{roundflight.FlightNumber}}profile-tab-pane" type="button" role="tab" aria-controls="{{roundflight.FlightNumber}}profile-tab-pane" aria-selected="false">Fare Rules</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link btn" id="{{roundflight.FlightNumber}}contact-tab"   data-bs-toggle="tab" data-bs-target="#{{roundflight.FlightNumber}}contact-tab-pane" type="button" role="tab" aria-controls="{{roundflight.FlightNumber}}contact-tab-pane" aria-selected="false">Fare Summary</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link btn" id="{{roundflight.FlightNumber}}bag-tab"  data-bs-toggle="tab" data-bs-target="#{{roundflight.FlightNumber}}bag-tab-pane" type="button" role="tab" aria-controls="{{roundflight.FlightNumber}}contact-tab-pane" aria-selected="false">Baggage Info</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content mt-2" id="myTabContent">
+                                    <div class="tab-pane fade show active col-md-12" id="{{roundflight.FlightNumber}}home-tab-pane"  role="tabpanel" aria-labelledby="{{roundflight.FlightNumber}}home-tab" tabindex="0">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <img src="" alt="Flight-logo">
+                                                    <h4 class="f-name">{{roundflight.AirlineName}} | {{roundflight.AirlineCode}}-{{roundflight.FlightNumber}}</h4>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="flight-timings" style="display: flex;flex-direction: row;"!important>
+                                                        <div class="f-from">
+                                                            <p class="f-time-in">{{roundflight.departurehoure}}:{{roundflight.departureminute}}</p>
+                                                            <p class="f-code">{{roundflight.DepartureAirport}} {{roundflight.DepartureAirportName}}</p>
+                                                            <p class="f-code2">{{roundflight.departurecityname}}, {{roundflight.departurecontryname}}</p>
+                                                            <p class="f-term">Terminal: {{roundflight.departureTerminal}}</p> 
+                                                        </div>
+                                                        <div>
+                                                            <p class="f_to_time" style="border-bottom:1px solid #00000033; border-bottom-style: dotted;margin:0px 2px;">{{roundflight.totalhour}}h{{roundflight.totalminute}}m</p>
+                                                        </div>
+                                                        <div class="f-to">
+                                                            <p class="f-time-in">{{roundflight.arrivalhoure}}:{{roundflight.arrivalminute}}</p>
+                                                            <p class="f-code">{{roundflight.ArrivalAirport}} {{roundflight.ArrivalAirportName}}</p>
+                                                            <p class="f-code2">{{roundflight.arrivalcityname}}, {{roundflight.arrivalcontryname}}</p>
+                                                            <p class="f-term">Terminal: {{roundflight.arrivalTerminal}}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 ms-12 d-flex" style="text-align: center;">
+                                                    <p class="f-refund">{{roundflight.refund}}</p>
+                                                    <p style="margin-left: 120px;">Seat Left: {{roundflight.setsAvailable}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show" role="tabpanel" id="{{roundflight.FlightNumber}}profile-tab-pane" aria-labelledby="{{roundflight.FlightNumber}}home-tab" tabindex="0">
+                                        <div class="container">
+                                            <div>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>TYPE</th>
+                                                            <th>BASE FARE</th>
+                                                            <th>TAXES & FEES</th>
+                                                            <th>TOTAL</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Adult X 1</td>
+                                                            <td>INR 4380.00</td>
+                                                            <td>INR 1170.00</td>
+                                                            <td>INR 5500.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Total</td>
+                                                            <td>INR 4380.00</td>
+                                                            <td>INR 1170.00</td>
+                                                            <td><strong>INR 5500.00</strong></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show" id="{{roundflight.FlightNumber}}contact-tab-pane"  role="tabpanel" aria-labelledby="{{roundflight.FlightNumber}}home-tab" tabindex="0">
+                                        <div class="container">
+                                            <div>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>SECTOR</th>
+                                                            <th>TIME FRAME</th>
+                                                            <th>CHARGES & DISCRIPTION</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="f-code">{{roundflight.DepartureAirport}} - {{roundflight.ArrivalAirport}}</td>
+                                                            <td>From & Above Before Dept</td>
+                                                            <td>INR 4000* + 0</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show" id="{{roundflight.FlightNumber}}bag-tab-pane"  role="tabpanel" aria-labelledby="{{roundflight.FlightNumber}}home-tab" tabindex="0">
+                                        <div class="container">
+                                            <div>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>SECTOR</th>
+                                                            <th>CHECK IN</th>
+                                                            <th>CABIN</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="f-code">{{roundflight.DepartureAirport}} - {{roundflight.ArrivalAirport}}</td>
+                                                            <td>{{roundflight.checkinbag}} / Person</td>
+                                                            <td>{{roundflight.combainbag}} / Person</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>   
+         <div class="container">
+            <div id="fd-sec" class="col-md-12">
+                <div id="sort-by">
+                    <div id="sortby-label" class="col-md-6 d-flex" onclick="handleClick(event)">
+                        <label class="form-check-label" for="airlinesRadio"  onclick="ReturnsortFlight('Name')">Airlines</label>
+                        <label class="form-check-label" for="departureRadio" onclick="ReturnsortFlight('Departure')">Departure</label>
+                        <label class="form-check-label" for="durationRadio" onclick="ReturnsortFlight('Duration')">Duration</label>
+                        <label class="form-check-label" for="arrivalRadio" onclick="ReturnsortFlight('Arrival')">Arrival</label>
+                        <label class="form-check-label" for="priceRadio" onclick="ReturnsortFlight('Price')">Price</label>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-3">                
+                <div id="retrunrountflight">
+                {% if error_message %}
+                    <p>{{error_message}}</p>
+                {% else %}
+                {% for round_flight in round_flight_info%}
+                <div class="flight-container1 col-md-12"  ticket-price="{{round_flight.OfferedFare}}" flight-name="{{round_flight.AirlineName}}" ticket-duration-hours="{{round_flight.totalhour}}" ticket-duration-minutes="{{round_flight.totalminute}}"
+                flight-departure-times="{{round_flight.departurehoure}}:{{round_flight.departureminute}}" flight-arrival-times="{{round_flight.arrivalhoure}}:{{round_flight.arrivalminute}}">
+                    <div class="row">
+                        <div class="col-md-3" style="align-items: center;">
+                            <img src="{% static 'image/flight/flight w.svg' %}" alt="Flight-logo">
+                            <h4 class="f-name">{{round_flight.AirlineName}} | {{round_flight.AirlineCode}}-{{round_flight.FlightNumber}}</h4>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="flight-timings">
+                                <div class=" d-flex" style="border-bottom: 1px solid blue;">
+                                    <p class="f-time-in">{{round_flight.arrivalhoure}}:{{round_flight.arrivalminute}}</p>
+                                    <p class="f_to_time">{{round_flight.totalhour}}h{{round_flight.totalminute}}m</p>
+                                    <p class="f-time-in">{{round_flight.departurehoure}}:{{round_flight.departureminute}}</p>
+                                </div>
+                                <div class="d-flex mt-2">
+                                    <p class="f-code">{{round_flight.ArrivalAirport}}</p>
+                                    <p class="f-code">{{round_flight.DepartureAirport}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 flight-price">
+                            <h4 class="f-price">₹ {{round_flight.OfferedFare}}</h4>
+                            <button type="button" class="btn btn-primary book-btn">Book Now</button>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="flight-features d-flex">
+                            <div class="mr-2">
+                                <button type="button" id="{{round_flight.FlightNumber}}01" class="btn flight-btn" onclick="show_FlightDetail('{{round_flight.FlightNumber}}','{{round_flight.FlightNumber}}','{{round_flight.FlightNumber}}')">Flight Details</button>
+                            </div>
+                            <div>
+                                <button type="button"  class="btn btn-primary more-btn" id="{{round_flight.FlightNumber}}12" onclick="show_Fare('{{round_flight.FlightNumber}}','{{round_flight.FlightNumber}}')">More Fare</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container mt-3" style="display: none;background: #D9D9D945; border-radius: 8px; align-items: center; justify-content: center;text-align: center;" id="{{round_flight.FlightNumber}}13">
+                        <div class="row">
+                            <div class="col-md-12 mt-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex justify-content-between col-md-7">
+                                        <p class="f-fil">SAVER</p>
+                                        <h4 class="f-price1">₹ {{round_flight.OfferedFare}}</h4>
+                                        <p class="f-class">Private/Economy</p>
+                                    </div>
+                                    <div class="f-sel-btn mb-3">
+                                        <button type="button" class="btn btn-primary select-btn">Select</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="{{round_flight.FlightNumber}}14" class="container mt-3" style="display: none;">
+                        <div>
+                            <div>
+                                <ul class="nav nav-tabs " id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active btn" id="{{round_flight.FlightNumber}}home-tabs"  data-bs-toggle="tab" data-bs-target="#{{round_flight.FlightNumber}}home-tab-panes" type="button" role="tab" aria-controls="{{round_flight.FlightNumber}}home-tab-panes" aria-selected="true" autofocus>Flight Detailes</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link btn" id="{{round_flight.FlightNumber}}profile-tabs"  data-bs-toggle="tab" data-bs-target="#{{round_flight.FlightNumber}}profile-tab-panes" type="button" role="tab" aria-controls="{{round_flight.FlightNumber}}profile-tab-panes" aria-selected="false">Fare Rules</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link btn" id="{{round_flight.FlightNumber}}contact-tabs"   data-bs-toggle="tab" data-bs-target="#{{round_flight.FlightNumber}}contact-tab-panes" type="button" role="tab" aria-controls="{{round_flight.FlightNumber}}contact-tab-panes" aria-selected="false">Fare Summary</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link btn" id="{{round_flight.FlightNumber}}bag-tabs"  data-bs-toggle="tab" data-bs-target="#{{round_flight.FlightNumber}}bag-tab-panes" type="button" role="tab" aria-controls="{{round_flight.FlightNumber}}contact-tab-panes" aria-selected="false">Baggage Info</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content mt-2" id="myTabContent">
+                                    <div class="tab-pane fade show active col-md-12" id="{{round_flight.FlightNumber}}home-tab-panes"  role="tabpanel" aria-labelledby="{{round_flight.FlightNumber}}home-tabs" tabindex="0">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-3" style="align-items: center;">
+                                                    <img src="" alt="Flight-logo">
+                                                    <h4 class="f-name">{{round_flight.AirlineName}} | {{round_flight.AirlineCode}}-{{round_flight.FlightNumber}}</h4>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="flight-timings" style="display: flex;flex-direction: row;"!important>
+                                                        <div class="f-from">
+                                                            <p class="f-time-in">{{round_flight.arrivalhoure}}:{{round_flight.arrivalminute}}</p>
+                                                            <p class="f-code">{{round_flight.ArrivalAirport}} {{round_flight.ArrivalAirportName}}</p>
+                                                            <p class="f-code2">{{round_flight.arrivalcityname}}, {{round_flight.arrivalcontryname}}</p>
+                                                            <p class="f-term">Terminal: {{round_flight.arrivalTerminal}}</p> 
+                                                        </div>
+                                                        <div>
+                                                            <p class="f_to_time" style="border-bottom:1px solid #00000033; border-bottom-style: dotted;margin:0px 2px;">{{round_flight.totalhour}}h{{round_flight.totalminute}}m</p>
+                                                        </div>
+                                                        <div class="f-to">
+                                                            <p class="f-time-in">{{round_flight.departurehoure}}:{{round_flight.departureminute}}</p>
+                                                            <p class="f-code">{{round_flight.DepartureAirport}} {{round_flight.DepartureAirportName}}</p>
+                                                            <p class="f-code2">{{round_flight.departurecityname}}, {{round_flight.departurecontryname}}</p>
+                                                            <p class="f-term">Terminal: {{round_flight.departureTerminal}}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 ms-12 d-flex" style="text-align: center;">
+                                                    <p class="f-refund">{{round_flight.refund}}</p>
+                                                    <p style="margin-left: 120px;">Seat Left: {{round_flight.setsAvailable}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show" role="tabpanel" id="{{round_flight.FlightNumber}}profile-tab-panes" aria-labelledby="{{round_flight.FlightNumber}}home-tabs" tabindex="0">
+                                        <div class="container">
+                                            <div>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>TYPE</th>
+                                                            <th>BASE FARE</th>
+                                                            <th>TAXES & FEES</th>
+                                                            <th>TOTAL</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Adult X 1</td>
+                                                            <td>INR 4380.00</td>
+                                                            <td>INR 1170.00</td>
+                                                            <td>INR 5500.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Total</td>
+                                                            <td>INR 4380.00</td>
+                                                            <td>INR 1170.00</td>
+                                                            <td><strong>INR 5500.00</strong></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show" id="{{round_flight.FlightNumber}}contact-tab-panes"  role="tabpanel" aria-labelledby="{{round_flight.FlightNumber}}home-tabs" tabindex="0">
+                                        <div class="container">
+                                            <div>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>SECTOR</th>
+                                                            <th>TIME FRAME</th>
+                                                            <th>CHARGES & DISCRIPTION</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="f-code">{{round_flight.ArrivalAirport}} - {{round_flight.DepartureAirport}}</td>
+                                                            <td>From & Above Before Dept</td>
+                                                            <td>INR 4000* + 0</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show" id="{{round_flight.FlightNumber}}bag-tab-panes"  role="tabpanel" aria-labelledby="{{round_flight.FlightNumber}}home-tabs" tabindex="0">
+                                        <div class="container">
+                                            <div>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>SECTOR</th>
+                                                            <th>CHECK IN</th>
+                                                            <th>CABIN</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="f-code">{{round_flight.ArrivalAirport}} - {{round_flight.DepartureAirport}}</td>
+                                                            <td>{{round_flight.checkinbag}} / Person</td>
+                                                            <td>{{round_flight.combainbag}} / Person</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+                </div>
+            </div>  
+        </div>     
+</section>
+<section class="container-fluid" id="flightBookDetails" style="color: rgba(255, 255, 255, 1);"!important>
+    <form action="" class="d-flex col-md-12">
+            <div class="d-flex col-md-4 text-center justify-content-between" style="margin: 0px 6px">
+                <div class="d-flex mt-2 p-1" style="align-items: center;">
+                    <img src="" alt="F-l">
+                    <h4 class="f-name f-name_1">Indigo</h4>
+                    <p class="f-class f-class_1">6E-6892</p>
+                </div>
+                <div style="display: flex;flex-direction: column;margin-top: -5px;"> 
+                    <div class="d-flex mt-2 p-1">
+                        <p class="f-time-in f-time-in1 p-1">18.25</p>
+                        <p class="f_to_time f_to_time1 p-1">9h20m</p>
+                        <p class="f-time-in f-time-in1 p-1">1.00</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p class="f-code f-code_l">MAA</p>
+                        <p class="f-code f-code_l">DEL</p>
+                    </div>
+                </div>
+                <div class="mt-2 p-1 align-items-center" style="border-right:1px solid white;border-left: 30px;">
+                    <h4 class="f-price1 f-price_2">₹ 7000</h4>
+                </div>
+            </div>
+            <div class="d-flex col-md-4 text-center mt-2  justify-content-between" style="margin: 0px 6px">
+                <div class="d-flex p-1">
+                    <img src="" alt="F-l">
+                    <h4 class="f-name f-name_1">Indigo</h4>
+                    <p class="f-class f-class_1">6E-6892</p>
+                </div> 
+                <div style="display: flex;flex-direction: column;margin-top: -5px;"> 
+                    <div class="d-flex p-1">
+                        <p class="f-time-in f-time-in1 p-1">18.25</p>
+                        <p class="f_to_time f_to_time1 p-1">9h20m</p>
+                        <p class="f-time-in f-time-in1 p-1">1.00</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p class="f-code f-code_l">MAA</p>
+                        <p class="f-code f-code_l">DEL</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="f-price1 f-price_2 p-1">₹ 7000</h4>
+                </div>
+            </div>
+            <div class="d-flex col-md-2 p-1 text-end mt-2" style="justify-content: center;">
+                <p>Total:</p>
+                <h4 class="f-price1 f-price_2" style="margin: 4px 0px 0px 8px">₹ 14000</h4>
+            </div>
+            <div class="col-md-2 text-center mt-2 p-1">
+                <button class="btn btn-primary book-btn1">Book Now</button>
+            </div>
+    </form>
+</section>
+    
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            font-family:'Inter', sans-serif;
+        }
+        Header {
+            background: rgba(74, 74, 74, 0.23);
+            border-radius: 20px;
+            height: 59px;
+            margin: 20px 18px;
+            align-items: center;
+            position: sticky;
+            top: 0; 
+            z-index: 100; 
+        }
+
+        nav {
+            align-items: center;
+            justify-content: center;
+            height: 59px;
+        }
+
+        .nav-item :hover {
+            opacity: 60%;
+            color: white;
+        }
+
+        .nav-item a img{
+            margin-top: -12px;
+            margin-right: 4px;
+        }
+
+        .nav-item a {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 1);
+        }
+
+        #img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        .btn-log {
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        #log-btn {
+            color: black;
+            background-color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        #log-btn:hover {
+            background-color: rgba(41, 41, 41, 0.8);
+        }
+
+        #mod-btn {
+            color: white;
+            background-color:rgba(41, 41, 41, 1);
+            border: 1px solid white;
+            width: 130px;
+            margin-top: 5px;
+            font-size: 14px;
+            border-radius: 17px;
+        }
+
+        .fcode-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #000000;
+        }
+
+        .f-label {
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        #filter-sec {
+           border:1px solid #00000033;
+           padding: 4px 8px 4px 10px;
+           border-radius: 9px;
+           margin: 2px 6px;
+        }
+
+        .fil-head {
+            font-size: 16px;
+            color: #000000;
+            font-weight: 600;
+        }
+
+        .slider{
+            height: 11px;
+            position: relative;
+            background: #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .slider .progress{
+            height: 100%;
+            left: 25%;
+            right: 25%;
+            position: absolute;
+            border-radius: 5px;
+            background:rgba(0, 113, 255, 1);
+            margin-top: -4px;
+        }
+
+        .range-input{
+            position: relative;
+        }
+            
+        .range-input input{
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            top: 0px;
+            background: none;
+            margin-bottom: 3px;
+            pointer-events: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        } 
+
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb{
+            height: 14px;
+            width: 14px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid rgba(0, 113, 255, 1);
+            pointer-events: auto;
+            -webkit-appearance: none;
+            box-shadow: 0 0 6px rgba(0,0,0,0.05);
+            margin-top: -16px;
+        }
+
+        input[type="range"]::-moz-range-thumb{
+            height: 15px;
+            width: 17px;
+            border: none;
+            border-radius: 50%;
+            background: white;
+            pointer-events: auto;
+            -moz-appearance: none;
+            box-shadow: rgba(0, 113, 255, 1);
+        }
+
+        .f-time {
+            border: 1px solid #00000099;
+            border-radius: 22px;
+            font-size: 13px;
+            padding:3px 6px;
+            margin: 4px 6px;
+        }
+
+        .f-time-in {
+            font-size: 16px;
+            color: #00000099;
+            font-weight: 400;
+        }
+        .f-time-in{
+            color: rgba(255, 255, 255, 1);
+        }
+        
+
+        .f_to_time {
+            color:#EA8208;
+            font-size: 13px;
+            font-weight: 400;
+        }
+
+        .f_to_time1 {
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .f-price {
+            color:  #151515;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .f-sel-btn {
+            text-align: center;
+        }
+
+        .f-price1 {
+            font-size: 14px;
+            margin-top: 2px;
+            font-weight: 700;
+            color: #0071FF;
+        }
+
+        .f-price_2 {
+            color: rgba(255, 255, 255, 1);
+            font-weight: 600;
+        }
+
+        .form-check label {
+            font-size: 14px;
+        }
+
+        #sort-by {
+            justify-content: space-between;
+            background: #292929;
+            color: #F0F0F0E0;
+            padding: 3px 6px;
+            border-radius: 7px;
+        }
+
+        #sort-by h4 {
+            font-size: 16px;
+            margin-top: 4px;
+            padding: 0px 6px;
+        }
+
+        #sortby-label {
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+            padding: 5px; 
+        }
+
+        #sortby-label label {
+            margin-right: 7px;
+            border: 0.5px solid #FFFFFF;
+            padding: 2px 8px;
+            border-radius: 22px;    
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        #sortby-label label:hover {
+            background-color: white;
+            color: black;
+        }
+
+        .flight-container1 {
+            border:1px solid #00000033;
+            padding: 4px 8px;
+            border-radius: 9px;
+            margin-bottom: 15px;
+        }
+        .flight-container {
+            border:1px solid #00000033;
+            padding: 4px 8px;
+            border-radius: 9px;
+            margin-bottom: 15px;
+        }
+
+        .flight-container1 img {
+            max-width: 100%;
+            height: auto;
+        }
+        .flight-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .flight-details {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .f-code {
+            font-size: 14px;
+            font-weight: 500;
+            color: #000000;
+        }
+
+        .f-code2 {
+            font-size: 14px;
+            font-weight: 500;
+            color:#00000099;
+
+        }
+
+        .f-code_l {
+            font-size: 13px;
+            margin-top: -30px;
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .f-code2, .f-term {
+            margin-top: -13px;
+        }
+
+        .f-fil {
+            color: #000000CC;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .f-name {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .f-name_1 {
+            color: rgba(255, 255, 255, 1);
+            font-weight: 500;
+        }
+
+        .f-class {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .f-class_1 {
+            color: rgba(255, 255, 255, 1);
+            font-weight: 500;
+        }
+
+        .flight-details img {
+            margin-right: 10px;
+        }
+
+        .flight-timings {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            flex-direction: column;
+        }
+
+        .flight-timings div {
+            text-align: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .flight-price {
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .flight-features {
+           justify-content: space-between;
+        }
+
+        .more-btn {
+            border: 1px solid #00000099;
+            background: none;
+            color: #000000;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 14px;
+        }
+
+        .flight-btn {
+            background: none;
+            border: none;
+            font-size: 14px;
+            color: #498ADC;
+        }
+
+        .book-btn {
+            background: #0071FF;
+            border-radius: 22px;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 3px 9px;
+        }
+
+        .book-btn1 {
+            background: #111;
+            border-radius: 22px;
+            border: none;
+            font-size: 13px;
+            font-weight: 500;
+            padding:3px 9px;
+        }
+
+        .select-btn {
+            background: #0071FF;
+            border-radius: 22px;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 3px 9px;
+        }
+
+        #fare-sec {
+            background: #D9D9D945;
+            border-radius: 8px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        #myTab li button {
+            border: 1px solid #0071FF;
+            border-radius: 22px;
+            color:  #0071FF;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 2px 6px;
+            margin: 2px 2px;
+        }
+
+        table th, table tr td{
+            font-size: 12px;
+        }
+
+        #myTab li button:hover {
+            background:#0071FF !important;
+            color: white !important;
+        }
+
+        #myTab li {
+            margin: 2px;
+            justify-content: space-between;
+        }
+
+
+        #myTab {
+            border-bottom: none;
+        }
+
+        .f-term {
+            font-weight: 700;
+        }
+
+        .f-refund {
+            color: #FFB800;
+        }
+
+        table {
+           border: none;
+           border-bottom: none;
+           outline: none;
+        }
+
+        #fare-sec, #flight-det-sec {
+            display: none;
+        }
+
+        #filter-sec {
+            height: 1000px;
+            position: sticky;
+            top: 0; 
+            z-index: 100;
+        }
+
+        #flightBookDetails {
+            position: sticky;
+            bottom: 0; 
+            z-index: 100;
+            background: rgba(102, 102, 102, 0.63);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+    </style>
+    
+    <script>
+        function showFare(main) {
+            var showFare = document.getElementById(main+'23');
+            var lessFare = document.getElementById(main+'22');
+            var show_FlightDetail = document.getElementById(main+'02');
+            if(showFare.style.display === "none") {
+                showFare.style.display = "block";
+                lessFare.innerHTML = "Less Fare";
+                show_FlightDetail.style.display = "none"
+            } else {
+                showFare.style.display = "none";
+                lessFare.innerHTML = "More Fare";
+                show_FlightDetail.style.display = "block"
+            }
+        }
+        
+        function showFlightDetail(main) {
+            var showFlightDetail = document.getElementById(main+'24');
+            var lessFare = document.getElementById(main+'22');
+            if(showFlightDetail.style.display === "none") {
+                showFlightDetail.style.display = "block";
+                lessFare.style.display = "none";
+            } else {
+                showFlightDetail.style.display = "none";
+                lessFare.style.display = "block";
+            }
+        }
+
+        function show_Fare(main) {
+            var show_Fare = document.getElementById(main+'13');
+            var less_Fare = document.getElementById(main+'12');
+            var show_FlightDetail = document.getElementById(main+'01');
+            if(show_Fare.style.display === "none") {
+                show_Fare.style.display = "block";
+                less_Fare.innerHTML = "Less Fare";
+                show_FlightDetail.style.display = "none"
+            } else {
+                show_Fare.style.display = "none";
+                less_Fare.innerHTML = "More Fare";
+                show_FlightDetail.style.display = "block"
+            }
+        }
+        
+        function show_FlightDetail(main) {
+            var show_FlightDetail = document.getElementById(main+'14');
+            var less_Fare = document.getElementById(main+'12');
+            if(show_FlightDetail.style.display === "none") {
+                show_FlightDetail.style.display = "block";
+                less_Fare.style.display = "none";
+            } else {
+                show_FlightDetail.style.display = "none";
+                less_Fare.style.display = "block";
+            }
+        }
+
+// sort by the round trip
+function sortrountFlight(criteria) {
+    var flightList = document.getElementById('roundflightlist');
+    var flights = Array.from(flightList.getElementsByClassName('flight-container'));
+
+    var sortOrder = flightList.getAttribute('data-sort-order') || 'asc';
+
+    flights.sort(function(a, b) {
+        var aValue, bValue;
+
+        if (criteria === 'Price') {
+            aValue = parseFloat(a.getAttribute('ticket-price'));
+            bValue = parseFloat(b.getAttribute('ticket-price'));
+        } else if (criteria === 'Departure') {
+            var aDeparture = a.getAttribute('flight-departure-time'); // assuming you have a departure time attribute
+            var bDeparture = b.getAttribute('flight-departure-time');
+            return sortOrder === 'asc' ? aDeparture.localeCompare(bDeparture) : bDeparture.localeCompare(aDeparture); 
+        } else if (criteria === 'Arrival') {
+            var aArrival = a.getAttribute('flight-arrival-time'); // assuming you have a arrival time attribute
+            var bArrival = b.getAttribute('flight-arrival-time');
+            return sortOrder === 'asc' ? aArrival.localeCompare(bArrival) : bArrival.localeCompare(aArrival);
+        } else if (criteria === 'Duration') {
+            // Convert duration to total minutes for comparison
+            aValue = parseInt(a.getAttribute('ticket-duration-hours')) * 60 + parseInt(a.getAttribute('ticket-duration-minutes'));
+            bValue = parseInt(b.getAttribute('ticket-duration-hours')) * 60 + parseInt(b.getAttribute('ticket-duration-minutes'));
+        } else if (criteria === 'Name') {
+            var aName = a.getAttribute('flight-name');
+            var bName = b.getAttribute('flight-name');
+            return sortOrder === 'asc' ? aName.localeCompare(bName) : bName.localeCompare(aName);
+        }
+
+        // Handle numeric comparisons
+        return sortOrder === 'asc' ? aValue - bValue : bValue - aValue;
+    });
+
+    // Clear the existing flight list
+    flightList.innerHTML = '';
+
+    // Append the sorted flights to the list
+    flights.forEach(function(flight) {
+        flightList.appendChild(flight);
+    });
+
+    // Toggle sort order for the next click
+    flightList.setAttribute('data-sort-order', sortOrder === 'asc' ? 'desc' : 'asc');
+}
+
+// ---------------------------------------------------ronud trip sort flights------------------------------
+function ReturnsortFlight(criteria) {
+    var flightList = document.getElementById('retrunrountflight');
+    var flights = Array.from(flightList.getElementsByClassName('flight-container1'));
+
+    var sortOrder = flightList.getAttribute('data-sort-order') || 'asc';
+
+    flights.sort(function(a, b) {
+        var aValue, bValue;
+
+        if (criteria === 'Price') {
+            aValue = parseFloat(a.getAttribute('ticket-price'));
+            bValue = parseFloat(b.getAttribute('ticket-price'));
+        } else if (criteria === 'Duration') {
+            // Convert duration to total minutes for comparison
+            aValue = parseInt(a.getAttribute('ticket-duration-hours')) * 60 + parseInt(a.getAttribute('ticket-duration-minutes'));
+            bValue = parseInt(b.getAttribute('ticket-duration-hours')) * 60 + parseInt(b.getAttribute('ticket-duration-minutes'));
+        }  else if (criteria === 'Departure') {
+            var aDeparture = a.getAttribute('flight-departure-times'); // assuming you have a departure time attribute
+            var bDeparture = b.getAttribute('flight-departure-times');
+            return sortOrder === 'asc' ? aDeparture.localeCompare(bDeparture) : bDeparture.localeCompare(aDeparture); 
+        } else if (criteria === 'Arrival') {
+            var aArrival = a.getAttribute('flight-arrival-times'); // assuming you have a arrival time attribute
+            var bArrival = b.getAttribute('flight-arrival-times');
+            return sortOrder === 'asc' ? aArrival.localeCompare(bArrival) : bArrival.localeCompare(aArrival);
+        } else if (criteria === 'Name') {
+            var aName = a.getAttribute('flight-name');
+            var bName = b.getAttribute('flight-name');
+            return sortOrder === 'asc' ? aName.localeCompare(bName) : bName.localeCompare(aName);
+        }
+
+        // Handle numeric comparisons
+        return sortOrder === 'asc' ? aValue - bValue : bValue - aValue;
+    });
+
+    // Clear the existing flight list
+    flightList.innerHTML = '';
+
+    // Append the sorted flights to the list
+    flights.forEach(function(flight) {
+        flightList.appendChild(flight);
+    });
+
+    // Toggle sort order for the next click
+    flightList.setAttribute('data-sort-order', sortOrder === 'asc' ? 'desc' : 'asc');
+}
+
+        
+</script>
+<!-- min max price based flight view script -->
+<script>
+    const rangeInput = document.querySelectorAll(".range-input input"),
+        priceInput = document.querySelectorAll(".price-input input"),
+        range = document.querySelector(".slider .progress");
+    let priceGap = 1000;
+
+    priceInput.forEach(input => {
+        input.addEventListener("input", e => {
+            let minPrice = parseInt(priceInput[0].value),
+                maxPrice = parseInt(priceInput[1].value);
+
+            if ((maxPrice - minPrice >= priceGap) && maxPrice <= rangeInput[1].max) {
+                if (e.target.classList.contains("input-min")) {
+                    rangeInput[0].value = minPrice;
+                    range.style.left = ((minPrice / rangeInput[0].max) * 100) + "%";
+                } else {
+                    rangeInput[1].value = maxPrice;
+                    range.style.right = 100 - (maxPrice / rangeInput[1].max) * 100 + "%";
+                }
+            }
+        });
+    });
+
+    rangeInput.forEach(input => {
+        input.addEventListener("input", () => {
+            RangeSlider();
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        RangeSlider();
+    });
+
+    function RangeSlider() {
+        let minVal = parseInt(rangeInput[0].value),
+            maxVal = parseInt(rangeInput[1].value);
+        filterFlightsByPrice(minVal, maxVal);
+
+        if ((maxVal - minVal) < priceGap) {
+            if (rangeInput[0].classList.contains("range-min")) {
+                rangeInput[0].value = maxVal - priceGap;
+            } else {
+                rangeInput[1].value = minVal + priceGap;
+            }
+        } else {
+            priceInput[0].value = minVal;
+            priceInput[1].value = maxVal;
+            range.style.left = ((minVal / rangeInput[0].max) * 100) + "%";
+            range.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
+        }
+    }
+
+    function filterFlightsByPrice(minPrice, maxPrice) {
+        console.log("Filtering by Price:", minPrice, maxPrice);
+
+        // For one-way and round-trip flights
+        document.querySelectorAll(".flight-container, .flight-container1").forEach(function (flight) {
+            var flightPrice = parseInt(flight.getAttribute("ticket-price"));
+
+            console.log("Flight Price:", flightPrice);
+
+            if (flightPrice >= minPrice && flightPrice <= maxPrice) {
+                flight.style.display = "block";
+            } else {
+                flight.style.display = "none";
+            }
+        });
+    }
+</script>
+
+<!-- airline name check box function -->
+<script>
+    document.querySelectorAll('.form-check-input').forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            updateFlightList();
+        });
+    });
+
+    function updateFlightList() {
+        var selectedAirlines = Array.from(document.querySelectorAll('.form-check-input:checked'))
+            .map(function (checkbox) {
+                return checkbox.getAttribute('data-airline').toLowerCase(); // Convert to lowercase
+            });
+
+        document.querySelectorAll('.flight-container').forEach(function (flight) {
+            var airlineName = flight.getAttribute('flight-name').toLowerCase(); // Convert to lowercase
+            if (selectedAirlines.length === 0 || selectedAirlines.includes(airlineName)) {
+                flight.style.display = 'block';
+            } else {
+                flight.style.display = 'none';
+            }
+        });
+    }
+</script>
+<!-- return flight name base -->
+<script>
+    document.querySelectorAll('.form-check-input-2').forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            updateFlightList();
+        });
+    });
+
+    function updateFlightList() {
+        var selectedAirlines = Array.from(document.querySelectorAll('.form-check-input-2:checked'))
+            .map(function (checkbox) {
+                return checkbox.getAttribute('data-airline').toLowerCase(); // Convert to lowercase
+            });
+
+        document.querySelectorAll('.flight-container1').forEach(function (flight) {
+            var airlineName = flight.getAttribute('flight-name').toLowerCase(); // Convert to lowercase
+            if (selectedAirlines.length === 0 || selectedAirlines.includes(airlineName)) {
+                flight.style.display = 'block';
+            } else {
+                flight.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+
+<!-- round trip flight based firstround -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".first-time").click(function () {
+            var selectedTime = $(this).text();
+            var timeType = $(this).attr("for").split("-")[0]; // "departure" or "arrival"
+
+            // Hide all flights
+            $(".flight-container").hide();
+
+            // Show flights based on selected time
+            $(".flight-container").each(function () {
+                var timeAttr = timeType === "departure" ? "flight-departure-time" : "flight-arrival-time";
+                var flightTime = $(this).attr(timeAttr);
+
+                if (isTimeInRange(flightTime, selectedTime)) {
+                    $(this).show();
+                }
+            });
+        });
+
+        // Function to check if a given time is in the selected range
+        function isTimeInRange(flightTime, selectedTime) {
+            var selectedHour = parseInt(selectedTime.split(":")[0], 10);
+            var flightHour = parseInt(flightTime.split(":")[0], 10);
+
+            return (selectedTime.includes("Before 6AM") && flightHour < 6) ||
+                (selectedTime.includes("6AM-12PM") && flightHour >= 6 && flightHour < 12) ||
+                (selectedTime.includes("12PM-6PM") && flightHour >= 12 && flightHour < 18) ||
+                (selectedTime.includes("After 6PM") && flightHour >= 18);
+        }
+    });
+</script>
+
+<!-- round trip return time based flight -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".first-times").click(function () {
+            var selectedTime = $(this).text();
+            var timeType = $(this).attr("for").split("-")[0]; // "departure" or "arrival"
+
+            // Hide all flights
+            $(".flight-container1").hide();
+
+            // Show flights based on selected time
+            $(".flight-container1").each(function () {
+                var timeAttr = timeType === "departure" ? "flight-departure-times" : "flight-arrival-times";
+                var flightTime = $(this).attr(timeAttr);
+
+                if (isTimeInRange(flightTime, selectedTime)) {
+                    $(this).show();
+                }
+            });
+        });
+
+        // Function to check if a given time is in the selected range
+        function isTimeInRange(flightTime, selectedTime) {
+            var selectedHour = parseInt(selectedTime.split(":")[0], 10);
+            var flightHour = parseInt(flightTime.split(":")[0], 10);
+
+            return (selectedTime.includes("Before 6AM") && flightHour < 6) ||
+                (selectedTime.includes("6AM-12PM") && flightHour >= 6 && flightHour < 12) ||
+                (selectedTime.includes("12PM-6PM") && flightHour >= 12 && flightHour < 18) ||
+                (selectedTime.includes("After 6PM") && flightHour >= 18);
+        }
+    });
+</script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

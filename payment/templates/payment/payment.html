@@ -1,0 +1,690 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">/
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>Razorpay Payment Gateway</title>
+</head>
+<body>
+    <div id="preloader"></div>
+    <style>
+        #preloader {
+            background: url("{% static 'image/booking/loading1.gif'%}") no-repeat center center;
+            width: 100%;
+            height: 300px;
+            margin-top: 100px;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+    <Header id="header">
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#" >
+                    <img src="{% static 'image/booking/Magnet logo.png' %}" alt="logo" width="79px" height="79px">
+                </a>
+                <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto"> <!-- mx-auto for centering -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/booking/flight b.svg' %}" alt=""><p>Flights</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <img src="{% static 'image/booking/hotel b.svg' %}" alt="">
+                                <p>Hotels</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/booking/holiday b.svg' %}" alt=""><p>Holidays</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/booking/island b.svg' %}" alt=""><p>Island</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/booking/visa b.svg' %}" alt=""><p>Visa</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/booking/more b.svg' %}" alt=""><p>More</p></a>
+                        </li>
+                    </ul>
+                    <div class="d-flex mt-2">
+                        <p id="mblNumber" style="font-size: 18px;font-weight: 600;color: black;" class="mb-0 mt-3">{{ hidden_username }}</p>
+                        <a href="{% url 'portalhome'  %}"><img src="{% static 'images/user_pic.webp' %}" id="logProfile" class="login_profile" alt="Profile" style="width:50px;height: 50px;"></a>
+                    </div>
+                    <!-- <div class="d-flex">
+                        <button class="btn btn-primary log-btn">LOG IN</button>
+                    </div> -->
+                </div>
+            </nav>
+        </div>
+    </Header>
+    <!-- <div id="customPopup" class="popup">
+        <div class="popup-content text-center">
+            <p >Your session has timed out. Please try again.</p>
+            <button  class="btn btn-primary ses-btn"><a href="{% url 'hotel'  %}">OK</a></button>
+        </div>
+    </div> -->
+    
+    <section id="process" class="bg-light py-5">
+        <div class="container mt-5">
+            <div class="d-flex flex-row justify-content-between">
+                <label class="text-center">Traveller Details</label>
+                <label class="text-center">Review</label>
+                <label class="text-center">Payment</label>
+            </div>
+            <div class="mt-3">
+                <input type="range" class="custom-range" min="0" max="100" value="50" style="width: 100%;">
+            </div>
+        </div>
+    </section>
+    <button type="button" id="timeOutBtn" class="btn btn-primary d-none" data-toggle="modal" data-target="#exampleModal">
+        Timeout
+    </button>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Timeout</h5>
+              <!-- <button type="button" class="close-btn" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button> -->
+            </div>
+            <div class="modal-body">
+                <div id="customPopup" class="popup">
+                    <div class="popup-content col-md-12 text-center">
+                        <p >Your session has timed out. Please try again.</p>
+                        <!-- <button  class="btn btn-primary ses-btn"></button> -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="{% url 'hotel' %}"><button type="button" class="btn btn-secondary">Ok</button></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    <section class="container d-flex" id="total-review">
+        <form action="" class="mt-3 col-md-8 hotel_details" style="margin:4px;">
+            <div class="mb-4" style="margin:4px;">
+                <h3 style="font-size: 24px;font-weight: 600;">Hotel Review</h3>
+            </div>
+            <div class="mb-4" style="margin:4px;">
+                <h4 class="h_name">{{ combined_data.hotel_name }}</h4>
+                <!-- <p>{{ combined_data.rating }}</p> -->
+                <p class="h_address">{{ combined_data.address }}</p>
+            </div>
+            <div class="d-flex justify-content-between mb-4 d_row" style="margin:4px;">
+                <div class="col-md-3">
+                    <p class="h_text">Check In</p>
+                    <p class="h_utext">{{ combined_data.check_in_date }}</p>
+                </div>
+                <div class="col-md-3">
+                    <p class="h_text">Check Out</p>
+                    <p class="h_utext">{{ combined_data.check_out_date }}</p>
+                </div>
+                <div class="col-md-3">
+                    <p class="h_text">Nights</p>
+                    <p class="h_utext">{{ combined_data.no_of_nights }}</p>
+                </div>
+                <div class="col-md-3">
+                    <p class="h_text">Room</p>
+                    <p class="h_utext">{{ combined_data.total_rooms }}</p>
+                </div>
+            </div>
+            {% for hotel in combined_data.hotel_details %}
+                <div class="row mb-4 " style="background: #F2F2F2;margin:4px;">
+                    <div class="col-md-7 d-flex mt-3">
+                        <p class="ht_text">Room Type</p>
+                        <p class="ht_utext">{{ hotel.HotelName }}</p>
+                    </div>
+                    <div class="col-md-3 d-flex mt-3">
+                        <p class="ht_text">INC</p>
+                        <p class="ht_utext">{{ hotel.OfferedPrice }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="mt-5">
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <div class="row mb-1">
+                            <h4 class="hsub_name">Contact Details</h4>
+                        </div>
+                        <div class="d-flex"  id="contact-deails" style="margin:4px;">
+                            <div class="mb-3 col-md-4">
+                                <p class="h_text cd_text mb-1">User Name</p>
+                                <p class="h_utext">{{ combined_data.user_name }}</p>
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <p class="h_text cd_text mb-1">Contact</p>
+                                <p class="h_utext">{{ combined_data.phone_number }}</p>
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <p class="h_text cd_text mb-1">Email</p>
+                                <p class="h_utext">{{ combined_data.email }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-4" style="background: #21CB511C;padding: 4px 8px;border-radius: 6px;">
+                            <h4 class="mt-2 mb-2 hsub_name">Cancellation Policy</h4>
+                            <p class="mt-2">{{ combined_data.cancellation_policy|safe }}</p>
+                        </div>
+                        <!-- <div class="row d-flex">
+                            <div class="mb-3 col-md-4">
+                                <button type="button" class="btn btn-primary" style="color: #4CAF50;background: #21CB511C;border: none;">Cancellation on or after</button>
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <button type="button" class="btn btn-primary" style="color: #4CAF50;background: #21CB511C;border: none;">Cancellation on or before</button>
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <button type="button" class="btn btn-primary" style="color: #4CAF50;background: #21CB511C;border: none;">Cancellation Charge/Comments</button>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="mt-2">
+                <div class="row mb-4">
+                    <div class="col-md-12" style="font-size: 14px;">
+                        <h4 class="hsub_name">Booking Notes</h4>
+                        <p class="h_address">double or twin studio apartment#^#100.00%Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncu</p>
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <div class="col-md-12" style="font-size: 14px;text-align: justify;">
+                        <h4 class="hsub_name">General Terms & Conditions</h4>
+                        <p class="h_address">1. scelerisque ante pulvinar. Donec ut rhonc condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac 
+                            Nam pulvinar blandit velit, id condimentum diam faucibus at. Aliquam lacus nisi, sollicitudin at nisi nec.</p>
+                        <p class="h_address" >2.condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac 
+                            Nam pulvinar blandit velit, id condimentum diam faucibus at. Aliquam lacus nisi, sollicitudin at nisi nec.</p>
+                        <p class="h_address">3.Donec ut rhonc condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac 
+                            Nam pulvinar blandit velit, id condimentum diam faucibus at. Aliquam lacus nisi, sollicitudin at nisi nec.</p>
+                        <p class="h_address">4. scelerisque ante pulvinar. Donec ut rhonc condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac 
+                            Nam pulvinar blandit velit, id condimentum diam faucibus at. Aliquam lacus nisi, sollicitudin at nisi nec.</p>
+                        <p class="h_address">5.condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac 
+                            Nam pulvinar blandit velit, id condimentum diam faucibus at. Aliquam lacus nisi, sollicitudin at nisi nec.</p>
+                        <p class="h_address">6.Donec ut rhonc condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac 
+                            Nam pulvinar blandit velit, id condimentum diam faucibus at. Aliquam lacus nisi, sollicitudin at nisi nec.</p>
+                        <p class="h_address">7. scelerisque ante pulvinar. Donec ut rhonc condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac 
+                            Nam pulvinar blandit velit, id condimentum diam faucibus at. Aliquam lacus nisi, sollicitudin at nisi nec.</p>
+                        <p class="h_address">8.condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac 
+                            Nam pulvinar blandit velit, id condimentum diam faucibus at. Aliquam lacus nisi, sollicitudin at nisi nec.</p>
+                        <p class="h_address">9.Donec ut rhonc condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac 
+                            Nam pulvinar blandit velit, id condimentum diam faucibus at. Aliquam lacus nisi, sollicitudin at nisi nec.</p>
+                    </div>
+                    <div class="mb-3 mt-2 d-flex">
+                        <input type="checkbox" id="contactCheckbox" style="width: 19.34px; height: 20.63px;margin-right: 6px;">
+                        <p style="color: #0071FF;font-size: 14px;">I understand and agree with the company rules, the privacy policy, the user agreement.</p>
+                        <span class="error" id="checkboxError"></span>
+                    </div>
+                    
+                </div>
+            </div>
+            <div action="" class="hotel-pay pay_2 mt-1 col-md-4 mt-2">
+                <div>
+                    <div class="row mt-2" style=" border-bottom: 1px solid #FFFFFF38;">
+                        <h4>Pricing Details</h4>
+                    </div>
+                    <div class="d-flex col-md-12 mt-2" style="justify-content: space-between;">
+                        <div class="text-start col-md-8">
+                            <p>Base Fare</p>
+                            <p>({{ combined_data.total_rooms }} Room X {{ combined_data.no_of_nights }} Night)</p>
+                        </div>
+                        <div class="d-flex col-md-4 justify-content-between">
+                            <p class="text-start">INR</p>
+                            <p class="text-end">{{ combined_data.published_price }}</p>
+                        </div>                            
+                    </div>
+                    <div class="d-flex col-md-12" style="justify-content: space-between;" >
+                        <div class="text-start col-md-8">
+                            <p>Taxes and fees</p>
+                            
+                        </div>
+                        <div class="d-flex col-md-4 justify-content-between">
+                            <p class="text-start">INR</p>
+                            <p class="text-end"> {{ combined_data.final_tax }}</p>
+                        </div>
+                    </div>
+                    <div class="d-flex col-md-12" style=" border-bottom: 1px solid #FFFFFF38;justify-content: space-between;">
+                        <div class="text-start col-md-8">
+                            <p>Total Price</p>
+                            
+                        </div>
+                        <div class="d-flex col-md-4 justify-content-between">
+                            <p class="text-start">INR</p>
+                            <p class="text-end">{{ combined_data.total_price }}</p>
+                        </div>
+                    </div>
+                    <div class="d-flex col-md-12 mt-2" style="justify-content: space-between;">
+                        <div class="d-flex col-md-8">
+                            <p>Your Price</p>
+                        </div>
+                        <div class="text-end d-flex col-md-4 justify-content-between">
+                            <p class="text-start" style="color: #5EFF81;">INR</p>
+                            <p class="text-end" style="color: #5EFF81;">{{ combined_data.total_price }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="btn_container mt-3 mb-2">
+                <button type="button" class="btn  btn-primary" id="pay-btn" style="border-radius: 26px;font-size: 14px ;padding: 3px 16px;color:#FFFFFF;" onclick="validateCheckbox()">Proceed To Payment</button>
+            </div>
+        </form>
+        <form action="" class="hotel-pay pay_1 mt-5 col-md-4 mt-2">
+            <div>
+                <div class="row mt-2" style=" border-bottom: 1px solid #FFFFFF38;">
+                    <h4>Pricing Details</h4>
+                </div>
+                <div class="d-flex col-md-12 mt-2" style="justify-content: space-between;">
+                    <div class="text-start col-md-8">
+                        <p>Base Fare</p>
+                        <p>({{ combined_data.total_rooms }} Room X {{ combined_data.no_of_nights }} Night)</p>
+                    </div>
+                    <div class="d-flex col-md-4 justify-content-between">
+                        <p class="text-start">INR</p>
+                        <p class="text-end">{{ combined_data.published_price }}</p>
+                    </div>                            
+                </div>
+                <div class="d-flex col-md-12" style="justify-content: space-between;" >
+                    <div class="text-start col-md-8">
+                        <p>Taxes and fees</p>
+                        
+                    </div>
+                    <div class="d-flex col-md-4 justify-content-between">
+                        <p class="text-start">INR</p>
+                        <p class="text-end"> {{ combined_data.final_tax }}</p>
+                    </div>
+                </div>
+                <div class="d-flex col-md-12" style=" border-bottom: 1px solid #FFFFFF38;justify-content: space-between;">
+                    <div class="text-start col-md-8">
+                        <p>Total Price</p>
+                        
+                    </div>
+                    <div class="d-flex col-md-4 justify-content-between">
+                        <p class="text-start">INR</p>
+                        <p class="text-end">{{ combined_data.total_price }}</p>
+                    </div>
+                </div>
+                <div class="d-flex col-md-12 mt-2" style="justify-content: space-between;">
+                    <div class="d-flex col-md-8">
+                        <p>Your Price</p>
+                    </div>
+                    <div class="text-end d-flex col-md-4 justify-content-between">
+                        <p class="text-start" style="color: #5EFF81;">INR</p>
+                        <p class="text-end" style="color: #5EFF81;">{{ combined_data.total_price }}</p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+    <div><input type="hidden" name="balance_time" id="balance_time" value="{{ combined_data.time_difference }}"></div>
+    <footer id="footer" class="text-center container-fluid mt-3 mb-1">
+        <!-- <p id="timer">Time remaining: 10:00</p> -->
+        <div>
+            <p>Time remaining:<span id="time">10:00</span></p></div>
+    </footer>
+    <!-- <div>
+        <h2>User Information</h2>
+        <p>User Name: {{ combined_data.user_name }}</p>
+        <p>Email: {{ combined_data.email }}</p>
+        <h2>User Information</h2>
+            {% for key, value in combined_data.items %}
+                <p>{{ key|title }}: {{ value }}</p>
+            {% endfor %}
+            <h2>Hotel Information</h2>
+            <p>Hotel Name: {{ combined_data.hotel_name }}</p>
+            <p>Rating: {{ combined_data.rating }}</p>
+            <p>Address: {{ combined_data.address }}</p>
+            <p>Cancellation Policy: {{ combined_data.cancellation_policy|safe }}</p>
+            <p>Check-in Date: {{ combined_data.check_in_date }}</p>
+            <p>Check-out Date: {{ combined_data.check_out_date }}</p>
+            <p>Adults: {{ combined_data.adults }}</p>
+            <p>Childs: {{ combined_data.childs }}</p>
+            <p>Total Rooms: {{ combined_data.total_rooms }}</p>
+            <p>Number of Nights: {{ combined_data.no_of_nights }}</p>
+            <p>Published Price: {{ combined_data.published_price }}</p>
+            <p>Final Tax: {{ combined_data.final_tax }}</p>
+            <p>Total Price: {{ combined_data.total_price }}</p>
+    </div> -->
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        Header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000; 
+            background-color: #fff; 
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-item  :hover {
+            opacity: 60%;
+        }
+
+        .nav-item a {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .nav-item a p {
+            margin-top: 12px;
+            margin-left: 10px;
+            color:  rgba(9, 9, 9, 1);
+            font-weight: 600;
+        }
+
+        .nav-item a img {
+            margin-top: -12px;
+            margin-right: 10px;
+        }
+
+        .log-btn {
+            color: black;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        #process {
+            margin-top: 120px;
+            width: 100%;
+        }
+
+        .final-pro ul {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            list-style: none;
+            color: blue;
+        }
+
+        .progress {
+            height: 8px;
+        }
+
+        .progress-bar {
+            color: rgba(12, 202, 54, 1);
+        } 
+
+        .hotel-pay {
+            position: sticky;
+            top: 110px; 
+            z-index: 100;
+            background: #101828;
+            color: #FFFFFF;
+            padding: 8px; 
+            margin: 4px;
+            border-radius: 18px;
+            height: 275px;
+        }
+
+        
+        .pay_2 {
+            display: none;
+            position: static !important;
+            width: 100%;
+        } 
+
+
+        #process {
+            margin-top: 40px;
+            width: 100%;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+        }
+
+        .ses-btn a {
+            text-decoration: none;
+            padding: 2px 16px;
+            width: 100px;
+            color: white;
+            border-radius: 10px;
+        }
+
+        .d_row {
+            border: 1px solid #0071FF;
+            background: #EDF5FF;
+            padding: 3px 10px 0px ;
+            border-radius: 12px;
+        }
+
+        .hsub_name {
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .h_name {
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .h_text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0071FF;
+        }
+
+        .h_utext {
+            font-size: 15px;
+            color: gray;
+        }
+
+        .ht_text {
+            color: #0071FF;
+            font-weight: 600;
+        }
+
+        .ht_utext {
+            color:  #0071FF;
+            opacity: 66%;
+            padding-left: 8px;
+        }
+
+        .h_address {
+            font-size: 14px;
+        }
+
+        /* #customPopup {
+            display: none;
+            width: 100vw;
+            height: 100px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 200px;
+            background-color: white;
+            color: black;
+        }
+
+        .popup-content {
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .popup-content p {
+            font-size: 18px;
+            font-weight: 500;
+        } */
+
+        footer {
+            position: sticky;
+            bottom: 0; 
+            z-index: 100;
+            padding: 10px 20px 4px;
+            color: white;
+            background: rgba(102, 102, 102, 0.63);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        @media only screen and (max-width: 768px) {
+            #contact-deails {
+            display: flex;
+            flex-direction: column;
+            }
+
+            .cd_text {
+                width: 30%;
+            }
+
+            .ht_text {
+                width: 30%;
+            }
+
+        #contact-deails div {
+            width: 100%;
+            display: flex;
+            gap: 40px;
+            margin-bottom: 3px !important;
+            }
+        }
+        
+        @media only screen and (max-width: 991px) {
+
+        #total-review {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #contact-deails {
+            display: flex;
+        }
+
+        .hotel_details {
+            width: 100%;
+        }
+
+        .pay_2 {
+            display: block;
+        }
+
+        .pay_1 {
+            display: none;
+        }
+        }
+
+        @media (min-width: 768px) and (max-width: 991.98px) { 
+
+            #total-review  {
+                max-width: 900px;
+            }
+
+        }
+
+    </style>
+    <script>
+         var loader =  document.getElementById("preloader")
+        window.addEventListener("load", function() {
+            loader.style.display="none"
+        })
+
+    </script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function validateCheckbox(e) {
+            var valid = true;
+            document.getElementById('checkboxError').innerText = '';
+            var checkbox = document.getElementById('contactCheckbox').checked;
+            if (!checkbox) {
+             document.getElementById('checkboxError').innerText = 'Please select the checkbox';
+           } else {
+                valid = false;
+                razarpay();
+           } 
+            return valid;
+        }
+    </script>
+    <script> 
+        function razarpay() {
+            var options = {
+                key: "{{ razorpay_merchant_key }}", 
+                currency: "{{ currency }}",
+                name: "Vacation Feast", 
+                order_id: "{{ razorpay_order_id }}",
+                amount: "{{ amount_in_paise }}", 
+                callback_url: "{{ callback_url }}",
+                };
+                var rzp1 = new Razorpay(options);
+                
+                // add event listener to the payment button.
+                
+            
+                document.getElementById("pay-btn").onclick = function (e) {
+                rzp1.open();
+                e.preventDefault();
+                } 
+            }
+            
+    </script>
+    <script>
+        function startTimer(duration, display) {
+            var timer = duration, minutes, seconds;
+            setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    timer = 0;
+                } else if(timer === 0){
+                    $("#timeOutBtn").click();
+                }
+            }, 1000);
+        }
+
+        window.onload = function () {
+            let formattedTime = `{{ combined_data.time_difference }}`;
+                let balanceTime = formattedTime.toString().slice(2,7);
+                let timeString = balanceTime;
+
+                // Extract hours and minutes
+                let [hours, minutes] = timeString.split(':').map(Number);
+
+                // Convert hours to minutes and add to the total minutes
+                
+                let totalMinutes = hours * 60 + minutes;
+                var Minutes =  totalMinutes,
+                display = document.querySelector('#time');
+                startTimer(Minutes, display);
+        };
+    </script>
+    {% block content %}
+
+    {% endblock content %} 
+</body>
+</html>

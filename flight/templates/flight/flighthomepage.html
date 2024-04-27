@@ -1,0 +1,1764 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vacation Feast</title>
+    <link rel="stylesheet" href="{% static 'css/flight/flighthome.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+    <script src="{% static 'js/booking/flighthome.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+   
+</head>
+<body>
+    <section>
+       <div class="container-fluid slider-sec">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="slider-container">
+                        <div class="slider">
+                            <div class="slide"><img src="{% static 'image/booking/flight slide image 1.png' %}" alt="Image 1" class="img-fluid" style="width: 100%; height: auto;"></div>
+                            <div class="slide"><img src="{% static 'image/booking/flight slide image 2.png' %}" alt="Image 2" class="img-fluid" style="width: 100%; height: auto;"></div>
+                            <div class="slide"><img src="{% static 'image/booking/flight slide image 3.png' %}" alt="Image 3" class="img-fluid" style="width: 100%; height: auto;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <Header>
+        <div class="container-fluid header">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="navbar-brand" href="#" >
+                    <img src="{% static 'image/booking/Magnet logo.png' %}"alt="logo" width="79px" height="79px">
+                </a>
+                <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto mt-3"> <!-- mx-auto for centering -->
+                        <li class="nav-item">
+                            <a class="nav-link" href=" "><img src="{% static 'image/booking/flight w.svg' %}"  alt=""><p>Flights</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'hotel' %}"><img src="{% static 'image/booking/hotel w.svg' %}"  alt=""><p>Hotels</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/booking/holiday w.svg' %}" alt=""><p>Holidays</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/booking/island w.svg' %}" alt=""><p>Island</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/booking/visa w 1 icon.svg' %}" alt=""><p>Visa</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><img src="{% static 'image/booking/more w 1 icon.svg' %}" alt=""><p>More</p></a>
+                        </li>
+                    </ul>
+                    <div class="d-flex btn-log mb-2">
+                        <button class="btn btn-primary" id="log-btn">LOG IN</button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </Header>
+
+    <section id="home-sec" style="margin: 460px 60px 0px;">
+        <div class="container-fluid mb-4">
+            <div id="trip" class="d-flex justify-content-between">
+                <div class="head">
+                    <p style="color: rgba(86, 86, 86, 1);">Where are you flying?</p>
+                </div>
+                <div id="trip-plan-btn" class="mt-2">
+                    <div class="nav nav-tabs text-end" id="myTab" role="tablist">
+                        <!-- <li class="nav-item" role="presentation"> -->
+                            <button class="nav-link show active  trip-btn" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true" autofocus >One Trip</button>
+                        <!-- </li> -->
+                        <!-- <li class="nav-item" role="presentation"> -->
+                            <button class="nav-link  trip-btn" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Round Trip</button>
+                        <!-- </li> -->
+                        <!-- <li class="nav-item" role="presentation"> -->
+                            <button class="nav-link  trip-btn" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Multi Trip</button>
+                        <!-- </li> -->
+                    </div>
+                </div>
+            </div>
+            <div id="input-sec" class="row container"  >
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                        <form id="one-trip" method="GET" action="{% url 'one_trip' %}" onsubmit="return validateForm()">
+                            {% csrf_token %}
+                            <div class="row container  justify-content-between mb-2">
+                                <fieldset class="scheduler-border ot_fieldset col-md-2">
+                                    <legend class="ot_legend scheduler-border">From</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text"  id="from" placeholder="Enter The City" style="font-size: 14px;" name="from-one-trip">
+                                            <input type="hidden" id="citycodeInput" name="from_city_code">
+                                            <input type="hidden" id="airportCodeInput" name="fromAirportCode">
+                                            <input type="hidden" id="aircityname" name="fromcityname">
+                                            <i class="icon-time"></i>
+                                            <script>
+                                                $(function () {
+                                                    $("#from").autocomplete({
+                                                        source: function (request, response) {
+                                                            $.ajax({
+                                                                url: "/search_destinations_flight/",
+                                                                dataType: "json",
+                                                                data: {
+                                                                    query: request.term
+                                                                },
+                                                                success: function (data) {
+                                                                    response(data.data);
+                                                                }
+                                                            });
+                                                        },
+                                                        minLength: 2,
+                                                        select: function (event, ui) {
+                                                            // Update the hidden input fields with selected values
+                                                            $("#citycodeInput").val(ui.item.cityCode);
+                                                            $("#airportCodeInput").val(ui.item.AirportCode);
+                                                            $("#aircityname").val(ui.item.CityName);
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border ot_fieldset col-md-2">
+                                    <legend class="scheduler-border ot_legend">To</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" id="to" placeholder="Enter The City" style="font-size: 14px;" name="to-one-trip">
+                                            <input type="hidden" id="tocitycodeInput" name="to_city_code">
+                                            <input type="hidden" id="toairportCodeInput" name="toAirportCode">
+                                            <input type="hidden" id="toaircityname" name="tocityname">
+
+                                            <i class="icon-time"></i>
+                                            <script>
+                                                $(function () {
+                                                    $("#to").autocomplete({
+                                                        source: function (request, response) {
+                                                            $.ajax({
+                                                                url: "/search_destinations_flight/",
+                                                                dataType: "json",
+                                                                data: {
+                                                                    query: request.term
+                                                                },
+                                                                success: function (data) {
+                                                                    response(data.data);
+                                                                }
+                                                            });
+                                                        },
+                                                        minLength: 2,
+                                                        select: function (event, ui) {
+                                                            // Update the hidden input fields with selected values
+                                                            $("#tocitycodeInput").val(ui.item.cityCode);
+                                                            $("#toairportCodeInput").val(ui.item.AirportCode);
+                                                            $("#toaircityname").val(ui.item.CityName);
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border ot_fieldset col-md-2">
+                                    <legend class="scheduler-border ot_legend">Departure</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" class="check" data-date="" data-date-format="DD MMMM YYYY"  style="font-size: 14px;" name="check-in" id="check-in" >
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border ot_fieldset col-md-1" id="return">
+                                    <legend class="scheduler-border ot_legend" >Return</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" class="check" data-date="" data-date-format="DD MMMM YYYY" value="Enter The Date"  style="font-size: 14px;"  id="retrun-date-onetrip"  disabled>
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border ot_fieldset col-md-1">
+                                    <legend class="scheduler-border ot_legend">Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <select class="f_types" name= "classes">
+                                                <option selected value="1">All</option>
+                                                <option value="2">Econamy</option>
+                                                <option value="3">PremiumEconomy</option>
+                                                <option value="4">Business</option>
+                                                <option value="5">PremiumBusiness</option>
+                                                <option value="6">First</option>
+                                            </select>
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border ot_fieldset col-md-2">
+                                    <legend class="scheduler-border ot_legend">Travellers & Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" value="" readonly id="pasInput" style="font-size: 14px;"  onclick="showFlightForm()">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                
+                            </div>
+                            <div class="container d-flex justify-content-between" id="flight_radio_div">
+                                <div class="col-md-9 d-flex radio-inp">
+                                    <p>Special Fares (Optional):</p>
+                                    <input type="radio" id="regular" name="fav_language" value="Regular" checked>
+                                    <label for="Regular Fares">Regular Fares</label>
+                                    <input type="radio" id="Student" name="fav_language" value="Student">
+                                    <label for="Student Fares">Student Fares</label>
+                                    <input type="radio" id="Senior" name="fav_language" value="Senior">
+                                    <label for="Senior citizen Fares">Senior Citizen Fares</label>
+                                </div>
+                                <div  class="col-md-3 justify-content-between d-flex">
+                                    <div class="form-check form-switch">
+                                        <label class="form-check-label df_text" for="flexSwitchCheckDefault">Direct Flight</label>
+                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                                        <input type="hidden" id="resultValue" value="" name="resultdir">
+                                    </div>
+                                    <script>
+                                        // JavaScript code to handle checkbox changes
+                                        var checkbox = document.getElementById("flexSwitchCheckDefault");
+                                        var resultInput = document.getElementById("resultValue");
+                                    
+                                        function updateResult() {
+                                            var formattedValue = checkbox.checked ? "True" : "False";
+                                            resultInput.value = formattedValue;
+                                            console.log("DirectFlight is now: " + formattedValue);
+                                        }
+                                    
+                                        // Add an event listener to detect changes
+                                        checkbox.addEventListener("change", updateResult);
+                                    
+                                        // Initial update
+                                        updateResult();
+                                    </script>
+                                    <div class="text-end">
+                                         <button type="submit" class="btn btn-primary search-btn" id="btn-search" >Search Flight</button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div id="flight_inp_form1" class="fi_form">
+                                
+                                <div class="inp-form">
+                                    <div class="d-flex">
+                                        <div class="col_1">
+                                            <label for="Adults">Adults</label>
+                                            <select name="Adults" id="Adult_inp">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                            </select>
+                                        </div>
+                                        <div class="col_1">
+                                            <label for="Child">Child</label>
+                                            <select name="Childs" id="Child_inp">
+                                                <option value="0">Select</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                            </select>
+                                        </div>
+                                        <div class="col_1">
+                                            <label for="Infant">Infant</label>
+                                            <select name="Infants" id="Infant_inp">
+                                                <option value="0">Select</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                            </select>
+                                        </div>
+                                        <div class="text-end" style="margin-top: -10px;">
+                                            <button type="button" onclick="hideFlightForm()" class="close-btn"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                           
+                            <script>
+
+                            </script>
+                            
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    // Get select elements
+                                    const adultSelect = document.getElementById('Adult_inp');
+                                    const childSelect = document.getElementById('Child_inp');
+                                    const infantSelect = document.getElementById('Infant_inp');
+                            
+                                    // Get input element
+                                    const pasInput = document.getElementById('pasInput');
+                            
+                                    // Update input value function
+                                    function updateInputValue() {
+                                        const adults = adultSelect.value;
+                                        const children = childSelect.value;
+                                        const infants = infantSelect.value;
+                                        pasInput.value = `${adults} Adults, ${children} Child, ${infants} Infant`;
+                                    }
+                            
+                                    // Listen for changes in select elements
+                                    adultSelect.addEventListener('change', updateInputValue);
+                                    childSelect.addEventListener('change', updateInputValue);
+                                    infantSelect.addEventListener('change', updateInputValue);
+                            
+                                    // Initial update
+                                    updateInputValue();
+                                });
+                            </script>
+                            
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                        <form id="round-trip" method="GET" action="{% url 'round_trip'%}">
+                            {% csrf_token %}
+                           <div class="row container justify-content-between">
+                                <fieldset class="scheduler-border col-md-2">
+                                    <legend class="scheduler-border">From</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text"  id="round-from" placeholder="Enter The City" style="font-size: 14px;" name="from-round-trip">
+                                            <input type="hidden" id="FcitycodeInput" name="from_city_code">
+                                            <input type="hidden" id="FairportCodeInput" name="from_airport_code">
+                                            <input type="hidden" id="Fcityname" name="cityname-from">
+                                            <i class="icon-time"></i>
+                                            <script>
+                                                $(function () {
+                                                    $("#round-from").autocomplete({
+                                                        source: function (request, response) {
+                                                            $.ajax({
+                                                                url: "/search_destinations_flight/",
+                                                                dataType: "json",
+                                                                data: {
+                                                                    query: request.term
+                                                                },
+                                                                success: function (data) {
+                                                                    response(data.data);
+                                                                }
+                                                            });
+                                                        },
+                                                        minLength: 2,
+                                                        select: function (event, ui) {
+                                                            // Update the hidden input fields with selected values
+                                                            $("#FcitycodeInput").val(ui.item.cityCode);
+                                                            $("#FairportCodeInput").val(ui.item.AirportCode);
+                                                            $("#Fcityname").val(ui.item.CityName);
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-2">
+                                    <legend class="scheduler-border">To</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" id="round-to" placeholder="Enter The City" style="font-size: 14px;" name="to-round-trip">
+                                            <input type="hidden" id="tcitycodeInput" name="to_city_code">
+                                            <input type="hidden" id="tairportCodeInput" name="to_airport_code">
+                                            <input type="hidden" id="tcitynmae" name="cityname-to">
+                                            <i class="icon-time"></i>
+                                            <script>
+                                                $(function () {
+                                                    $("#round-to").autocomplete({
+                                                        source: function (request, response) {
+                                                            $.ajax({
+                                                                url: "/search_destinations_flight/",
+                                                                dataType: "json",
+                                                                data: {
+                                                                    query: request.term
+                                                                },
+                                                                success: function (data) {
+                                                                    response(data.data);
+                                                                }
+                                                            });
+                                                        },
+                                                        minLength: 2,
+                                                        select: function (event, ui) {
+                                                            // Update the hidden input fields with selected values
+                                                            $("#tcitycodeInput").val(ui.item.cityCode);
+                                                            $("#tairportCodeInput").val(ui.item.AirportCode);
+                                                            $("#tcitynmae").val(ui.item.CityName);
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-1">
+                                    <legend class="scheduler-border">Departure</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <!-- <input type="date" id="checkOutDate"  class="check" data-date="" data-date-format="DD MMMM YYYY" value="2023-12-23" style="font-size: 14px;"> -->
+                                            <input type="text" class="check rtcheck-in" data-date="" data-date-format="DD MMMM YYYY"  style="font-size: 14px;"  name="start-date-roundtrip">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-1 mb-3">
+                                    <legend class="scheduler-border">Return</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <!-- <input type="date" id="checkOutDate"  class="check" data-date="" data-date-format="DD MMMM YYYY" value="2023-12-23" style="font-size: 14px;" name="return-date-roundtrip"> -->
+                                            <input type="text" class="check rtcheck-out" data-date="" data-date-format="DD MMMM YYYY" style="font-size: 14px;" name="retrun-date-onetrip" >
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-2 mb-3">
+                                    <legend class="scheduler-border">Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <select style="border: none;padding: 2px 3px;" name= "classes" class="f_types">
+                                                <option value="All">All</option>
+                                                <option selected value="Econamy">Econamy</option>
+                                                <option value="Business">Business</option>
+                                                <option value="First">First</option>
+                                            </select>
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-2 mb-3">
+                                    <legend class="scheduler-border">Travellers & Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" value="2 Adults, 1 Child" id="room" style="font-size: 14px;" onclick="showFlightForm2()">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="container d-flex" id="rt_radio_div">
+                                <div class="col-md-9 d-flex radio-inp">
+                                    <p>Special Fares (Optional):</p>
+                                    <input type="radio" id="regular" name="fav_language" value="regular" checked>
+                                    <label for="Regular Fares">Regular Fares</label>
+                                    <input type="radio" id="Student" name="fav_language" value="regular">
+                                    <label for="Student Fares">Student Fares</label>
+                                    <input type="radio" id="Senior" name="fav_language" value="regular">
+                                    <label for="Senior citizen Fares">Senior Citizen Fares</label>
+                                </div>
+                                <div class="col-md-3 text-end">
+                                    <button class="btn btn-primary search-btn2" >Search Flight</button>
+                                </div>
+                            </div>
+                            <div class="inp-form fi_form" id="flight_inp_form2" >
+                                <div class="d-flex">
+                                    <div class="col_1">
+                                        <label for="Adults">Adults</label>
+                                        <select name="Adults1" id="Adult_inp">
+                                            <option value="0">Select</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                        </select>
+                                    </div>
+                                    <div class="col_1"> 
+                                        <label for="Child">Child</label>
+                                        <select name="Child1" id="Child_inp">
+                                            <option value="0">Select</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                        </select>
+                                    </div>
+                                    <div class="col_1">
+                                        <label for="Infant">Infant</label>
+                                        <select name="Infant1" id="Adult_inp">
+                                            <option value="0">Select</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                        </select>
+                                    </div>
+                                </div>
+                           </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                            <form id="multi-trip" method="get" >
+                                <div class="row" id="multitrip-container">
+                                    <div class="row">
+                                        <fieldset class="scheduler-border col-md-3">
+                                            <legend class="scheduler-border">From</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <input type="text"  id="multi-from" placeholder="Enter The City" style="font-size: 14px;" name="from-multi-trip">
+                                                    <input type="hidden" id="citycodeInput" name="to_city_code">
+                                                    <input type="hidden" id="airportCodeInput" name="to_airport_code">
+                                                    <i class="icon-time"></i>
+                                                    <script>
+                                                        $(function () {
+                                                            $("#multi-from").autocomplete({
+                                                                source: function (request, response) {
+                                                                    $.ajax({
+                                                                        url: "/search_destinations_flight/",
+                                                                        dataType: "json",
+                                                                        data: {
+                                                                            query: request.term
+                                                                        },
+                                                                        success: function (data) {
+                                                                            response(data.data);
+                                                                        }
+                                                                    });
+                                                                },
+                                                                minLength: 2,
+                                                                select: function (event, ui) {
+                                                                    // Update the hidden input fields with selected values
+                                                                    $("#citycodeInput").val(ui.item.cityCode);
+                                                                    $("#airportCodeInput").val(ui.item.AirportCode);
+                                                                }
+                                                            });
+                                                        });
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="scheduler-border col-md-2">
+                                            <legend class="scheduler-border">To</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <input type="text" id="multi-to" placeholder="Enter The City" style="font-size: 14px;" name="to-multi-trip">
+                                                    <input type="hidden" id="citycodeInput" name="to_city_code">
+                                                    <input type="hidden" id="airportCodeInput" name="to_airport_code">
+                                                    <i class="icon-time"></i>
+                                                    <script>
+                                                        $(function () {
+                                                            $("#multi-to").autocomplete({
+                                                                source: function (request, response) {
+                                                                    $.ajax({
+                                                                        url: "/search_destinations_flight/",
+                                                                        dataType: "json",
+                                                                        data: {
+                                                                            query: request.term
+                                                                        },
+                                                                        success: function (data) {
+                                                                            response(data.data);
+                                                                        }
+                                                                    });
+                                                                },
+                                                                minLength: 2,
+                                                                select: function (event, ui) {
+                                                                    // Update the hidden input fields with selected values
+                                                                    $("#citycodeInput").val(ui.item.cityCode);
+                                                                    $("#airportCodeInput").val(ui.item.AirportCode);
+                                                                }
+                                                            });
+                                                        });
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="scheduler-border col-md-2">
+                                            <legend class="scheduler-border">Departure</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <input type="date" id="checkOutDate"  class="check" data-date="" data-date-format="DD MMMM YYYY" value="2023-12-23" style="font-size: 14px;" name="start-multi-trip">
+                                                    <i class="icon-time"></i>
+                                                    
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="scheduler-border col-md-1 mb-3">
+                                            <legend class="scheduler-border">Class</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <select style="border: none;padding: 2px 3px;" name= "classes"  class="f_types">
+                                                        <option selected value="All">All</option>
+                                                        <option value="Econamy">Econamy</option>
+                                                        <option value="Business">Business</option>
+                                                        <option value="First">First</option>
+                                                    </select>
+                                                    <i class="icon-time"></i>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="scheduler-border col-md-3 mb-3">
+                                            <legend class="scheduler-border">Travellers & Class</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <input type="text" value="2 Adults, 1 Child"  id="room" style="font-size: 14px;" onclick="showForm()">
+                                                    <i class="icon-time"></i>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="row">
+                                        <fieldset class="scheduler-border col-md-3">
+                                            <legend class="scheduler-border">From</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <input type="text"  id="from-multi" placeholder="Enter The City" style="font-size: 14px;">
+                                                    <i class="icon-time"></i>
+                                                    <script>
+                                                        $(function () {
+                                                            $("#from-multi").autocomplete({
+                                                                source: function (request, response) {
+                                                                    $.ajax({
+                                                                        url: "/search_destinations_flight/",
+                                                                        dataType: "json",
+                                                                        data: {
+                                                                            query: request.term
+                                                                        },
+                                                                        success: function (data) {
+                                                                            response(data.data);
+                                                                        }
+                                                                    });
+                                                                },
+                                                                minLength: 2,
+                                                                select: function (event, ui) {
+                                                                    // Update the hidden input fields with selected values
+                                                                    $("#citycodeInput").val(ui.item.cityCode);
+                                                                    $("#airportCodeInput").val(ui.item.AirportCode);
+                                                                }
+                                                            });
+                                                        });
+                                                    </script>
+                                                    
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="scheduler-border col-md-2">
+                                            <legend class="scheduler-border">To</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <input type="text" id="to-multi" placeholder="Enter The City" style="font-size: 14px;">
+                                                    <i class="icon-time"></i>
+                                                    <script>
+                                                        $(function () {
+                                                            $("#to-multi").autocomplete({
+                                                                source: function (request, response) {
+                                                                    $.ajax({
+                                                                        url: "/search_destinations_flight/",
+                                                                        dataType: "json",
+                                                                        data: {
+                                                                            query: request.term
+                                                                        },
+                                                                        success: function (data) {
+                                                                            response(data.data);
+                                                                        }
+                                                                    });
+                                                                },
+                                                                minLength: 2,
+                                                                select: function (event, ui) {
+                                                                    // Update the hidden input fields with selected values
+                                                                    $("#citycodeInput").val(ui.item.cityCode);
+                                                                    $("#airportCodeInput").val(ui.item.AirportCode);
+                                                                }
+                                                            });
+                                                        });
+                                                    </script>
+
+                                                    </div>
+                                                </div>
+                                        </fieldset>
+                                        <fieldset class="scheduler-border col-md-2">
+                                            <legend class="scheduler-border">Departure</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <input type="date" id="checkOutDate"  class="check" data-date="" data-date-format="DD MMMM YYYY" value="2023-12-23" style="font-size: 14px;">
+                                                    <i class="icon-time"></i>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="scheduler-border col-md-1 mb-3">
+                                            <legend class="scheduler-border">Class</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <select style="border: none;padding: 2px 3px;" name= "classes"  class="f_types">
+                                                        <option selected value="All">All</option>
+                                                        <option value="Econamy">Econamy</option>
+                                                        <option value="Business">Business</option>
+                                                        <option value="First">First</option>
+                                                    </select>
+                                                    <i class="icon-time"></i>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="scheduler-border col-md-3 mb-3">
+                                            <legend class="scheduler-border">Travellers & Class</legend>
+                                            <div class="control-group">
+                                                <div class="controls bootstrap-timepicker">
+                                                    <input type="text" value="2 Adults, 1 Child" id="room" style="font-size: 14px;" onclick="showForm2()">
+                                                    <i class="icon-time"></i>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="row" class="multitrip-container" id="multitrip-add" style="display:none;">
+                                    </div>
+                                </div>
+                                <div id="ar-btn">
+                                    <button type="button" class="btn btn-primary" onclick="addFlight()">Add Flight</button>
+                                    <button  class="btn btn-primary">Search Flight</button>
+                                </div>
+                                <div class="col-md-12 d-flex">
+                                    <div class="col-md-8 d-flex radio-inp">
+                                        <p>Special Fares (Optional):</p>
+                                        <input type="radio" id="regular" name="fav_language" value="regular" checked>
+                                        <label for="Regular Fares">Regular Fares</label>
+                                        <input type="radio" id="Student" name="fav_language" value="regular">
+                                        <label for="Student Fares">Student Fares</label>
+                                        <input type="radio" id="Senior" name="fav_language" value="regular">
+                                        <label for="Senior citizen Fares">Senior Citizen Fares</label>
+                                    </div>
+                                </div>
+                            </form>     
+                        </div> 
+                </div>
+                <!-- <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                        <div class="row" id="multitrip-container">
+                            <form id="multi-trip" method="GET" action="{% url 'multitrip' %}" >
+                                {% csrf_token %}
+                                <div class="row">
+                                    <fieldset class="scheduler-border col-md-3">
+                                        <legend class="scheduler-border">From</legend>
+                                        <div class="control-group">
+                                            <div class="controls bootstrap-timepicker">
+                                                <input type="text"  id="multi-from" placeholder="Enter The City" style="font-size: 14px;" name="from-multi-trip">
+                                                <input type="hidden" id="citycodeInput" name="to_city_code">
+                                                <input type="hidden" id="airportCodeInput" name="to_airport_code">
+                                                <i class="icon-time"></i>
+                                                <script>
+                                                    $(function () {
+                                                        $("#multi-to").autocomplete({
+                                                            source: function (request, response) {
+                                                                $.ajax({
+                                                                    url: "/search_destinations_flight/",
+                                                                    dataType: "json",
+                                                                    data: {
+                                                                        query: request.term
+                                                                    },
+                                                                    success: function (data) {
+                                                                        response(data.data);
+                                                                    }
+                                                                });
+                                                            },
+                                                            minLength: 2,
+                                                            select: function (event, ui) {
+                                                                // Update the hidden input fields with selected values
+                                                                $("#citycodeInput").val(ui.item.cityCode);
+                                                                $("#airportCodeInput").val(ui.item.AirportCode);
+                                                            }
+                                                        });
+                                                    });
+                                                });
+                                            </script>
+                                </div>
+                            </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-2">
+                                    <legend class="scheduler-border">To</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" id="multi-to" placeholder="Enter The City" style="font-size: 14px;" name="to-multi-trip">
+                                            <input type="hidden" id="citycodeInput" name="to_city_code">
+                                            <input type="hidden" id="airportCodeInput" name="to_airport_code">
+                                            <i class="icon-time"></i>
+                                            <script>
+                                                $(function () {
+                                                    $("#multi-to").autocomplete({
+                                                        source: function (request, response) {
+                                                            $.ajax({
+                                                                url: "/search_destinations_flight/",
+                                                                dataType: "json",
+                                                                data: {
+                                                                    query: request.term
+                                                                },
+                                                                success: function (data) {
+                                                                    response(data.data);
+                                                                }
+                                                            });
+                                                        },
+                                                        minLength: 2,
+                                                        select: function (event, ui) {
+                                                            // Update the hidden input fields with selected values
+                                                            $("#citycodeInput").val(ui.item.cityCode);
+                                                            $("#airportCodeInput").val(ui.item.AirportCode);
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-2">
+                                    <legend class="scheduler-border">Departure</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="date" id="checkOutDate"  class="check" data-date="" data-date-format="DD MMMM YYYY" value="2023-12-23" style="font-size: 14px;" name="start-multi-trip">
+                                            <i class="icon-time"></i>
+                                            
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-1 mb-3">
+                                    <legend class="scheduler-border">Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <select style="border: none;padding: 2px 3px;" name= "classes">
+                                                <option value="All">All</option>
+                                                <option selected value="Econamy">Econamy</option>
+                                                <option value="Business">Business</option>
+                                                <option value="First">First</option>
+                                            </select>
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-3 mb-3">
+                                    <legend class="scheduler-border">Travellers & Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" placeholder="1 Room & 0 Adults" id="room" style="font-size: 14px;" onclick="showForm()">
+                                            <input type="hidden" id="roomInfoInput" name="roomInfo">
+                                            <input type="hidden" id="totalRoomInfoInput" name="totalRoomInfo">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="row">
+                                <fieldset class="scheduler-border col-md-3">
+                                    <legend class="scheduler-border">From</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text"  id="from-multi" placeholder="Enter The City" style="font-size: 14px;">
+                                            <i class="icon-time"></i>
+                                            <script>
+                                                $(function () {
+                                                    $("#from-multi").autocomplete({
+                                                        source: function (request, response) {
+                                                            $.ajax({
+                                                                url: "/search_destinations_flight/",
+                                                                dataType: "json",
+                                                                data: {
+                                                                    query: request.term
+                                                                },
+                                                                success: function (data) {
+                                                                    response(data.data);
+                                                                }
+                                                            });
+                                                        },
+                                                        minLength: 2,
+                                                        select: function (event, ui) {
+                                                            // Update the hidden input fields with selected values
+                                                            $("#citycodeInput").val(ui.item.cityCode);
+                                                            $("#airportCodeInput").val(ui.item.AirportCode);
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+                                            
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-2">
+                                    <legend class="scheduler-border">To</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" id="to-multi" placeholder="Enter The City" style="font-size: 14px;">
+                                            <i class="icon-time"></i>
+                                            <script>
+                                                $(function () {
+                                                    $("#to-multi").autocomplete({
+                                                        source: function (request, response) {
+                                                            $.ajax({
+                                                                url: "/search_destinations_flight/",
+                                                                dataType: "json",
+                                                                data: {
+                                                                    query: request.term
+                                                                },
+                                                                success: function (data) {
+                                                                    response(data.data);
+                                                                }
+                                                            });
+                                                        },
+                                                        minLength: 2,
+                                                        select: function (event, ui) {
+                                                            // Update the hidden input fields with selected values
+                                                            $("#citycodeInput").val(ui.item.cityCode);
+                                                            $("#airportCodeInput").val(ui.item.AirportCode);
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+
+                                            </div>
+                                        </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-2">
+                                    <legend class="scheduler-border">Departure</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="date" id="checkOutDate"  class="check" data-date="" data-date-format="DD MMMM YYYY" value="2023-12-23" style="font-size: 14px;">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-1 mb-3">
+                                    <legend class="scheduler-border">Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <select style="border: none;padding: 2px 3px;" name= "classes">
+                                                <option value="All">All</option>
+                                                <option selected value="Econamy">Econamy</option>
+                                                <option value="Business">Business</option>
+                                                <option value="First">First</option>
+                                            </select>
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-3 mb-3">
+                                    <legend class="scheduler-border">Travellers & Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" placeholder="1 Room & 0 Adults" id="room" style="font-size: 14px;" onclick="showForm2()">
+                                            <input type="hidden" id="roomInfoInput" name="roomInfo">
+                                            <input type="hidden" id="totalRoomInfoInput" name="totalRoomInfo">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="row" class="multitrip-container" id="multitrip-add" style="display:none;">
+                            </div>
+                        </div>
+                            <div id="ar-btn">
+                                <button type="button" class="btn btn-primary" onclick="addFlight()">Add Flight</button>
+                                <button  class="btn btn-primary">Search Flight</button>
+                            </div>
+                            <div class="col-md-12 d-flex">
+                                <div class="col-md-8 d-flex radio-inp">
+                                    <p>Special Fares (Optional):</p>
+                                    <input type="radio" id="regular" name="fav_language" value="regular" checked>
+                                    <label for="Regular Fares">Regular Fares</label>
+                                    <input type="radio" id="Student" name="fav_language" value="regular">
+                                    <label for="Student Fares">Student Fares</label>
+                                    <input type="radio" id="Senior" name="fav_language" value="regular">
+                                    <label for="Senior citizen Fares">Senior Citizen Fares</label>
+                                </div>
+                            </div>
+                        </form>     
+                    </div> 
+                </div>
+            </div>    
+        </div>
+    </div>
+</section>
+
+<footer class="bg-dark text-white">
+    <div class="container">
+        <div class="row align-items-center footer">
+            <div class="col-md-2 footer-img">
+                <img src="{% static 'image/booking/Magnet logo.png' %}" alt="VF Logo" class="img-fluid">
+            </div>
+            <div class="col-md-2 footer-icons">
+                <img src="{% static 'image/booking/facebook Icons.svg' %}" alt="Facebook Icon" class="footer-icon">
+                <img src="{% static 'image/booking/x Icons.svg' %}" alt="X Icon" class="footer-icon">
+                <img src="{% static 'image/booking/youtube Icons.svg' %}"  alt="YouTube Icon" class="footer-icon">
+                <img src="{% static 'image/booking/insta Icons.svg' %}" alt="Instagram Icon" class="footer-icon">
+                <img src="{% static 'image/booking/linked in Icons.svg' %}" alt="LinkedIn Icon" class="footer-icon">
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function addFlight() {
+    var container = document.getElementById("multitrip-container");
+    var newFlight = document.createElement("div");
+    newFlight.className = "multitrip-container-item";
+    newFlight.style.display = "none";
+
+    newFlight.innerHTML = `<div class="d-flex">
+                                <fieldset class="scheduler-border col-md-3">
+                                    <legend class="scheduler-border">From</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text"  id="from" placeholder="Enter The City" style="font-size: 14px;">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-2">
+                                    <legend class="scheduler-border">To</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" id="to" placeholder="Enter The City" style="font-size: 14px;">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-2">
+                                    <legend class="scheduler-border">Departure</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="date" id="checkOutDate"  class="check" data-date="" data-date-format="DD MMMM YYYY" value="2023-12-23" style="font-size: 14px;">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-1 mb-3">
+                                    <legend class="scheduler-border">Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <select style="border: none;padding: 2px 3px;" name= "classes">
+                                                <option value="All">All</option>
+                                                <option selected value="Econamy">Econamy</option>
+                                                <option value="Business">Business</option>
+                                                <option value="First">First</option>
+                                            </select>
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="scheduler-border col-md-3 mb-3">
+                                    <legend class="scheduler-border">Travellers & Class</legend>
+                                    <div class="control-group">
+                                        <div class="controls bootstrap-timepicker">
+                                            <input type="text" placeholder="1 Room & 0 Adults" id="room" style="font-size: 14px;" onclick="showForm2()">
+                                            <input type="hidden" id="roomInfoInput" name="roomInfo">
+                                            <input type="hidden" id="totalRoomInfoInput" name="totalRoomInfo">
+                                            <i class="icon-time"></i>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div id="flight_inp_form4" >
+                                    <div class="inp-form" >
+                                        <div class="d-flex">
+                                            <div class="col_1">
+                                                <label for="Adults">Adults</label>
+                                                <select name="Adults" id="Adult_inp">
+                                                    <option value="0">Select</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                </select>
+                                            </div>
+                                            <div class="col_1"> 
+                                                <label for="Child">Child</label>
+                                                <select name="Childs" id="Child_inp">
+                                                    <option value="0">Select</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                </select>
+                                            </div>
+                                            <div class="col_1">
+                                                <label for="Infant">Infant</label>
+                                                <select name="Infants" id="Adult_inp">
+                                                    <option value="0">Select</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="ar-btn">
+                            <button type="button" class="btn btn-primary" onclick="addFlight()">Add Flight</button>
+                            <button  class="btn btn-primary">Search Flight</button>
+                        </div>
+                        <div class="col-md-12 d-flex">
+                            <div class="col-md-8 d-flex radio-inp">
+                                <p>Special Fares (Optional):</p>
+                                <input type="radio" id="regular" name="fav_language" value="regular">
+                                <label for="Regular Fares">Regular Fares</label>
+                                <input type="radio" id="Student" name="fav_language" value="regular">
+                                <label for="Student Fares">Student Fares</label>
+                                <input type="radio" id="Senior" name="fav_language" value="regular">
+                                <label for="Senior citizen Fares">Senior Citizen Fares</label>
+                            </div>
+                        </div>
+                        `; 
+                        
+                    </form>     
+                </div> 
+            </div> -->
+            </div>    
+        </div> 
+    </section>
+    
+    <script>
+        container.appendChild(newFlight);
+
+        if (newFlight.style.display === "none") {
+            newFlight.style.display = "block";
+        } else {
+            newFlight.style.display = "none";
+        }
+    
+    </script>
+ 
+
+    <!-- DATE FUNCTIONS -->
+    <script>
+         $(function () {
+            // Initialize Datepicker for the first date
+            $(".rtcheck-in").datepicker({
+            minDate: 0, // Minimum date is today
+            dateFormat: 'dd MM yy', // Set the date format
+            onSelect: function (dateText, inst) {
+                // Update the data-date attribute using moment.js
+                $(this).attr("data-date", moment(dateText, "DD MMMM YYYY").format($(this).attr("data-date-format")));
+
+                // Calculate the next date using moment.js
+                var nextDate = moment(dateText, "DD MMMM YYYY").add(1, 'days').format("DD MMMM YYYY");
+
+                // Set the default date for the second datepicker to one day after the selected date
+                $(".rtcheck-out").datepicker("option", "minDate", nextDate);
+                $(".rtcheck-out").datepicker("setDate", nextDate);
+            }
+            });
+
+            // Initialize Datepicker for the second date
+            $(".rtcheck-out").datepicker({
+            minDate: 1, // Minimum date is one day after today
+            dateFormat: 'dd MM yy', // Set the date format
+            });
+
+            // Set the default date to today for the first datepicker
+            $(".rtcheck-in").datepicker("setDate", new Date());
+
+            // Set the default date for the second datepicker to one day after today
+            var nextDefaultDate = moment().add(1, 'days').format("DD MMMM YYYY");
+            $(".rtcheck-out").val(nextDefaultDate);
+        });
+
+    </script>
+
+    <!-- Date Roundtrip -->
+
+    <script>
+        $(function () {
+           // Initialize Datepicker for the first date
+           $("#check-in").datepicker({
+           minDate: 0, // Minimum date is today
+           dateFormat: 'dd MM yy', // Set the date format
+           onSelect: function (dateText, inst) {
+               // Update the data-date attribute using moment.js
+               $(this).attr("data-date", moment(dateText, "DD MMMM YYYY").format($(this).attr("data-date-format")));
+
+               // Calculate the next date using moment.js
+               var nextDate = moment(dateText, "DD MMMM YYYY").add(1, 'days').format("DD MMMM YYYY");
+
+               // Set the default date for the second datepicker to one day after the selected date
+               $("#check-out").datepicker("option", "minDate", nextDate);
+               $("#check-out").datepicker("setDate", nextDate);
+           }
+           });
+
+           // Initialize Datepicker for the second date
+           $("#check-out").datepicker({
+           minDate: 1, // Minimum date is one day after today
+           dateFormat: 'dd MM yy', // Set the date format
+           });
+
+           // Set the default date to today for the first datepicker
+           $("#check-in").datepicker("setDate", new Date());
+
+           // Set the default date for the second datepicker to one day after today
+           var nextDefaultDate = moment().add(1, 'days').format("DD MMMM YYYY");
+           $("#check-out").val(nextDefaultDate);
+       });
+
+   </script>
+
+    
+    <script>
+        function addFlight() {
+        var container = document.getElementById("multitrip-container");
+        var newFlight = document.createElement("div");
+        newFlight.className = "multitrip-container-item";
+        newFlight.style.display = "none";
+
+        newFlight.innerHTML = `<div class="row container">
+                                    <fieldset class="scheduler-border col-md-3">
+                                        <legend class="scheduler-border">From</legend>
+                                        <div class="control-group">
+                                            <div class="controls bootstrap-timepicker">
+                                                <input type="text"  id="from" placeholder="Enter The City" style="font-size: 14px;">
+                                                <i class="icon-time"></i>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="scheduler-border col-md-2">
+                                        <legend class="scheduler-border">To</legend>
+                                        <div class="control-group">
+                                            <div class="controls bootstrap-timepicker">
+                                                <input type="text" id="to" placeholder="Enter The City" style="font-size: 14px;">
+                                                <i class="icon-time"></i>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="scheduler-border col-md-2">
+                                        <legend class="scheduler-border">Departure</legend>
+                                        <div class="control-group">
+                                            <div class="controls bootstrap-timepicker">
+                                                <input type="date" id="checkOutDate"  class="check" data-date="" data-date-format="DD MMMM YYYY" value="2023-12-23" style="font-size: 14px;">
+                                                <i class="icon-time"></i>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="scheduler-border col-md-1 mb-3">
+                                        <legend class="scheduler-border">Class</legend>
+                                        <div class="control-group">
+                                            <div class="controls bootstrap-timepicker">
+                                                <select style="border: none;padding: 2px 3px;" name= "classes">
+                                                    <option  selected value="All">All</option>
+                                                    <option value="Econamy">Econamy</option>
+                                                    <option value="Business">Business</option>
+                                                    <option value="First">First</option>
+                                                </select>
+                                                <i class="icon-time"></i>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="scheduler-border col-md-3 mb-3">
+                                        <legend class="scheduler-border">Travellers & Class</legend>
+                                        <div class="control-group">
+                                            <div class="controls bootstrap-timepicker">
+                                                <input type="text" placeholder="1 Room & 0 Adults" id="room" style="font-size: 14px;" onclick="showForm2()">
+                                                <i class="icon-time"></i>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <div id="flight_inp_form4" class="fi_form" >
+                                        <div class="inp-form" >
+                                            <div class="d-flex">
+                                                <div class="col_1">
+                                                    <label for="Adults">Adults</label>
+                                                    <select name="Adults" id="Adult_inp">
+                                                        <option value="0">Select</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col_1"> 
+                                                    <label for="Child">Child</label>
+                                                    <select name="Childs" id="Child_inp">
+                                                        <option value="0">Select</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col_1">
+                                                    <label for="Infant">Infant</label>
+                                                    <select name="Infants" id="Adult_inp">
+                                                        <option value="0">Select</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+        `;
+
+        container.appendChild(newFlight);
+
+        if (newFlight.style.display === "none") {
+            newFlight.style.display = "block";
+        } else {
+            newFlight.style.display = "none";
+        }
+    }
+    </script>
+    <script>
+
+            function hideFlightForm() {
+                var flightForm = document.getElementById("flight_inp_form1")
+                if(flightForm.style.display === "block") {
+                            flightForm.style.display = "none";
+                        } else {
+                            flightForm.style.display = "block"
+                        }
+            }
+
+        function showFlightForm() {
+            var flightForm = document.getElementById("flight_inp_form1")
+            if(flightForm.style.display === "none") {
+                flightForm.style.display = "block";
+            } else {
+                flightForm.style.display = "none"
+            }
+        }
+
+        function showFlightForm2() {
+            var flightForm = document.getElementById("flight_inp_form2")
+            if(flightForm.style.display === "none") {
+                flightForm.style.display = "block";
+            } else {
+                flightForm.style.display = "none"
+            }
+        }
+
+        function showForm() {
+            var flightForm = document.getElementById("flight_inp_form3")
+            if(flightForm.style.display === "none") {
+                flightForm.style.display = "block";
+            } else {
+                flightForm.style.display = "none"
+            }
+        }
+
+        function showForm2() {
+            var flightForm = document.getElementById("flight_inp_form4")
+            if(flightForm.style.display === "none") {
+                flightForm.style.display = "block";
+            } else {
+                flightForm.style.display = "none"
+            }
+
+            var header = document.getElementById("myTab");
+            var btns = header.getElementsByClassName("trip-btn");
+            for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function() {
+            var current = document.getElementsByClassName("active");
+            current[0].className = current[0].className.replace(" active", "");
+            this.className += " active";
+            });
+        }}
+
+    </script>
+    <script>
+        function validateForm() {
+            var from = document.getElementById("from").value;
+            var to = document.getElementById("to").value;
+            if (from === "") {
+                alert("Please Enter Your Place");
+                return false; // Prevent form submission
+            } 
+                if (to === "") {
+                alert("Please Enter Your Destination");
+                return false; // Prevent form submission
+            }
+    
+            return true; // Allow form submission
+        }
+    </script>
+        <!-- SLIDERS FUNCTIONS -->
+    <script>
+        let slideIndex = 1;
+        const slides = document.getElementsByClassName("slide");
+        const dots = document.getElementsByClassName("dot");
+
+        function showSlides(n) {
+        if (n > slides.length) {
+            slideIndex = 1;
+        }
+        if (n < 1) {
+            slideIndex = slides.length;
+        }
+
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+
+        for (let i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+        }
+
+        function plusSlides(n) {
+        showSlides((slideIndex += n));
+        }
+
+        function currentSlide(n) {
+        showSlides((slideIndex = n));
+        }
+
+        setInterval(function () {
+        plusSlides(1);
+        }, 3000);
+
+        showSlides(slideIndex);
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+
+
+ <style>
+    Header {
+        background: rgba(74, 74, 74, 0.23);
+        backdrop-filter: blur(7px);
+        border-radius: 20px;
+        height: 59px;
+        margin: 20px 18px;
+        align-items: center;
+        position: sticky;
+        top: 0; 
+    }
+
+    .f_types {
+        border: none; 
+        padding:4px; 
+        width: 100%;
+        outline: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    .fi_form {
+        margin: -80px 2px 2px 950px;
+        width: 301px;
+        height: 80px;
+        border-radius: 12px;
+        background: #FFFFFF !important;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 5px 5px 12px grey;
+        display: none;
+        position: absolute;
+    }
+
+    #flight_inp_form2, #flight_inp_form3, #flight_inp_form1, #flight_inp_form4 {
+        display: none;
+    }
+        
+    .dp-btn {
+        justify-content: end;
+    }
+
+        legend.scheduler-border {
+            font-size: 0.9em !important;
+            font-weight: normal !important;
+            text-align: left !important;
+            margin-bottom: 0 !important;
+        }
+      
+        /* .ot_fieldset {
+            
+            padding: 2px 4px !important;
+            border-radius: 12px;
+            margin: 4px 20px 8px 2px !important;
+            -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+        } */
+
+    #input-sec {
+        margin: 4px 10px; 
+    }
+
+        input {
+            position: relative;
+            width: 100%; 
+            height: 30px;
+            border-radius: 6px;
+            border: 1px solid rgba(128, 128, 128, 0.5);
+            border: none;
+            outline: none;
+            padding: 2px;
+            /* margin-top: -20px; */
+        }
+
+       
+        .radio-inp input {
+            width: 15px;
+            height: 15px;
+            margin: 5px 0px 5px 10px;
+        }
+
+        .radio-inp label {
+            font-size: 14px;
+            margin: 2px 0px 5px 10px;
+            color: rgba(102, 112, 133, 1);
+        }
+
+        .radio-inp p {
+            color: rgba(86, 86, 86, 1);
+            font-size: 14px;
+        }
+
+        legend {
+            float: none;
+            width: auto;
+            padding: 2px 6px;
+            margin-bottom: 0.5rem;
+            font-size: calc(1.275rem + .3vw);
+            line-height: inherit;
+        }
+
+        
+        .search-btn2 {
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 22px;
+            width: 112px;
+            /* margin: -4px 0px 10px 240px; */
+        }
+
+        
+        .search-btn {
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 22px;
+            width: 112px;
+            margin: -4px 0px 10px 20px;
+        }
+
+        @media only screen and (max-width: 991px) {
+            .navbar-brand img {
+                margin-top: -25px;
+            }
+
+            .navbar-toggler {
+                margin-top: -25px;
+            }
+        }
+
+        @media only screen and (max-width: 770px) {
+            .slider-sec {
+                width: 100%;
+                height: auto;
+            }
+        
+
+            #navbarNav {
+                margin-left: 250px;
+                margin-top: -20px;
+                background: grey;
+                z-index: 1;
+                font-size: 13px;
+                border-radius: 10px;
+            }
+
+            #navbarNav  .nav-item:hover{
+                background: gray;
+            }
+
+            #log-btn {
+                width: 70px;
+                text-align: center;
+                font-size: 13px;
+                margin-bottom: 3px;
+            }
+        }
+
+        @media only screen and (max-width: 767px) {
+            #home-sec {
+                /* margin-top: 100px !important; */
+                margin: 100px 20px 0px !important;
+                border-radius: 10px;
+                background: rgba(255, 255, 255, 1);
+            }
+        }
+
+        @media only screen and (max-width: 516px) {
+            #home-sec {
+                margin-top: 0px;
+                border-radius: 10px;
+                background: rgba(255, 255, 255, 1);
+            }
+        }
+
+        @media only screen and (max-width: 552px) {
+            /* #trip-plan-btn div {
+                display: flex;
+                flex-direction: column;
+            } */
+
+            .head p {
+                font-size: 18px;
+            }
+
+            #trip-plan-btn div button {
+                margin: 4px 2px;
+            }
+
+            .trip-btn {
+                border: 1px solid rgba(0, 113, 255, 1) !important;
+                color: rgba(0, 113, 255, 1) !important;
+                border-radius: 22px !important;
+                padding: 2px 6px !important;
+                font-size: 13px !important;
+                margin-right: 5px;
+            } 
+        }
+
+        @media only screen and (max-width: 652px) {
+            .radio-inp input {
+                width: 14px;
+                height: 14px;
+                margin: 5px 0px 5px 5px;
+            }
+
+            .radio-inp label {
+                font-size: 14px;
+                margin: 2px 0px 5px 5px;
+                color: rgba(102, 112, 133, 1);
+            }
+
+            .radio-inp p {
+                color: rgba(86, 86, 86, 1);
+                font-size: 13px;
+            }
+
+            .df_text {
+                font-size: 13px;
+            }
+
+            #flight_radio_div {
+               display: flex;
+               flex-direction: column;
+            }
+
+            #rt_radio_div {
+                margin-left: -30px;
+            }
+        }
+        
+        
+    .trip-btn {
+        border: 1px solid rgba(0, 113, 255, 1) !important;
+        color: rgba(0, 113, 255, 1) !important;
+        border-radius: 22px !important;
+        padding: 2px 10px !important;
+        font-size: 14px !important;
+        margin-right: 10px;
+    } 
+
+    
+    fieldset.scheduler-border {
+        border: 1px solid rgba(128, 128, 128, 1) !important;
+        padding:  0em 1em!important;
+        border-radius: 12px;
+        margin: 0 1.2em 1.5em 0 !important;
+        -webkit-box-shadow:  0px 0px 0px 0px #000;
+        box-shadow:  0px 0px 0px 0px #000;
+    }
+
+    legend.scheduler-border {
+        font-size: 0.9em !important;
+        font-weight: normal !important;
+        text-align: left !important;
+    }
+    
+    .ot_fieldset {
+        border: 1px solid rgba(128, 128, 128, 1) !important;
+        padding: 2px 4px !important;
+        border-radius: 12px;
+        /* margin: 4px 20px 8px 2px !important; */
+        -webkit-box-shadow:  0px 0px 0px 0px #000;
+        box-shadow:  0px 0px 0px 0px #000;
+    }
+
+    .ot_legend {
+        font-size: 0.8em !important;
+        font-weight: normal !important;
+        text-align: left !important;
+        margin-bottom: 0 !important;
+    }
+
+    input {
+        position: relative;
+        width: 100%; 
+        height: 30px;
+        border-radius: 6px;
+        border: 1px solid rgba(128, 128, 128, 0.5);
+        border: none;
+        outline: none;
+        padding: 2px;
+        /* margin-top: -20px; */
+    }
+
+    
+    .radio-inp input {
+        width: 15px;
+        height: 15px;
+        margin: 5px 0px 5px 10px;
+    }
+
+    .radio-inp label {
+        font-size: 14px;
+        margin: 2px 0px 5px 10px;
+        color: rgba(102, 112, 133, 1);
+    }
+
+    .radio-inp p {
+        color: rgba(86, 86, 86, 1);
+        font-size: 14px;
+    }
+
+    legend {
+        float: none;
+        width: auto;
+        padding: 2px 6px;
+        margin-bottom: 0.5rem;
+        font-size: calc(1.275rem + .3vw);
+        line-height: inherit;
+    }
+    
+</style>
+
+</body>
+</html>

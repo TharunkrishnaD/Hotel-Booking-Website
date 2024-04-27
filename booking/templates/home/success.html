@@ -1,0 +1,1226 @@
+<!-- {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="display: flex;flex-direction: column;">
+        <a>Payment Successfully</a>
+        <a>InvoiceNumber:{{booking_details.InvoiceNumber}}</a>
+        <a>ConfirmationNo:{{booking_details.ConfirmationNo}}</a>
+        <a>BookingRefNo:{{booking_details.BookingRefNo}}</a>
+        <a>BookingId:{{booking_details.BookingId}}</a>
+        <a>IsPriceChanged:{{booking_details.IsPriceChanged}}</a>
+        <a>IsCancellationPolicyChanged:{{booking_details.IsCancellationPolicyChanged}}</a>
+    </div>
+    <h1>Hotel Information</h1>
+    <h1>Booking Details</h1>
+    <p>Invoice Number: {{ booking_details_1.invoice_number }}</p>
+    <p>Invoice Amount: {{ booking_details_1.invoice_amount }}</p>
+    <p>Booking ID: {{ booking_details_1.booking_id }}</p>
+    <p>Hotel Confirmation Number: {{ booking_details_1.hotel_confirmation_number }}</p>
+    <p>Hotel Name: {{ booking_details_1.hotel_name }}</p>
+    <p>Star Rating: {{ booking_details_1.star_rating }}</p>
+    <p>Address Line 1: {{ booking_details_1.address_line_1 }}</p>
+    <p>Hotel Booking Status: {{ booking_details_1.hotel_booking_status }}</p>
+    <p>Address Line 2: {{ booking_details_1.address_line_2 }}</p>
+    <p>Confirmation Number: {{ booking_details_1.confirmation_no }}</p>
+    <p>Longitude: {{ booking_details_1.longitude }}</p>
+    <p>Latitude: {{ booking_details_1.latitude }}</p>
+    <p>Booking Reference Number: {{ booking_details_1.booking_ref_number }}</p>
+    <p>City: {{ booking_details_1.city }}</p>
+    <p>Initial Check-in Date: {{ booking_details_1.initial_checkin_date }}</p>
+    <p>Initial Checkout Date: {{ booking_details_1.initial_checkout_date }}</p>
+    <p>Number of Rooms: {{ booking_details_1.number_of_rooms }}</p>
+    <p>Booking Date: {{ booking_details_1.Booking_Date }}</p>
+    <p>Special Request:</p>
+    <h2>Hotel Passengers Details</h2>
+    <h2>Hotel Policy Details</h2>
+    <p>{{ booking_details_1.hotel_policy_details | safe }}</p>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Room Type Name</th>
+                <th>Adult Count</th>
+                <th>Child Count</th>
+                <th>Cancellation Policy</th>
+                <th>Hotel Passengers</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detail in booking_details_1.Hotel_Passengers_Details %}
+            <tr>
+                <td>{{ detail.RoomTypeName }}</td>
+                <td>{{ detail.AdultCount }}</td>
+                <td>{{ detail.ChildCount }}</td>
+                <td>{{ detail.CancellationPolicy }}</td>
+                <td>
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Last Name</th>
+                                <th>First Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for passenger in detail.HotelPassengers %}
+                            <tr>
+                                <td>{{ passenger.Title }}</td>
+                                <td>{{ passenger.LastName }}</td>
+                                <td>{{ passenger.FirstName }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div style="display: flex;flex-direction: row;">
+        <h1>Hotel Information</h1>
+        <h1>Booking Details</h1>
+        <p>:</p>
+        <p>Invoice Amount:</p>
+        <p>Booking ID:</p>
+        <p>Hotel Confirmation Number: </p>
+        <p>Hotel Name: </p>
+        <p>Star Rating: {{ booking_details_1.star_rating }}</p>
+        <p>Address Line 1: </p>
+        <p>Hotel Booking Status: {{ booking_details_1.hotel_booking_status }}</p>
+        <p>Address Line 2: </p>
+        <p>Confirmation Number: {{ booking_details_1.confirmation_no }}</p>
+        <p>Longitude: {{ booking_details_1.longitude }}</p>
+        <p>Latitude: {{ booking_details_1.latitude }}</p>
+        <p>Booking Reference Number: </p>
+        <p>City: {{ booking_details_1.city }}</p>
+        <p>Initial Check-in Date: </p>
+        <p>Initial Checkout Date:</p>
+        <p>Number of Rooms:</p>
+        <p>Booking Date: </p>
+        <p>Special Request: </p>
+        <h2>Hotel Passengers Details</h2>
+        <h2></h2>
+        <p></p>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Room Type Name</th>
+                    <th>Adult Count</th>
+                    <th>Child Count</th>
+                    <th>Cancellation Policy</th>
+                    <th>Hotel Passengers</th>
+                </tr>
+            </thead>
+            <tbody>
+               
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{ detail.CancellationPolicy }}</td>
+                    <td>
+                        <table border="1">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Last Name</th>
+                                    <th>First Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+    <header class="container mt-3">
+        <div class="row justify-content-between" id="voucher_header">
+            <img src="Magnet logo.png" alt="VF" style="width: 152px;height: 152px;">
+            <div class="mt-5">
+                <h2 class="voucher_head">Hotel Voucher</h2>
+                <a class="web_link" href="{% url 'home' %}">https://www.vacationfeast.com/</a>
+            </div>
+        </div>
+    </header>
+    <section class="container mt-3"  id="bd_container">
+        <div class="mt-2 mb-2" id="bd_head_div">
+             <h3 class="bd_head">Booking Details</h3>
+        </div>
+        <div class="d-flex mt-2 justify-content-between">
+            <div class="col-md-6 mt-2 details_div1">
+                <div class="d-flex">
+                    <p class="details_key col-md-6">No Of Rooms</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">{{ booking_details_1.number_of_rooms }}</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Lead Guest</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">{{ User_Name }}</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Guest Contact Number</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">{{ phone_number }}</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Reference No</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">{{ booking_details_1.booking_ref_number }}</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Bookin Date</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">{{ booking_details_1.Booking_Date }}</p>
+                </div>
+                </div>
+            </div>
+            <div class="col-md-6 mt-2 details_div2">
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Payment ID</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5"> {{ booking_details_1.booking_id }}</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Invoice Number</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">{{ booking_details_1.invoice_number }}</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Payment Flag</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">Paid</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Accommodation Charges</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">Rs:1904</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Convenience Fees</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">Rs:95</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Net Amount Paid</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">Rs: {{ booking_details_1.invoice_amount }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="container table_container">
+        <div class="mt-4 mb-4">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Room</th>
+                        <th>Room Type</th>
+                        <th>Guests Type</th>
+                        <th>Pax Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for detail in booking_details_1.Hotel_Passengers_Details %}
+                    <tr>
+                        <td>Room{{ loop.index }}</td>
+                        <td>{{ detail.RoomTypeName }}</td>
+                        <td>{{ detail.AdultCount }} Adult {{ detail.ChildCount }} Child</td>
+                        <td>
+                        {% for passenger in detail.HotelPassengers %}
+                            {{ passenger.Title }}. {{ passenger.FirstName }} {{ passenger.LastName }}
+                        {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="container">
+        <div class="mt-4 mb-4">
+            <div >
+                <h3 class="bd_head">Package Details</h3>
+            </div>
+            <div class="d-flex col-md-6 mt-3" style=" margin-left:  -28px;">
+                <p class="details_key col-md-6">Special Servies Request
+                <p class="col-md-1">:</p>  
+                <p class="details_value col-md-5">{{ booking_details_1.special_request }}</p>
+            </div>
+        </div>
+    </section>
+    <section class="container">
+        <div class="mt-4 mb-4">
+            <div>
+                <h3 class="bd_head">Remarks</h3>
+            </div>
+            <div class="d-flex mt-3">
+                <p class="remarks">urabitur  turpis sed lacinia.  condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem.</p>
+            </div>
+        </div>
+    </section>
+    <section class="container mt-4 mb-4">
+        <div class="mt-4 mb-4">
+            <div>
+                <h3 class="bd_head">Hotel Policy Details</h3>
+            </div>
+            <div class="mt-2">
+                <ul class="mt-3 terms_conditions">
+                    {{ booking_details_1.hotel_policy_details | safe }}
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="container mt-4 mb-4">
+        <div class="mt-4 mb-4">
+            <div>
+                <h3 class="bd_head">Booking Terms & Conditions</h3>
+            </div>
+            <div class="mt-2">
+                <ul class="mt-3 hotel_policies">
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="container">
+        <div class="mt-4 mb-4">
+            <div>
+                <h3 class="bd_head">Agency Contact</h3>
+            </div>
+            <div class="d-flex mt-3">
+                <div class="col-md-6 mt-3">
+                    <h4 class="loc_vf">Vacation Feast</h4>
+                    <address>Brigade Vantage, IndiQube, Santhosh Nagar, Perungudi, Chennai, Tamil Nadu 600096</address>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <div class="d-flex">
+                        <p class="details_key col-md-3">Phone No</p>
+                        <p class="col-md-1">:</p>
+                        <p class="details_value col-md-5">7397790260</p>
+                    </div>
+                    <div class="d-flex">
+                        <p class="details_key col-md-3">Email</p>
+                        <p class="col-md-1">:</p>
+                        <p class="details_value col-md-5">savitha@vacationfeast.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <style>
+
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            font-family:'Inter', sans-serif;
+        }
+
+        .details_key {
+            color: rgba(23, 52, 73, 1);
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .details_value {
+            color: rgba(23, 52, 73, 0.8);
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .voucher_head {
+            color: rgba(0, 0, 0, 1);
+            font-size: 36px;
+            font-weight: 600;
+        }
+
+        .web_link {
+            color: rgba(0, 78, 174, 1);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        #bd_container {
+            border-top: 1px solid rgba(213, 232, 255, 1);
+        }
+
+        #bd_head_div {
+            border-bottom: 1px solid rgba(213, 232, 255, 1);
+        }
+
+        .bd_head {
+            color: rgba(0, 78, 174, 1);
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .details_div1 {
+            margin-left:  -20px;
+        }
+
+        .details_div2 {
+            margin-right:  -40px;
+        } 
+
+        .table_container {
+            border-bottom: 1px solid rgba(213, 232, 255, 1)
+        }
+
+        .table {
+            border: 1px solid rgba(0, 78, 174, 1) !important;
+        }
+
+        .remarks {
+            font-size: 15px;
+            font-weight: 500;
+            color: rgba(23, 52, 73, 1);
+        }
+
+        .terms_conditions li {
+            color: rgba(23, 52, 73, 1);
+            font-size: 15px;
+            font-weight: 500;
+            margin: 4px 12px;
+            padding: 2px 6px;
+        }
+
+        .terms_conditions li::marker {
+            color: rgba(0, 78, 174, 1) ;
+        }
+
+        .hotel_policies li {
+            color: rgba(23, 52, 73, 1);
+            font-size: 15px;
+            font-weight: 500;
+            margin: 4px 12px;
+            padding: 2px 6px;
+        }
+
+        .hotel_policies li::marker {
+            color: rgba(0, 78, 174, 1) ;
+        }
+
+        .loc_vf {
+            color: rgba(23, 52, 73, 1);
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        address {
+            color: rgba(23, 52, 73, 0.8);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <a href="{% url 'pdfs' %}"><button>Click to Download</button></a>
+</body>
+</html> -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Success</title>
+    <!-- Add Bootstrap CSS link -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .checked {
+            color: orange;
+        }
+    </style>
+</head>
+<body>
+    <Header>
+        <div class="container-fluid header">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="navbar-brand" href="#" >
+                    <img src="{% static 'image/flight/Magnet logo.png' %}"alt="logo" width="79px" height="79px">
+                </a>
+                <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto mt-2"> <!-- mx-auto for centering -->
+                        <li class="nav-item">
+                            <a class="nav-link icon" href=" "><img src="{% static 'image/flight/flight w.svg' %}"  alt=""><p>Flights</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link icon" href="{% url 'hotel' %}"><img src="{% static 'image/flight/hotel w.svg' %}"  alt=""><p>Hotels</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link icon" href="#"><img src="{% static 'image/flight/holiday w.svg' %}" alt=""><p>Holidays</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link icon" href="#"><img src="{% static 'image/flight/island w.svg' %}" alt=""><p>Island</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link icon" href="#"><img src="{% static 'image/flight/visa w 1 icon.svg' %}" alt=""><p>Visa</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link icon" href="#"><img src="{% static 'image/flight/more w 1 icon.svg' %}" alt=""><p>More</p></a>
+                        </li>
+                    </ul>
+                    <!-- <div class="d-flex btn-log mb-2">
+                        <button class="btn btn-primary" id="log-btn">LOG IN</button>
+                    </div> -->
+                </div>
+            </nav>
+        </div>
+    </Header>
+    <section class="container mt-5 text-center">
+        <div class="text-center">
+            <img src="{% static 'image/booking/successful image.svg' %}" alt="Success Icon" class="img-fluid">
+        </div>
+        <div class="text-center mb-3 mt-3">
+            <h4 class="ps_text mb-0">Payment Successful</h4>
+            <p class="psu_text">A copy of your receipt has been sent to your email</p>
+            <a href="{% url 'pdf' booking_details_1.booking_id %}"><button class="dn-btn mx-2">Print/Download The Voucher</button></a>
+        </div>
+    </section>
+    <section class="container mt-5 mb-5">
+        <div class=" d-flex" id="room_det_container">
+            <div class="mt-2 col-md-6">
+                <div>
+                    <p class="booked_vf">Booked By Vacation Feast</p>
+                </div>
+                <div class="d-flex mb-0">
+                    <h4 class="h_name">{{ booking_details_1.hotel_name }}</h4>
+                    <p class="h_star">
+                        {% for star in "12345" %}
+                            <span class="fa fa-star {% if forloop.counter <= booking_details_1.star_rating %}checked{% else %}unchecked{% endif %}"></span>
+                        {% endfor %}
+                    </p>
+                </div>
+                <div class="mb-3">
+                    <p class="h_address mb-0">{{ booking_details_1.address_line_1 }}</p>
+                    <p class="h_address">{{ booking_details_1.address_line_2 }}</p>
+                </div>
+                <div class="d-flex cd_div">
+                    <div>
+                        <p class="r_head">No Of Room</p>
+                        <p class="rs_head">{{ booking_details_1.number_of_rooms }} Rooms</p>
+                    </div>
+                    <div>
+                        <p class="r_head">Accomdation</p>
+                        <p class="rs_head" id="nights"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-2 col-md-6">
+                <div class="mb-0">
+                    <p class="cn_text">Confirmaion No</p>
+                    <p class="cn_number">{{ booking_details_1.confirmation_no }}</p>
+                </div>
+                <div class="d-flex cd_div mt-o">
+                    <div>
+                        <p class="h_check">Check In</p>
+                        <p class="check_date">{{ booking_details_1.initial_checkin_date }}</p>
+                        <p class="check_date" id="check_in_day">WED</p>
+                    </div>
+                    <div>
+                        <p class="h_check">Check Out</p>
+                        <p class="check_date">{{ booking_details_1.initial_checkout_date }}</p>
+                        <p class="check_date" id="check_out_day">THU</p>
+                    </div>
+                </div>
+                <script>
+                    window.onload = function () {
+                        // Get the check-in and check-out dates
+                        var checkInDate = new Date("{{ booking_details_1.initial_checkin_date }}");
+                        var checkOutDate = new Date("{{ booking_details_1.initial_checkout_date }}");
+            
+                        // Array of weekdays
+                        var weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+            
+                        // Get the day of the week for check-in and check-out dates
+                        var checkInDay = weekdays[checkInDate.getDay()];
+                        var checkOutDay = weekdays[checkOutDate.getDay()];
+            
+                        // Set the day values for check-in and check-out
+                        document.querySelector('#check_in_day').textContent = checkInDay;
+                        document.querySelector('#check_out_day').textContent = checkOutDay;
+                    }
+                </script>
+                <script>
+                    window.onload = function () {
+                        // Get the check-in and check-out dates
+                        var checkInDate = new Date("{{ booking_details_1.initial_checkin_date }}");
+                        var checkOutDate = new Date("{{ booking_details_1.initial_checkout_date }}");
+            
+                        // Calculate the difference in time between the two dates
+                        var timeDifference = checkOutDate.getTime() - checkInDate.getTime();
+            
+                        // Calculate the number of nights
+                        var numberOfNights = Math.ceil(timeDifference / (1000 * 3600 * 24));
+            
+                        // Update the HTML element with the calculated number of nights
+                        document.querySelector('#nights').textContent = numberOfNights + " Nights";
+                        document.querySelector('#night').textContent = numberOfNights
+                    }
+                </script>
+            </div>
+        </div>
+    </section>
+    <section class="container d-flex">
+        <div class="map_div col-md-7 mt-3 mb-3">
+            <img src="{% static 'image/booking/map image.png' %}" id="map_img" width="100%" alt="">
+        </div>
+        <div class="guest_div mt-3">
+            <div class="mt-4">
+                <h4 class="guest_head">Guest Contact</h4>
+            </div>
+            <div class="mt-4">
+                <p class="lg_head">Lead Guest</p>
+                <p class="lgs_head">{{ User_Name }}</p>
+            </div>
+            <div class="d-flex cd_div mt-4">
+                <div>
+                    <p class="lg_head">Contact Number</p>
+                    <p class="lgs_head">{{ phone_number }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="container mt-2 mb-2">
+        <table class="table mt-3 mb-2 table-rounded">
+            <thead style="border-radius: 12px;">
+                <tr>
+                    <th>Rooms</th>
+                    <th>Rooms Type</th>
+                    <th>Guest Info</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for detail in booking_details_1.Hotel_Passengers_Details %}
+                <tr style="border-bottom: 1px solid rgba(0, 78, 174, 1) !important;">
+                    <td>Room {{ forloop.counter }}</td>
+                    <td>{{ detail.RoomTypeName }}</td>
+                    <td>
+                        <p class="mb-0">{{ detail.AdultCount }} Adult   {{ detail.ChildCount }} Child </p>
+                        <p class="mb-0">
+                        {% for passenger in detail.HotelPassengers %}
+                            {{ passenger.Title }}. {{ passenger.FirstName }} {{ passenger.LastName }},
+                        {% endfor %}
+                        </p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    <section class="container mt-3"  id="bd_container">
+        <div class="mt-2 mb-2" id="bd_head_div">
+             <h3 class="bd_head mb-0">Booking Details</h3>
+             <p class="details_value">contact information of the user</p>
+        </div>
+        <div class="d-flex mt-2 justify-content-between" id="bd_div">
+            <div class="col-md-6 mt-2 details_div1">
+                <div class="d-flex">
+                    <p class="details_key col-md-6">No Of Nights</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5" id="night"></p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Booking Date</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">{{ booking_details_1.Booking_Date }}</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Hotel Confirmation Number</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5"> {{ booking_details_1.hotel_confirmation_number }}</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Reference No</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5"> {{ booking_details_1.booking_ref_number }}</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Invoice Number</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">{{ booking_details_1.invoice_number }}</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Booking Id</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">{{ booking_details_1.booking_id }}</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Guest Contact Number</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">9863409321</p>
+                </div>
+            </div>
+            <div class="col-md-6 mt-2 details_div2">
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Payment ID</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">{{payment_id}}</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Payment Flag</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">Paid</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Accommodation Charges</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">{{ booking_details_1.invoice_amount }}</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Convenience Fees</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">Rs:95</p>
+                </div>
+                <div class="d-flex">
+                    <p class="details_key col-md-6">Net Amount Paid</p>
+                    <p class="col-md-1">:</p>
+                    <p class="details_value col-md-5">Rs:1999</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="container mt-4 mb-4">
+        <div class="mt-4 mb-4">
+            <div>
+                <h3 class="bd_head">Booking Terms & Conditions</h3>
+            </div>
+            <div class="mt-2">
+                <ul class="mt-3 terms_conditions">
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="container mt-4 mb-4">
+        <div class="mt-4 mb-4">
+            <div>
+                <h3 class="bd_head">Hotel Policies</h3>
+            </div>
+            <div class="mt-2">
+                <ul class="mt-3 hotel_policies">
+                    <p>{{ booking_details_1.hotel_policy_details | safe }}</p>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                    <li>Curabitur  turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <Footer class="container-fluid mt-4 col-md-12 col-sm-12 col-xs-12">
+        <div class="container d-flex" id="footer_container">
+            <div class="col-md-2 mt-3" id="footer-links">
+                <div>
+                    <img src="{% static 'image/booking/Magnet logo.png' %}" alt="" class="footer_logo" style="width: 131px;height: 142.608px;">
+                </div>
+                <div class="sm_icons">
+                    <a href="https://www.linkedin.com/company/vacationfeast/"><img src="Assets/social/linkedin Icons.svg" alt=""></a>
+                    <a href="https://www.facebook.com/vacationfeast"><img src="Assets/social/facebook Icons.svg" alt=""></a>
+                    <a href="https://www.instagram.com/thevacationfeast/"><img src="Assets/social/insta Icons.svg" alt=""></a>
+                    <a href="https://www.youtube.com/@vacationfeast5882 "><img src="Assets/social/youtube Icons.svg" alt=""></a>
+                </div>
+            </div>
+            <div class="d-flex col-md-10 justify-content-between">
+                <div class="col-md-2 mt-5">
+                    <h4>About Company</h4>
+                    <p>About Us</p>
+                    <p>Terms & Conditions</p>
+                    <p>Privacy Policy</p>
+                    <p>Contact Us</p>
+                    <p>Blog</p>
+                    <p>FAQ</p>
+                </div>
+                <div class="col-md-2 mt-5">
+                    <h4>Tour By Category</h4>
+                    <p>Honey Moon</p>
+                    <p>Trekking</p>
+                    <p>Wild Life</p>
+                    <p>India</p>
+                    <p>Astonish</p>
+                    <p>Adventure</p>
+                    <p>Beach & Island</p>
+                </div>
+                <div class="col-md-2 mt-5">
+                    <h4>Tour Packages</h4>
+                    <p>International</p>
+                    <p>Domestic</p>
+                </div>
+                <div class="col-md-3 mt-5">
+                    <h4>Trending Tour Packages</h4>
+                    <p>Bali Tour</p>
+                    <p>Srilanka Tour</p>
+                    <p>Malaysia Tour</p>
+                    <p>Thailand Tour Tour</p>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-2">
+            <p class="cr_text">  &#169; 2024 Vacationfeast. All Rights Reserved</p>
+        </div>
+    </Footer>
+    
+    <style>
+
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            font-family:'Inter', sans-serif;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            font-family:'Inter', sans-serif;
+        }
+        
+        Header {
+            background: rgba(74, 74, 74, 0.23);
+            backdrop-filter: blur(7px);
+            border-radius: 20px;
+            height: 59px;
+            margin: 20px 18px;
+            align-items: center;
+            position: sticky;
+            top: 0; 
+            z-index: 100; 
+        }
+
+        nav {
+            align-items: center;
+            justify-content: center;
+            height: 59px;
+        }
+
+        .nav-item :hover {
+            opacity: 60%;
+            color: white;
+        }
+
+        .nav-item a img{
+            margin-top: -12px;
+            margin-right: 4px;
+        }
+
+        .nav-item .icon {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 1);
+        }
+
+        #img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        .btn-log {
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        #log-btn {
+            color: black;
+            background-color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        #log-btn:hover {
+            background-color: rgba(41, 41, 41, 0.8);
+        }
+
+        .booked_vf {
+            color: rgba(32, 192, 67, 0.48);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .ps_text {
+            font-size: 32px;
+            font-weight: 500;
+        }
+
+        .psu_text {
+            font-size: 16px;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .dn-btn {
+            border:1px solid rgba(234, 130, 8, 1);
+            background: white;
+            color: rgba(234, 130, 8, 1);
+            font-size: 16px;
+            padding: 4px 16px;
+            border-radius: 12px;
+        }
+
+        #room_det_container {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 5px 5px 12px grey;
+            padding: 25px 25px;
+            border-radius: 24px;
+        }
+
+        .dn-btn:hover{
+          opacity: 60% !important;
+          cursor: pointer;
+        }
+
+        .room_img {
+            height:237px; 
+            width:100%;
+            border-radius: 12px;
+        }
+
+        .h_name {
+            font-size: 20px;
+            color: rgba(23, 52, 73, 1);
+            font-weight: 600;
+        }
+
+        .h_star {
+            margin: 2px 6px;
+        }
+
+        .h_address {
+            color: rgba(23, 52, 73, 0.7);
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .r_head {
+            color: rgba(23, 52, 73, 1);
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 0px;
+        }
+
+        .rs_head {
+            color: rgba(23, 52, 73, 0.7);
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .cd_div div {
+            align-items: center;
+            justify-content: center;
+            margin: 0px 40px 2px 0px;
+        }
+
+        .h_check {
+            color: rgba(0, 78, 174, 0.8);
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 0px;
+        }
+
+        .check_date {
+            color: rgba(0, 78, 174, 1);
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 0px;
+        }
+
+        .cn_text {
+            color: rgba(23, 52, 73, 1);
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 0px;
+        }
+
+        .cn_number {
+            color: rgba(23, 52, 73, 0.7);
+            font-size: 32px;
+            font-weight: 500;
+            margin-top: 0px;
+        }
+
+        #map_img {
+            box-shadow: 5px 5px 12px grey;
+            border-radius: 18px;
+            height: 253px;
+            cursor: pointer;
+        }
+
+        .guest_div {
+            border: 1px solid rgba(0, 78, 174, 1);
+            padding: 4px 20px;
+            width: 100%;
+            border-radius: 12px;
+            height: 253px;
+            box-shadow: 5px 5px 12px grey;
+        }
+
+        .guest_head {
+            color: rgba(0, 78, 174, 1);
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .lg_head {
+            color: rgba(23, 52, 73, 0.8);
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 1px;
+        }
+
+        .lgs_head {
+           color: rgba(23, 52, 73, 1);
+           font-size: 16px;
+           font-weight: 600;
+        }
+
+        .table th {
+            color:rgba(0, 78, 174, 1);
+            font-size: 16px;
+        }
+
+        .table thead {
+            border-radius: 0px 0px 13px 13px !important;
+            background: rgba(217, 217, 217, 1);
+            padding: 6px 10px !important;
+        }
+
+        .table tbody {
+            border-radius: 13px;
+            background: rgba(238, 238, 238, 0.57);
+        }
+
+        .details_key {
+            color: rgba(23, 52, 73, 1);
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .details_value {
+            color: rgba(23, 52, 73, 0.8);
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        #bd_container {
+            border-top: 1px solid rgba(213, 232, 255, 1);
+        }
+
+        #bd_head_div {
+            border-bottom: 1px solid rgba(213, 232, 255, 1);
+        }
+
+        .bd_head {
+            color: rgba(0, 78, 174, 1);
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .details_div1 {
+            margin-left:  -20px;
+        }
+
+        .details_div2 {
+            margin-right:  -40px;
+        } 
+
+        .terms_conditions li {
+            color: rgba(23, 52, 73, 1);
+            font-size: 15px;
+            font-weight: 500;
+            margin: 4px 12px;
+            padding: 2px 6px;
+        }
+
+        .terms_conditions li::marker {
+            color: rgba(0, 78, 174, 1) ;
+        }
+
+        .hotel_policies li {
+            color: rgba(23, 52, 73, 1);
+            font-size: 15px;
+            font-weight: 500;
+            margin: 4px 12px;
+            padding: 2px 6px;
+        }
+
+        .hotel_policies li::marker {
+            color: rgba(0, 78, 174, 1) ;
+        }
+
+        /* Footer */
+
+        Footer {
+            background: #004EAE;
+        }
+
+        #footer_container {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            border-bottom: 1px solid white;
+        }
+
+        #footer_container h4 {
+            font-size: 16px !important;
+            font-weight: 600 !important;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        #footer_container h4:hover {
+            opacity: 60%;
+        }
+
+        #footer_container p {
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        #footer_container p:hover {
+            opacity: 60%;
+        }
+
+        .cr_text {
+            color: #FFF;
+            text-align: start;
+            font-size: 14px;
+            font-weight: 600;
+            padding-bottom: 10px;
+        }
+
+        .sm_icons img{
+            cursor: pointer;
+        }
+
+        /* Media Queries */
+
+    @media only screen and (max-width: 992px) {
+
+    .navbar-brand img {
+        margin-top: -25px;
+    }
+
+    .navbar-toggler {
+        margin-top: -25px;
+    }
+
+    #navbarNav  .nav-item:hover{
+        background: gray;
+    }
+
+    #footer_container {
+        font-size: 13px;
+        width: 100%;
+    }
+
+    #footer_container div .footer_logo {
+        width: 90px;
+        height: 90px;
+        margin-left: -20px;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    #room_det_container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #bd_div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .details_div2 {
+            margin-left:  -20px;
+        } 
+    
+    #footer_container {
+        font-size: 13px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    #footer_container .mt-5 {
+        margin-top: 10px !important;
+        align-items: center;
+        justify-content: center;
+    }
+
+  }
+
+  @media only screen and (max-width: 576px) {
+
+    #footer-links {
+        flex-direction: row;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #footer_container {
+        font-size: 13px !important;
+        justify-content: center !important;
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+        align-items: center !important;
+    }
+
+    #footer_container h4 {
+        font-size: 14px !important;
+        font-weight: 500 !important;
+    }
+
+  }
+
+    </style>
+
+    <!-- Add Bootstrap JS and Popper.js scripts (required for Bootstrap features) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> -->
+</body>
+</html>
+

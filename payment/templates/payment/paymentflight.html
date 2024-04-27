@@ -1,0 +1,573 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <Header>
+        <div class="container-fluid header">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="navbar-brand" href="#" >
+                    <img src="{% static 'image/flight/Magnet logo.png' %}"alt="logo" width="79px" height="79px">
+                </a>
+                <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto mt-2"> <!-- mx-auto for centering -->
+                        <li class="nav-item">
+                            <a class="nav-link icon" href=" "><img src="{% static 'image/flight/flight w.svg' %}"  alt=""><p>Flights</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link icon" href="{% url 'hotel' %}"><img src="{% static 'image/flight/hotel w.svg' %}"  alt=""><p>Hotels</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link icon" href="#"><img src="{% static 'image/flight/holiday w.svg' %}" alt=""><p>Holidays</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link icon" href="#"><img src="{% static 'image/flight/island w.svg' %}" alt=""><p>Island</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link icon" href="#"><img src="{% static 'image/flight/visa w 1 icon.svg' %}" alt=""><p>Visa</p></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link icon" href="#"><img src="{% static 'image/flight/more w 1 icon.svg' %}" alt=""><p>More</p></a>
+                        </li>
+                    </ul>
+                    <div class="d-flex btn-log mb-2">
+                        <button class="btn btn-primary" id="log-btn">LOG IN</button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </Header>
+    <section id="process" class="bg-light py-5">
+        <div class="container">
+            <div class="final-pro">
+                <ul class="nav nav-pills" >
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Traveller Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Review</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Payment</a>
+                    </li>
+                </ul>
+                <div class="slider">
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </section>
+    <section class="container mt-2 d-flex">
+        <div id="fl_rev_details" class="col-md-8 mt-2">
+            <div>
+                <div class="d-flex fl_rev_div justify-content-between mt-2" style="border-bottom:1px solid rgba(0, 0, 0, 0.30);">
+                    <div class="d-flex">
+                        <div>
+                            <h4 class="fr-head">{{single_flight_del.start_point}} - {{single_flight_del.end_point}}</h4>
+                            <p style="font-size: 14px;">{{single_flight_del.flight_stop}} | {{single_flight_del.flight_class}}</p>
+                        </div>
+                        <div>
+                          <h4 class="fr-head">{{single_flight_del.flight_date}}</h4>
+                            <p style="font-size: 14px;">{{single_flight_del.flight_H_M}}</p>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <h4 class="fr-head mt-2">Departure</h4>
+                    </div>
+                </div>
+                
+              
+                {% for flights in flightdetails %}
+                <div class="d-flex mt-3  justify-content-between">
+                    <div class="col-md-3">
+                        <img src="{% static 'image/AirlineLogo/' %}{{ flights.AirlineCode }}.gif" alt="Flight-logo" style="width: 43%; height: 75px; padding-bottom: 10px;">
+                        <p style="font-size: 16px;font-weight: 600;" class="mb-0">{{flights.AirlineName}} </p>
+                        <p style="font-size: 16px;font-weight: 600;">{{flights.AirlineCode}}-{{flights.AirlineNumber}}</p>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="d-flex f_dep_div" >
+                            <div>
+                                <p class="f-time1">{{flights.departur_H_M}}</p>
+                                <p class="f-date1">{{flights.departur_date}}</p>
+                            </div>
+                            <div>
+                                <p class="f-timeduration">{{flights.total_H_M}}</p>
+                            </div>
+                            <div>
+                                <p class="f-time1">{{flights.arrival_H_M}}</p>
+                                <p class="f-date1">{{flights.arrival_date}}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex mt-2" id="airport_div">
+                            <div class="text-start">
+                                <p class="f-name">{{flights.OrginAirportCode}} {{flights.OrginAirportName}}</p>
+                                <p class="f-sname">{{flights.OrginAirportCityName}}, {{flights.OrginAirportCoutryName}}</p>
+                                <p class="f-term">Terminal: {{flights.OrginAirportTerminal}}</p>
+                            </div>
+                            <div class="text-left">
+                                <p class="f-name">{{flights.DestinationAirportCode}} {{flights.DestinationAirportName}}</p>
+                                <p class="f-sname">{{flights.DestinationCityName}}, {{flights.DestinationCountryName}}</p>
+                                <p class="f-term">Terminal: {{flights.DestinationTerminal}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between mt-2" id="icon_container">
+                    <div class="col-md-9 d-flex">
+                        <div class="d-flex icon_div">
+                            <img src="{% static 'image/flight/luggage.svg' %}" alt="lug-icon" class="img-class">
+                            <p class="icon_text">Check-In : {{flights.checkinbag}}</p>
+                        </div>
+                        <div class="d-flex icon_div">
+                            <img src="{% static 'image/flight/cab in icon.svg' %}" alt="cab-icon" class="img-class">
+                            <p class="icon_text">Cab-In : {{flights.combainbag}}</p>
+                        </div>
+                        <div class="d-flex icon_div">
+                            <img src="{% static 'image/flight/meal icon.svg' %}" alt="meal-icon" class="img-class">
+                            <p class="icon_text">Meal : Yes</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-flex">
+                            <img src="{% static 'image/flight/info orang.svg' %}" alt="ref-icon"  class="img-class">
+                            <div class="padding-top: 17px;text-align:left">
+                                <p style="color: #FFB800; font-size: 12px;" class="mb-0">fear rules</p>
+                                <p style="color: #FFB800;font-size: 14px;" class="mb-0">{{flightdetails.0.Refund}}</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="flight-pay col-md-4 mt-2">
+            <div class="">
+                <h2 class="price-head">Pricing Details</h2>
+            </div>
+            <hr>
+            <div class="d-flex col-md-12">
+                <div class="col-md-9">
+                    <p>Base Fare</p>
+                </div>
+                <div class="d-flex col-md-3" style="justify-content: space-between;">
+                    <p class="text-start">INR</p>
+                    <p class="text-end">5,126.01</p>
+                </div>
+            </div>
+            <div class="d-flex col-md-12">
+                <div class="col-md-9">
+                    <p>Taxes and Fees</p>
+                </div>
+                <div class="d-flex col-md-3" style="justify-content: space-between;" >
+                    <p class="text-start">INR</p>
+                    <p  class="text-end">907.01</p>
+                </div>
+            </div>
+            <div class="d-flex col-md-12">
+                <div class="col-md-9">
+                    <p>Total Price</p>
+                </div>
+                <div class="d-flex col-md-3" style="justify-content: space-between;">
+                    <p class="text-start">INR</p>
+                    <p class="text-end">6000.01</p>
+                </div>
+            </div>
+            <hr>
+            <div class="d-flex col-md-12">
+                <div class="col-md-9">
+                    <p>Your Price</p>
+                </div>
+                <div class="d-flex col-md-3" style="color: rgba(94, 255, 129, 1); justify-content: space-between;">
+                    <p class="text-start">INR</p>
+                    <p  class="text-end">6,034.31</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="container mt-2" >
+        <div class="col-md-8" id="td_container">
+            <div>
+                <h4 class="head_text">Traveller Details</h4>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <p class="mb-1 con_head">Contact Number</p>
+                    <p class="con_text">+91 {{combined_data.phone_number}}</p>
+                </div>
+                <div class="col">
+                    <p class="mb-1 con_head">Email</p>
+                    <p class="con_text">{{combined_data.phone_number}}</p>
+                </div>
+            </div>
+            <div class="row mt-2" id="pax_details">
+                <div class="col mt-2">
+                    <p class="con_head">Adult 1</p>
+                    <p class="con_head">Adult 2</p>
+                    <p class="con_head">Child 1</p>
+                </div>
+                <div class="col mt-2">
+                    <p class="con_text">Mr Gokul</p>
+                    <p class="con_text">Mr Mane</p>
+                    <p class="con_text">Aarav</p>
+                </div>
+                <div class="col mt-2 d-flex">
+                    <div class="mt-0">
+                        <p class="con_head">DOB: </p>
+                        <p class="con_head">DOB: </p>
+                        <p class="con_head">DOB: </p>
+                    </div>
+                    <div class="mt-0">
+                        <p class="con_text">08/04/2020</p>
+                        <p class="con_text">08/04/2020</p>
+                        <p class="con_text">08/04/2020</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <div class="mt-2">
+                    <h4 class="head_text">GST IN Details</h4>
+                </div>
+                <div  id="gst_div" class="mt-2">
+                    <p class="mb-0 con_head">GST IN</p>
+                    <p class="mb-2 con_text">08042020</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="container">
+        <div class="col-md-8">
+            <div class="mt-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="checkbox">
+                    <label class="form-check-label agree_text" for="checkbox">
+                        I Understand And Agree With The Company Rules,The Privacy Policy,The User Agreement I Understand And Agree With The Company.
+                    </label>
+                    <span class="error" id="checkboxError"></span>
+                </div>
+            </div>
+            <div class="mt-4 mb-4">
+                <button class="btn btn-primary payment_btn" id="pay-btn" onclick="validateCheckbox()">Proceed To Payment</button>
+            </div>
+        </div>
+    </section>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function validateCheckbox(e) {
+            var valid = true;
+            document.getElementById('checkboxError').innerText = '';
+            var checkbox = document.getElementById('checkbox').checked;
+            if (!checkbox) {
+             document.getElementById('checkboxError').innerText = 'Please select the checkbox';
+           } else {
+                valid = false;
+                razarpay();
+           } 
+            return valid;
+        }
+    </script>
+
+    <script> 
+        function razarpay() {
+            var options = {
+                key: "{{ razorpay_merchant_key }}", 
+                currency: "{{ currency }}",
+                name: "Vacation Feast", 
+                order_id: "{{ razorpay_order_id }}",
+                amount: "{{ amount_in_paise }}", 
+                callback_url: "{{ callback_url }}",
+                };
+                var rzp1 = new Razorpay(options);
+                
+                // add event listener to the payment button.
+                
+            
+                document.getElementById("pay-btn").onclick = function (e) {
+                rzp1.open();
+                e.preventDefault();
+                } 
+            }
+            
+    </script>
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            font-family:'Inter', sans-serif;
+        }
+
+        /* HEADER */
+
+         Header {
+            background: rgba(74, 74, 74, 0.23);
+            border-radius: 20px;
+            height: 59px;
+            margin: 20px 18px;
+            align-items: center;
+            position: sticky;
+            top: 0; 
+            z-index: 100; 
+        }
+
+        nav {
+            align-items: center;
+            justify-content: center;
+            height: 59px;
+        }
+
+        .nav-item :hover {
+            opacity: 60%;
+            color: white;
+        }
+
+        .nav-item a img{
+            margin-top: -12px;
+            margin-right: 4px;
+        }
+
+        .nav-item .icon {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 1);
+        }
+
+        #img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        .btn-log {
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        #log-btn {
+            color: black;
+            background-color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        #log-btn:hover {
+            background-color: rgba(41, 41, 41, 0.8);
+        }
+
+        /* PROGRESS BAR */
+
+        #process {
+            /* margin-top: 70px; */
+            width: 100%;
+        }
+        
+
+        .final-pro ul {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            list-style: none;
+            color: rgba(12, 202, 54, 1)!important;
+        }
+
+        .progress {
+            height: 8px;
+        }
+
+        .progress-bar {
+            color: rgba(12, 202, 54, 1);
+        } 
+
+        /* FLIGHT DETAILS */
+
+        #fl_rev_details {
+            border: 1px solid #00000038;
+            padding: 10px;
+            border-radius: 10px
+        }
+
+        #fl_rev_details div {
+            margin: 0px 3px;
+        }
+
+        .fr-head {
+           font-size: 16px;
+           font-weight: 600;
+           color: #004EAE;
+        }
+
+        .f-time1 {
+            font-size: 16px;
+            color: #000;
+            font-weight: 400;
+            margin-bottom: 0px;
+        }
+
+        .f-date1 {
+            font-size: 16px;
+            color: #000;
+            font-weight: 400;
+            margin-bottom: 0px;
+        }
+
+        .f-timeduration {
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .f-name {
+            color: #000;
+            font-weight: 600;
+            margin-bottom: 0px;
+            font-size: 14px;
+        }
+
+        .f-sname {
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 60%;
+            margin-bottom: 0px;
+        }
+
+        .f-term {
+            font-weight: 500;
+            font-size: 14px;
+            opacity: 60%;
+        }
+
+        .f_dep_div div {
+            border-bottom:1px solid rgba(0, 0, 0, 0.30);
+            justify-content: space-around;
+            align-items: center;
+            text-align: left;
+            width: 100%;
+        }
+
+        #airport_div div {
+            justify-content: space-around;
+            align-items: center;
+            text-align: left;
+            width: 100%;
+        }
+
+        .icon_div {
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .icon_text {
+            font-size: 14px;
+            padding-top: 17px;
+            color:rgba(0, 0, 0, 0.6);
+            font-weight: 400;
+        }
+
+        .img-class{
+            padding-right: 5px;
+            width: 24px;
+            height: 42px
+        }
+
+        #icon_container {
+            background: rgba(244, 244, 244, 1);
+            border-radius: 12px;
+        }
+
+        #icon_container div {
+            padding: 4px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* FLIGHT PAY */
+
+        .flight-pay {
+            padding: 10px;
+            margin: 1px 4px;
+            border: 1.5px solid rgba(208, 213, 221, 1);
+            border-radius: 10px;
+            height: 300px;
+            background: rgba(23, 52, 73, 1);
+            color: rgba(255, 255, 255, 1);
+        }
+
+        /* TD CONTAINER */
+
+        #td_container { 
+            border: 1px solid #00000038;
+            padding: 10px 20px;
+            border-radius: 10px
+        }
+
+        #pax_details {
+            background: rgba(244, 244, 244, 1);
+            margin: 4px;
+            border-radius: 3px;
+        }
+
+        #gst_div {
+            background: rgba(244, 244, 244, 1);
+            margin: 4px;
+            padding: 4px 10px;
+            border-radius: 3px;
+        }
+
+        .head_text {
+            color: rgba(0, 78, 174, 1);
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .con_head {
+            color: rgba(23, 52, 73, 1);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .con_text {
+            color: rgba(23, 52, 73, 0.51);
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .payment_btn {
+            background: rgba(0, 78, 174, 1);
+            color: rgba(255, 255, 255, 1);
+            font-size: 14px;
+            font-weight: 600;
+            padding: 4px 20px;
+            border-radius: 28px;
+        }
+
+        .agree_text {
+            color: rgba(0, 78, 174, 1);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+    </style>
+</body>
+
+</html>

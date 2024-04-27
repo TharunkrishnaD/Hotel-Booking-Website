@@ -17,9 +17,6 @@ Header {
     justify-content: center;
 }
 
-.inp-div {
-    background-color: rgba(255, 255, 255, 1);
-}
 
 .nav-item a {
     display: flex;
@@ -37,7 +34,7 @@ Header {
 
 #input-sec {
     margin-top: 105PX;
-    padding: 10px;
+    padding: 20px;
     background: rgba(230, 230, 230, 1);
 }
 
@@ -46,7 +43,7 @@ input {
     width: 180px; 
     height: 30px;
     border-radius: 6px;
-    padding: 6px;
+    padding: 10px;
     border: 1px solid rgba(128, 128, 128, 0.5);
 }
 
@@ -77,11 +74,12 @@ input {
 
 .inp {
     padding-left: 4px;
+    margin-left: 10px;
 }
 
 .inp-row {
     background: rgba(255, 255, 255, 1);
-    padding: 10px;
+    padding: 20px;
     border-radius: 10px;
     display: flex;
     flex-direction: row;
@@ -177,11 +175,12 @@ input {
 
 #hotel-main {
     border: 1px solid rgba(208, 213, 221, 1);
+    border-radius: 10px;
     margin: 2px;
     height: 800px;
     position: sticky;
     top: 0; 
-    z-index: 100; 
+    z-index: 0; 
 }
 
 #hotel-info {
@@ -195,6 +194,7 @@ input {
     flex-direction: column;
     border: 1px solid rgba(208, 213, 221, 1);
     margin-bottom: 10px;
+    border-radius: 10px;
 }
 
 .hotel-div {
@@ -252,6 +252,10 @@ input {
     opacity: 70%;
 }
 
+#sec-2 {
+    margin: 0px;
+}
+
 .sortby-sec {
     display: flex;
     flex-direction: row;
@@ -262,13 +266,16 @@ input {
     color: white;
     padding: 4px;
     align-items: center;
-    border-radius: 20px;
-    margin: 4px;
+    border-radius: 10px;
+    margin: 0px 0px 10px 0px;
+}
+
+.sort-by {
+   margin: 13px 0px 0px 15px;
 }
 
 .sort-by p {
-    padding-left: 10px;
-    padding-top:8px ;
+    font-size: 15px;
 }
 
 .hotel-img {
@@ -283,7 +290,7 @@ input {
 
 .hotel-data {
     width: 100%;
-    height: 100%;
+    height: 188px;
     align-items: center;
     justify-content: center;
     margin: 2px 6px;
@@ -291,29 +298,31 @@ input {
 }
 
 .hotel-name p {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 500;
+    color: #222222E5;
+
 }
 
 .price {
     color: rgba(0, 78, 174, 1);
-    font-weight: 400;
+    font-weight: 800;
     font-family: lato;
     font-size: 24px;
 }
 
 .price-sec {
     align-items: center;
+    margin: 4px 15px 4px 0px;
 }
 
 .hotel-price {
-    margin-left: 10px;
     text-align: center;
 }
 
 .hotel-price .pn {
     margin-top: -20px;
-    font-size: 12px;
+    font-size: 14px;
     color: #00000066;
     font-weight: 600;
 }
@@ -325,15 +334,15 @@ input {
 
 .hotel-loc {
     width: 100%;
-    height: 31px;
     font-size: 12px;
     color:#00000099;;
-    margin: 10px 2px;
+    margin: 0px 2px;
 }
 
 .hotel-loc address {
-    width: 100%;
+    height: 30px;
 }
+
 
 .hotel-star {
     margin-bottom: 20px;
@@ -345,7 +354,10 @@ input {
    color: #00000066;
    font-weight: 500;
    margin: 2px;
-   margin-top: 15px;
+}
+
+.hotel-view {
+    margin-top: 25px;
 }
 
 .hotel-name p {
@@ -358,9 +370,14 @@ input {
     background-color:rgba(0, 102, 228, 1);
     border: 1px solid white;
     width: 100px;
-    margin-right: 15px;
     font-size: 12px;
     border-radius: 17px;
+}
+
+.price-info {
+    margin:4px;
+    justify-content:space-between;
+    align-items:center;
 }
 
 #hideBtn {
@@ -385,20 +402,55 @@ input {
 
 .hotel-room {
    width: 100%;
-   margin-left: 0px;
    border: 1px solid rgba(208, 213, 221, 1);
+   border: none;
    justify-content: space-between;
    padding: 6px;
+   border-radius:10px;
    display: flex;
 }
 
 .hide-room1 {
     display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-between;
+    padding: 4px 8px;
+    align-items: center;
+    background: #D0D5DD3B;
+    border-radius:10px;
+    margin:4px 0px 2px;
+}
+.hide-room2 {
+    display: flex;
     flex-direction: row;
     width: 100%;
     justify-content: space-between;
-    padding: 4px 6px;
+    padding: 4px 8px;
     align-items: center;
+    border-radius:10px;
+    margin:4px 0px 2px;
+}
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+.book-room {
+    width:40%;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 4px;
 }
 
 .book-room h3 {
@@ -602,6 +654,8 @@ input[type="range"]::-moz-range-thumb{
 #star3 , #star4, #star5 {
     display: none;
 }
+
+
 
 .footer-img img {
     width: 100px;

@@ -1,0 +1,434 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+Header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000; 
+    background-color: #fff; 
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-item  :hover {
+    opacity: 60%;
+}
+
+.nav-item a {
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-item a img {
+    margin-top: -12px;
+    margin-right: 10px;
+}
+
+.log-btn {
+    color: black;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.nav-item a p {
+    margin-top: 12px;
+    margin-left: 10px;
+    color:  rgba(9, 9, 9, 1);
+    font-weight: 600;
+}
+
+
+.final-pro ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    list-style: none;
+    color: blue;
+}
+
+.progress {
+    height: 8px;
+}
+
+.progress-bar {
+    color: rgba(12, 202, 54, 1);
+} 
+
+
+#total-review {
+    display: flex;
+    flex-direction: row;
+}
+
+.hotel-summary {
+    padding: 10px;
+    margin: 4px;
+}
+
+.dtls_text {
+    font-size: 19px;
+    font-weight: 600;
+    color:rgba(16, 24, 40, 1); 
+}
+
+.dtls_utext {
+    font-size: 18px;
+    font-weight: 500;
+    color:rgb(24, 40, 72); 
+}
+
+.hotel-pay {
+    padding: 10px;
+    margin: 4px;
+    border: 1.5px solid rgba(208, 213, 221, 1);
+    border-radius: 10px;
+    height: 300px;
+    background: rgba(16, 24, 40, 1);
+    color: rgba(255, 255, 255, 1);
+}
+
+.h-sum {
+    justify-content: space-between;
+}
+
+
+label,textarea {
+    margin-top: 10px;
+}
+
+
+
+.final-pro {
+    justify-content: space-between;
+}
+
+
+  .error {
+    color: red;
+    font-size: 13px;
+}
+
+.ses-btn a {
+    text-decoration: none;
+    padding: 2px 16px;
+    width: 100px;
+    color: white;
+    border-radius: 10px;
+}
+/* 
+#customPopup {
+    display: none;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    background: white;
+    border-radius: 20px;
+    display: none;
+    z-index: 1000;
+}
+
+.popup-content {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.popup-content p {
+    font-size: 18px;
+    font-weight: 500;
+} */
+
+#process {
+    margin-top: 30px;
+    width: 100%;
+}
+
+ .mt-2 {
+    margin-top: 10px;
+    background: #F1F1F1;padding:10PX 6px;border-radius: 8px;
+}
+
+.price-head {
+    font-size: 22px;
+}
+
+.name_no {
+    color: #9BA0A7;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+h3 {
+    color: #0071FF;
+    font-weight: 500;
+    font-size: 21px;
+    font-weight: 500;
+    margin-top: 2px !important;
+}
+
+/* select {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}  */
+
+input, textarea {
+    border-radius: 6px;
+    padding: 6px 8px;
+    gap: 1px;
+    border: 1.5px solid #D0D5DD;
+    color: #9BA0A7;
+    font-size: 15px;
+    font-weight: 400;
+    width: 90%;
+}
+
+select {
+    border-radius: 6px;
+    padding: 6px 8px;
+    gap: 1px;
+    border: 1.5px solid #D0D5DD;
+    font-size: 15px;
+    font-weight: 400;
+    width: 90%;
+}
+
+/* #canpol_container {
+    position: fixed;
+    margin: -100px 20px 0px 320px;
+    display: none;
+    z-index: 1000;
+} */
+
+.cp-img {
+    cursor: pointer;
+}
+
+.cp_head {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    color: rgba(0, 78, 174, 1);
+}
+
+.cp_btn {
+    background:none !important;
+    color: gray;
+    font-size: 14px;
+    border:none !important;
+    text-decoration: underline;
+}
+
+.cp_btn:hover {
+    opacity: 70% !important;
+    color: gray !important;
+}
+
+.close-btn {
+    font-size: 20px;
+    background: none;
+    border: none;
+}
+
+.cp_refund {
+    color: rgba(234, 130, 8, 1);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.t_head th {
+    color: rgba(0, 78, 174, 1);
+}
+
+.t_body tr td {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+}
+
+.cp_list li::marker {
+    color:rgba(0, 78, 174, 1);
+    width: 10px;
+}
+
+.cp_list li {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+}
+
+#valid-btn, .pro-btn  {
+    background: #0071FF;
+    border-radius: 22px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 4PX 16PX;
+}
+
+
+
+.det {
+    border: 1.5px solid rgba(208, 213, 221, 1);
+    border-radius: 10px;
+    padding: 10px 10px;
+    margin: 6px 2px;
+}
+
+.det .heading {
+    font-size: 20px;
+    font-weight: 650;
+}
+
+.checkinput {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+
+.log-btn {
+    color: black;
+    background-color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.hotel-loc address {
+    font-size: 13px;
+}
+
+.hotel-pay {
+    position: sticky;
+    top: 110px; 
+    z-index: 100;
+}
+
+.fares {
+    justify-content: space-between;
+}
+
+
+footer {
+    position: sticky;
+    bottom: 0; 
+    z-index: 100;
+    padding: 10px 20px 4px;
+    color: white;
+    background: rgba(102, 102, 102, 0.63);
+    backdrop-filter: blur(4px);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 18px;
+}
+
+@media (min-width: 991.98px) and (max-width:1200px ) { 
+
+    .hotel-summary {
+        width: 60%;
+    }
+
+    .hotel-pay {
+        width: 40%;
+    }
+    /* #total-review {
+        width: 100%;
+    } */
+}
+
+@media only screen and (max-width: 768px) {
+
+    .det .heading {
+        font-size: 16px;
+    }
+
+    .guide_text {
+        font-size: 14px;
+    }
+    
+    .hotel-name p {
+        font-size: 16px;
+    }
+
+    .dtls_text {
+        font-size: 16px;
+    }
+
+    .dtls_utext  {
+        font-size: 15px;
+    }
+
+    .price-head {
+        font-size: 16px;
+    }
+
+    .fare_text {
+        font-size: 15px;
+    }
+
+    .fares p {
+        font-size: 15px ;
+    } 
+
+    input, textarea, select {
+        font-size: 12px;
+        padding: 4px;
+    }
+
+    .u_heading {
+        font-size: 14px;
+    }
+
+    h3 {
+        font-size:19px ;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    .name_no {
+        font-size: 17px;
+    }
+
+    .hotel-pay {
+        height: auto;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    #total-review {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hotel-summary {
+        width: 100%;
+    }
+
+    .pay_2 {
+        display: block !important; 
+        position: static !important;
+    }
+    
+    .pay_1 {
+        display: none;
+    }
+}
+
+  @media only screen and (max-width: 500px) {
+    .mq-col{
+        display: flex;
+        flex-direction: column;
+    }
+  }
